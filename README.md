@@ -2,4 +2,4 @@
 Paywalls.
 
 # Simply Paywall
-![Simply Paywall](/docs/images/simply.png)
+<img src="/docs/images/simply.png" width="250">
