@@ -55,13 +55,15 @@ final class ExampleSimplyPaywallViewController: SimplyPaywallViewController {
                     .withTintColor(accentColor, renderingMode: .alwaysOriginal)
             ),
         ]
+        DispatchQueue.main.async {
+            self.productItems = [
+                Self.ProductItemViewModel(id: "1", title: "Start 3-day free trial", description: "then $39.99/year. Cancel anytime"),
+                Self.ProductItemViewModel(id: "2", title: "Get Monthly Subscription", description: "$9.99/month. Cancel anytime"),
+    //            Self.ProductItemViewModel(title: "Get Monthly Subscription", description: "$9.99/month. Cancel anytime"),
+    //            Self.ProductItemViewModel(title: "Get Monthly Subscription", description: "$9.99/month. Cancel anytime")
+            ]
+        }
         
-        productItems = [
-            Self.ProductItemViewModel(id: "1", title: "Start 3-day free trial", description: "then $39.99/year. Cancel anytime"),
-            Self.ProductItemViewModel(id: "2", title: "Get Monthly Subscription", description: "$9.99/month. Cancel anytime"),
-//            Self.ProductItemViewModel(title: "Get Monthly Subscription", description: "$9.99/month. Cancel anytime"),
-//            Self.ProductItemViewModel(title: "Get Monthly Subscription", description: "$9.99/month. Cancel anytime")
-        ]
         
         benefitItems = [
             "No charge until Oct 20",

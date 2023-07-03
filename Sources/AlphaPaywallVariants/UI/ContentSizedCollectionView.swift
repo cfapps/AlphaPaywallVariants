@@ -15,7 +15,7 @@ final class ContentSizedCollectionView: UICollectionView {
         let cvHeight = heightAnchor.constraint(equalToConstant: 1)
         cvHeight.isActive = true
         contentSizeObservation = self.observe(\.contentSize, options: .new, changeHandler: { (cv, _) in
-            cvHeight.constant = cv.collectionViewLayout.collectionViewContentSize.height
+            cvHeight.constant = max(cv.collectionViewLayout.collectionViewContentSize.height, 1)
         })
     }
     

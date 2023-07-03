@@ -188,6 +188,16 @@ open class SimplyPaywallViewController: UIViewController {
         }
     }
     
+    public var isCloseButtonVisible: Bool = true {
+        didSet {
+            if isCloseButtonVisible {
+                navigationItem.leftBarButtonItem = closeBarButton
+            } else {
+                navigationItem.leftBarButtonItem = nil
+            }
+        }
+    }
+    
     public var isRestoreActionIndication: Bool = false {
         didSet {
             closeBarButton.isEnabled = !isRestoreActionIndication
@@ -464,8 +474,7 @@ open class SimplyPaywallViewController: UIViewController {
         
         featuresCollectionView.snp.makeConstraints { make in
             make.top.equalTo(featuresTitleLabel.snp.bottom).offset(24)
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
+            make.left.right.equalToSuperview()
         }
         
         productsTitleLabel.snp.makeConstraints { make in
@@ -477,7 +486,7 @@ open class SimplyPaywallViewController: UIViewController {
         
         productsCollectionView.snp.makeConstraints { make in
             make.bottom.equalTo(continueButton.snp.top).offset(-10)
-            make.leading.trailing.equalToSuperview()
+            make.left.right.equalToSuperview()
         }
         
         continueButton.snp.makeConstraints { make in
