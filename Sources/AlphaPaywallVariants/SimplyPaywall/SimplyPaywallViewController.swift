@@ -248,7 +248,11 @@ open class SimplyPaywallViewController: UIViewController {
     
     private lazy var scrollableContentView = UIView()
     
-    private lazy var bottomContentView = UIView()
+    private lazy var bottomContentView = {
+        let view = UIView()
+        view.backgroundColor = contentBackgroundColor
+        return view
+    }()
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -399,6 +403,39 @@ open class SimplyPaywallViewController: UIViewController {
         setupUI()
     }
     
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let apperance = UINavigationBarAppearance()
+        apperance.configureWithTransparentBackground()
+        
+        navigationController?.navigationBar.standardAppearance = apperance
+        navigationController?.navigationBar.compactAppearance = apperance
+        navigationController?.navigationBar.scrollEdgeAppearance = apperance
+    }
+    
+    open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        var apperance = UINavigationBarAppearance()
+        apperance.configureWithDefaultBackground()
+        navigationController?.navigationBar.standardAppearance = apperance
+        
+        apperance = UINavigationBarAppearance()
+        apperance.configureWithTransparentBackground()
+        navigationController?.navigationBar.compactAppearance = apperance
+        navigationController?.navigationBar.scrollEdgeAppearance = apperance
+    }
+    
+    override open func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        let bottomContentHeight = bottomContentView.frame.height
+        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: bottomContentHeight, right: 0)
+        featuresCollectionView.snp.updateConstraints { make in
+            make.bottom.lessThanOrEqualToSuperview().offset(-bottomContentHeight)
+        }
+    }
+    
     open func didSelectProductItem(_ viewModel: ProductItemViewModel) { }
     
     open func didTapFooterItem(withIndex index: Int) { }
@@ -474,6 +511,7 @@ open class SimplyPaywallViewController: UIViewController {
         
         featuresCollectionView.snp.makeConstraints { make in
             make.top.equalTo(featuresTitleLabel.snp.bottom).offset(24)
+            make.bottom.lessThanOrEqualToSuperview().offset(-1800)
             make.left.right.equalToSuperview()
         }
         
@@ -522,7 +560,7 @@ open class SimplyPaywallViewController: UIViewController {
         }
         
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(view.snp.top)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.left.right.equalToSuperview()
         }
