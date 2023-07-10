@@ -386,6 +386,11 @@ open class SimplyPaywallViewController: UIViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.backgroundColor = .clear
+        
+        collectionView.contentSizeDidChangeAction = { [unowned self] in
+            self.updateScrollContentOffset()
+        }
+        
         return collectionView
     }()
     
@@ -426,14 +431,10 @@ open class SimplyPaywallViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = apperance
     }
     
-    override open func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+    override open func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
-        let bottomContentHeight = bottomContentView.frame.height
-        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: bottomContentHeight, right: 0)
-        featuresCollectionView.snp.updateConstraints { make in
-            make.bottom.lessThanOrEqualToSuperview().offset(-bottomContentHeight)
-        }
+        updateScrollContentOffset()
     }
     
     open func didSelectProductItem(_ viewModel: ProductItemViewModel) { }
@@ -621,6 +622,14 @@ open class SimplyPaywallViewController: UIViewController {
         }
         
         return view
+    }
+    
+    private func updateScrollContentOffset() {
+        let bottomContentHeight = bottomContentView.frame.height
+        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: bottomContentHeight, right: 0)
+        featuresCollectionView.snp.updateConstraints { make in
+            make.bottom.lessThanOrEqualToSuperview().offset(-bottomContentHeight)
+        }
     }
     
     override open func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
