@@ -512,7 +512,7 @@ open class SimplyPaywallViewController: UIViewController {
         
         featuresCollectionView.snp.makeConstraints { make in
             make.top.equalTo(featuresTitleLabel.snp.bottom).offset(24)
-            make.bottom.lessThanOrEqualToSuperview().offset(-1800)
+            make.bottom.lessThanOrEqualToSuperview().offset(0)
             make.left.right.equalToSuperview()
         }
         
@@ -561,7 +561,7 @@ open class SimplyPaywallViewController: UIViewController {
         }
         
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(view.snp.top)
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
             make.left.right.equalToSuperview()
         }
