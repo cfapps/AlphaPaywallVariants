@@ -26,7 +26,27 @@ open class SimplyPaywallViewController: UIViewController {
     }
     
     open var secondaryLabelColor: UIColor {
-        UIColor.red
+        UIColor.secondaryLabel
+    }
+    
+    open var captionLabelColor: UIColor {
+        UIColor.secondaryLabel
+    }
+    
+    open var productBackgroundColor: UIColor {
+        UIColor.label
+    }
+    
+    open var productPrimaryLabelColor: UIColor {
+        UIColor.label
+    }
+    
+    open var productSecondaryLabelColor: UIColor {
+        UIColor.secondaryLabel
+    }
+    
+    open var applyTitleColor: UIColor {
+        UIColor.label
     }
     
     // MARK: Public properties
@@ -51,7 +71,7 @@ open class SimplyPaywallViewController: UIViewController {
                 )
                 attributedString.addAttribute(
                     .foregroundColor,
-                    value: accentColor,
+                    value: primaryLabelColor,
                     range: NSRange(location: 0, length: text.count)
                 )
             }
@@ -67,7 +87,7 @@ open class SimplyPaywallViewController: UIViewController {
                 )
                 attributedString.addAttribute(
                     .foregroundColor,
-                    value: primaryLabelColor,
+                    value: secondaryLabelColor,
                     range: range
                 )
             }
@@ -229,7 +249,7 @@ open class SimplyPaywallViewController: UIViewController {
     private var featureCollectionViewOffset: CGFloat = 0
     
     private lazy var closeBarButton: UIBarButtonItem = {
-        return CloseBarButtonItem(color: secondaryLabelColor, target: self, action: #selector(didTapCloseButton))
+        return CloseBarButtonItem(color: captionLabelColor, target: self, action: #selector(didTapCloseButton))
     }()
     
     private lazy var restoreBarButton: UIBarButtonItem = {
@@ -267,7 +287,7 @@ open class SimplyPaywallViewController: UIViewController {
     private lazy var featuresTitleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .headline, weight: .semibold)
-        label.textColor = accentColor
+        label.textColor = primaryLabelColor
         label.textAlignment = .center
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -286,11 +306,11 @@ open class SimplyPaywallViewController: UIViewController {
     
     private lazy var continueButton: IncidactionButton = {
         let button = IncidactionButton()
-        button.indicationColor = primaryLabelColor
-        button.setTitleColor(primaryLabelColor, for: .normal)
         button.setBackgroundColor(color: accentColor, forState: .normal)
         button.setBackgroundColor(color: accentColor.withAlphaComponent(0.7), forState: .disabled)
         button.setBackgroundColor(color: accentColor.withAlphaComponent(0.7), forState: .highlighted)
+        button.indicationColor = applyTitleColor
+        button.setTitleColor(applyTitleColor, for: .normal)
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.lineBreakMode = .byWordWrapping
         button.titleLabel?.textAlignment = .center
@@ -582,8 +602,8 @@ open class SimplyPaywallViewController: UIViewController {
     private func makeFooterButton(text: String, index: Int) -> UIButton {
         let button = UIButton()
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: CGFloat.leastNonzeroMagnitude, bottom: 0, right: 0)
-        button.setTitleColor(secondaryLabelColor, for: .normal)
-        button.setTitleColor(secondaryLabelColor.withAlphaComponent(0.7), for: .highlighted)
+        button.setTitleColor(captionLabelColor, for: .normal)
+        button.setTitleColor(captionLabelColor.withAlphaComponent(0.7), for: .highlighted)
         button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .caption1)
         button.setTitle(text, for: .normal)
         button.addAction { [weak self] in
@@ -603,7 +623,7 @@ open class SimplyPaywallViewController: UIViewController {
         
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .footnote, weight: .regular)
-        label.textColor = primaryLabelColor
+        label.textColor = secondaryLabelColor
         label.text = text
         
         view.addSubview(imageView)
@@ -680,7 +700,7 @@ extension SimplyPaywallViewController: UICollectionViewDelegate, UICollectionVie
             }
             let itemViewModel = featureItems[indexPath.item]
             
-            cell.primaryLabelColor = primaryLabelColor
+            cell.primaryLabelColor = secondaryLabelColor
             cell.horizontalOffset = (collectionView.bounds.width - featureCollectionViewOffset) / 2
             
             cell.titleText = itemViewModel.title
@@ -693,10 +713,10 @@ extension SimplyPaywallViewController: UICollectionViewDelegate, UICollectionVie
             }
             let itemViewModel = productItems[indexPath.item]
             
-            cell.contentBackgroundColor = contentBackgroundColor
             cell.accentColor = accentColor
-            cell.primaryLabelColor = primaryLabelColor
-            cell.secondaryLabelColor = secondaryLabelColor
+            cell.contentBackgroundColor = productBackgroundColor
+            cell.primaryLabelColor = productPrimaryLabelColor
+            cell.secondaryLabelColor = productSecondaryLabelColor
             
             cell.titleText = itemViewModel.title
             cell.descriptionText = itemViewModel.description
