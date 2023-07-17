@@ -11,15 +11,20 @@ let package = Package(
     products: [
         .library(
             name: "AlphaPaywallVariants",
-            targets: ["AlphaPaywallVariants"]),
+            targets: ["AlphaPaywallVariants"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.0.1")),
+        .package(url: "https://github.com/QuickTableKit/QuickTableKit.git", .upToNextMajor(from: "0.1.1")),
     ],
     targets: [
         .target(
             name: "AlphaPaywallVariants",
-            dependencies: ["SnapKit"]
+            dependencies: [
+                "SnapKit",
+                "QuickTableKit"
+            ]
         )
     ]
 )

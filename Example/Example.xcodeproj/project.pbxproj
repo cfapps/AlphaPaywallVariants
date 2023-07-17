@@ -16,6 +16,7 @@
 		073C297A2A0E84A6002EDCEE /* ExampleSimplyPaywallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C29792A0E84A6002EDCEE /* ExampleSimplyPaywallViewController.swift */; };
 		073C297C2A0E84F5002EDCEE /* PaywallBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C297B2A0E84F5002EDCEE /* PaywallBuilder.swift */; };
 		073C297E2A0E8AAB002EDCEE /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 073C297D2A0E8AAB002EDCEE /* Color.xcassets */; };
+		074C4CD72A5F68C100924407 /* ExampleLongiflorumPaywallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074C4CD62A5F68C100924407 /* ExampleLongiflorumPaywallViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		073C29792A0E84A6002EDCEE /* ExampleSimplyPaywallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSimplyPaywallViewController.swift; sourceTree = "<group>"; };
 		073C297B2A0E84F5002EDCEE /* PaywallBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallBuilder.swift; sourceTree = "<group>"; };
 		073C297D2A0E8AAB002EDCEE /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
+		074C4CD62A5F68C100924407 /* ExampleLongiflorumPaywallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleLongiflorumPaywallViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 			children = (
 				073C297B2A0E84F5002EDCEE /* PaywallBuilder.swift */,
 				073C29792A0E84A6002EDCEE /* ExampleSimplyPaywallViewController.swift */,
+				074C4CD62A5F68C100924407 /* ExampleLongiflorumPaywallViewController.swift */,
 			);
 			path = Paywalls;
 			sourceTree = "<group>";
@@ -204,6 +207,7 @@
 				073C297A2A0E84A6002EDCEE /* ExampleSimplyPaywallViewController.swift in Sources */,
 				073C297C2A0E84F5002EDCEE /* PaywallBuilder.swift in Sources */,
 				0703052C29F71210000DB9C8 /* SceneDelegate.swift in Sources */,
+				074C4CD72A5F68C100924407 /* ExampleLongiflorumPaywallViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

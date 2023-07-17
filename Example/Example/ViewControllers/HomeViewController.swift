@@ -8,6 +8,7 @@ import AlphaPaywallVariants
 enum Variant: String {
     
     case simply
+    case longiflorum
 }
 
 extension Variant {
@@ -16,6 +17,18 @@ extension Variant {
         switch self {
         case .simply:
             return "Simply"
+        case .longiflorum:
+            return "Longiflorum"
+        }
+    }
+    
+    var viewController: UIViewController {
+        let builder = PaywallBuilder()
+        switch self {
+        case .simply:
+            return builder.makeSimplyPaywall()
+        case .longiflorum:
+            return builder.makeLongiflorumPaywall()
         }
     }
 }
@@ -23,11 +36,7 @@ extension Variant {
 class HomeViewController: UITableViewController {
     
     private lazy var variants: [Variant] = {
-        [.simply]
-    }()
-    
-    private lazy var paywallBuilder: PaywallBuilder = {
-        return PaywallBuilder()
+        [.simply, .longiflorum]
     }()
     
     override func viewDidLoad() {
@@ -74,18 +83,11 @@ extension HomeViewController {
 extension HomeViewController {
     
     private func openPaywall(_ variant: Variant) {
-        switch variant {
-        case .simply:
-            openPaywallSimply()
-        }
-    }
-    
-    private func openPaywallSimply() {
         guard let navigationController = navigationController else {
             return
         }
         
-        let vc = paywallBuilder.makeSimplyPaywall()
+        let vc = variant.viewController
         let nvc = UINavigationController(rootViewController: vc)
         nvc.modalPresentationStyle = .fullScreen
         

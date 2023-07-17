@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "quicktablekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/QuickTableKit/QuickTableKit",
+      "state" : {
+        "revision" : "8bd28ea1e28f719c65012f4d1cb5d795a761ab57",
+        "version" : "0.1.1"
+      }
+    },
+    {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SnapKit/SnapKit.git",

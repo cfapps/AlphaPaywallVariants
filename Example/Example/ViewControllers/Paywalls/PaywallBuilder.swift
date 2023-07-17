@@ -10,4 +10,8 @@ final class PaywallBuilder {
     public func makeSimplyPaywall() -> UIViewController {
         return ExampleSimplyPaywallViewController()
     }
+    
+    public func makeLongiflorumPaywall() -> UIViewController {
+        return ExampleLongiflorumPaywallViewController()
+    }
 }
