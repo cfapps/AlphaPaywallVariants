@@ -3,7 +3,7 @@
     {
       "identity" : "quicktablekit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/QuickTableKit/QuickTableKit",
+      "location" : "https://github.com/QuickTableKit/QuickTableKit.git",
       "state" : {
         "revision" : "2dc272e03e0bdd6472d2491549e323c71f962220",
         "version" : "0.1.2"
