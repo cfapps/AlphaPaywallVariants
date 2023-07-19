@@ -1,11 +1,11 @@
 import XCTest
-@testable import AlphaPaywallVariants
+@testable import AlphaPaywallsKit
 
-final class AlphaPaywallVariantsTests: XCTestCase {
+final class AlphaPaywallsKitTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-//        XCTAssertEqual(AlphaPaywallVariants().text, "Hello, World!")
+//        XCTAssertEqual(AlphaPaywallsKit().text, "Hello, World!")
     }
 }

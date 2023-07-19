@@ -18,8 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let window = UIWindow(windowScene: windowScene)
 //        let vc = UINavigationController(rootViewController: HomeViewController())
-            let vc = UINavigationController(rootViewController: ExampleLongiflorumPaywallViewController())
-        vc.navigationBar.prefersLargeTitles = true
+        let vc = UINavigationController(rootViewController: ExampleLongiflorumPaywallViewController())
+        vc.navigationBar.prefersLargeTitles = false
         window.rootViewController = vc
         self.window = window
         

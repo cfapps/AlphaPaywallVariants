@@ -3,7 +3,7 @@
 //
 
 import UIKit
-import AlphaPaywallVariants
+import AlphaPaywallsKit
 
 enum Variant: String {
     

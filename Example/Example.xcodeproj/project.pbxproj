@@ -12,7 +12,7 @@
 		0703052E29F71210000DB9C8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0703052D29F71210000DB9C8 /* HomeViewController.swift */; };
 		0703053329F71212000DB9C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0703053229F71212000DB9C8 /* Assets.xcassets */; };
 		0703053629F71212000DB9C8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0703053429F71212000DB9C8 /* LaunchScreen.storyboard */; };
-		0703054429F716F7000DB9C8 /* AlphaPaywallVariants in Frameworks */ = {isa = PBXBuildFile; productRef = 0703054329F716F7000DB9C8 /* AlphaPaywallVariants */; };
+		0703054429F716F7000DB9C8 /* AlphaPaywallsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 0703054329F716F7000DB9C8 /* AlphaPaywallsKit */; };
 		073C297A2A0E84A6002EDCEE /* ExampleSimplyPaywallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C29792A0E84A6002EDCEE /* ExampleSimplyPaywallViewController.swift */; };
 		073C297C2A0E84F5002EDCEE /* PaywallBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C297B2A0E84F5002EDCEE /* PaywallBuilder.swift */; };
 		073C297E2A0E8AAB002EDCEE /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 073C297D2A0E8AAB002EDCEE /* Color.xcassets */; };
@@ -27,7 +27,7 @@
 		0703053229F71212000DB9C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0703053529F71212000DB9C8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0703053729F71212000DB9C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0703054129F716E8000DB9C8 /* AlphaPaywallVariants */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AlphaPaywallVariants; path = ..; sourceTree = "<group>"; };
+		0703054129F716E8000DB9C8 /* AlphaPaywallsKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = AlphaPaywallsKit; path = ..; sourceTree = "<group>"; };
 		073C29792A0E84A6002EDCEE /* ExampleSimplyPaywallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSimplyPaywallViewController.swift; sourceTree = "<group>"; };
 		073C297B2A0E84F5002EDCEE /* PaywallBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallBuilder.swift; sourceTree = "<group>"; };
 		073C297D2A0E8AAB002EDCEE /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
@@ -39,7 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0703054429F716F7000DB9C8 /* AlphaPaywallVariants in Frameworks */,
+				0703054429F716F7000DB9C8 /* AlphaPaywallsKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,7 +106,7 @@
 		0703054029F716E8000DB9C8 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				0703054129F716E8000DB9C8 /* AlphaPaywallVariants */,
+				0703054129F716E8000DB9C8 /* AlphaPaywallsKit */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -145,7 +145,7 @@
 			);
 			name = Example;
 			packageProductDependencies = (
-				0703054329F716F7000DB9C8 /* AlphaPaywallVariants */,
+				0703054329F716F7000DB9C8 /* AlphaPaywallsKit */,
 			);
 			productName = Example;
 			productReference = 0703052629F71210000DB9C8 /* Example.app */;
@@ -360,7 +360,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alphapaywallvariants.exampleapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alphapaywallskit.exampleapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -388,7 +388,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.alphapaywallvariants.exampleapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alphapaywallskit.exampleapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -420,9 +420,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0703054329F716F7000DB9C8 /* AlphaPaywallVariants */ = {
+		0703054329F716F7000DB9C8 /* AlphaPaywallsKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = AlphaPaywallVariants;
+			productName = AlphaPaywallsKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

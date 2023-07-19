@@ -4,23 +4,23 @@
 import PackageDescription
 
 let package = Package(
-    name: "AlphaPaywallVariants",
+    name: "AlphaPaywallsKit",
     platforms: [
         .iOS(.v13)
     ],
     products: [
         .library(
-            name: "AlphaPaywallVariants",
-            targets: ["AlphaPaywallVariants"]
+            name: "AlphaPaywallsKit",
+            targets: ["AlphaPaywallsKit"]
         ),
     ],
     dependencies: [
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.6.0")),
-        .package(url: "https://github.com/QuickTableKit/QuickTableKit.git", .upToNextMajor(from: "0.1.2")),
+        .package(url: "https://github.com/QuickTableKit/QuickTableKit.git", .upToNextMajor(from: "0.1.6")),
     ],
     targets: [
         .target(
-            name: "AlphaPaywallVariants",
+            name: "AlphaPaywallsKit",
             dependencies: [
                 "SnapKit",
                 "QuickTableKit"
