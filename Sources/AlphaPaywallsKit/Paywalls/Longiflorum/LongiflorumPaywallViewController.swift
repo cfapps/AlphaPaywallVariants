@@ -24,29 +24,29 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     
     // MARK: Public properties
     
-    open var titleText: NSAttributedString {
-        NSAttributedString()
-    }
+    public var titleText: NSAttributedString = NSAttributedString()
     
-    open var benefitItems: [BenefitItemViewModel] {
-        []
-    }
+    public var benefitItems: [BenefitItemViewModel] = []
     
-    open var productItems: [ProductItemViewModel] = []
+    public var productItems: [ProductItemViewModel] = []
     
-    open var selectedProductId: String? = nil
+    public var selectedProductId: String? = nil
     
-    public convenience init() {
-        self.init(style: .grouped)
+    public init() {
+        super.init(style: .grouped)
     }
     
     public convenience init(
         products: [ProductItemViewModel],
         selectedProductId: String?) {
-        self.init(style: .grouped)
+        self.init()
         
         self.productItems = products
         self.selectedProductId = selectedProductId
+    }
+    
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     open override func viewDidLoad() {
