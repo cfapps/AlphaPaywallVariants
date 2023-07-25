@@ -126,6 +126,9 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             )
         })
         cellModels.productsItemsCellModel.selectedItemId = selectedProductId
+        cellModels.productsItemsCellModel.didSelectItem = { [weak self] (item) in
+            self?.delegate?.didSelectProduct(withId: item.id)
+        }
         
         collection.update(with: [
             cellModels.benefitsSectionModel,

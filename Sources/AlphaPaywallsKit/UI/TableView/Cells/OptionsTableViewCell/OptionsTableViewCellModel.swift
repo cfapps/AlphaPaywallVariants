@@ -40,7 +40,7 @@ final class OptionsTableViewCellModel: QuickTableViewCellModelProtocol {
     
     var selectedItemId: String?
     
-    let didSelectItem: ((Item) -> Void)?
+    var didSelectItem: ((Item) -> Void)?
     
     let inset: UIEdgeInsets
     
