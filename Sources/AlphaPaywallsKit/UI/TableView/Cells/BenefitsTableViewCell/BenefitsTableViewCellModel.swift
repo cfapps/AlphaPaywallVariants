@@ -6,7 +6,7 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-final class FeaturesTableViewCellModel: QuickTableViewCellModelProtocol {
+final class BenefitsTableViewCellModel: QuickTableViewCellModelProtocol {
     
     struct Item {
         
@@ -15,7 +15,7 @@ final class FeaturesTableViewCellModel: QuickTableViewCellModelProtocol {
         let text: String
     }
     
-    static var type: QuickTableViewCellProtocol.Type { FeaturesTableViewCell.self }
+    static var type: QuickTableViewCellProtocol.Type { BenefitsTableViewCell.self }
     
     var id: Int?
     
@@ -23,12 +23,20 @@ final class FeaturesTableViewCellModel: QuickTableViewCellModelProtocol {
     
     var items: [Item]
     
+    var iconColor: UIColor
+    
+    var textColor: UIColor
+    
     init(id: Int? = nil,
          entity: IdentifiableEntity? = nil,
-         items: [Item]) {
+         items: [Item],
+         iconColor: UIColor,
+         textColor: UIColor) {
         self.id = id
         self.entity = entity
         self.items = items
+        self.iconColor = iconColor
+        self.textColor = textColor
     }
 }
 

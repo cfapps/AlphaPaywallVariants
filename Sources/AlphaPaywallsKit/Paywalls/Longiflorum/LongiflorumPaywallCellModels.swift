@@ -37,9 +37,11 @@ final class LongiflorumPaywallCellModels {
         inset: UIEdgeInsets(top: 24, left: 32, bottom: 32, right: 32)
     )
     
-    lazy var benefitsItemsCellModel = FeaturesTableViewCellModel(
+    lazy var benefitsItemsCellModel = BenefitsTableViewCellModel(
         id: CellId.benefitsItems.rawValue,
-        items: []
+        items: [],
+        iconColor: UIColor.systemBlue,
+        textColor: UIColor.label
     )
     
     // MARK: Section - Products
@@ -49,30 +51,31 @@ final class LongiflorumPaywallCellModels {
         items: [productsItemsCellModel]
     )
     
-    lazy var productsItemsCellModel = OptionsTableViewCellModel(
+    lazy var productsItemsCellModel = ProductsTableViewCellModel(
         id: CellId.productsItems.rawValue,
         items: [],
         selectedItemId: nil,
         didSelectItem: nil,
         inset: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16),
-        backgroundColor: UIColor.white,
-        unselectedColor: UIColor.opaqueSeparator,
+        backgroundColor: UIColor.systemBackground,
+        textColor: UIColor.systemBlue,
         selectedColor: UIColor.systemBlue,
-        labelColor: UIColor.systemBlue
+        unselectedColor: UIColor.opaqueSeparator,
+        checkmarkColor: UIColor.separator
     )
     
     // MARK: Section - Award
     
     lazy var awardSectionModel = QuickTableViewSection(
         id: SectionId.award.rawValue,
-        items: [awardItemCellMode]
+        items: [awardItemCellModel]
     )
     
-    lazy var awardItemCellMode = AwardTableViewCellModel(
+    lazy var awardItemCellModel = AwardTableViewCellModel(
         id: CellId.awardItem.rawValue,
-        title: "Trusted by 10,000 Businesses Worldwide. Boost Your Business Growth with GetInvoice",
-        subTitle: "Featured in 12 countries",
-        details: "Apps for\nSmall Business",
+        title: nil,
+        subTitle: nil,
+        details: nil,
         insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16),
         contentColor: UIColor(red: 0, green: 0.48, blue: 1, alpha: 0.08),
         textColor: UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
@@ -86,20 +89,13 @@ final class LongiflorumPaywallCellModels {
     )
     
     lazy var featuresHeaderModel = TitleTableViewHeaderModel(
-        titleText: "Great Features You will Love",
+        titleText: nil,
         textColor: .black,
         insets: UIEdgeInsets(top: 0, left: 16, bottom: 24, right: 16)
     )
     
     lazy var featuresCellModel = ObjectComparisonTableViewCellModel(
-        items: [
-            "Unlimited Invoices",
-            "Follow-up Reminders",
-            "Custom Templates",
-            "Custom Reports",
-            "Add-Free Experience",
-            "Priority Support"
-        ],
+        items: [],
         insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16),
         contentColor: UIColor(red: 0, green: 0.48, blue: 1, alpha: 0.08),
         textColor: UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)

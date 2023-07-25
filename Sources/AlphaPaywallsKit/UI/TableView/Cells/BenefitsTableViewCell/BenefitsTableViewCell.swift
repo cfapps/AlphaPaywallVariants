@@ -6,11 +6,15 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-final class FeaturesTableViewCell: UITableViewCell {
+final class BenefitsTableViewCell: UITableViewCell {
     
     private let collection = QuickCollectionViewCollection()
     
     private var itemMaxWidth: CGFloat = 0
+    
+    private var iconColor: UIColor = UIColor.systemBlue
+    
+    private var textColor: UIColor = UIColor.label
     
     private lazy var collectionViewLayout: UICollectionViewLayout = {
         let item = NSCollectionLayoutItem(
@@ -19,15 +23,13 @@ final class FeaturesTableViewCell: UITableViewCell {
                 heightDimension: .estimated(44)
             )
         )
-        let group = NSCollectionLayoutGroup.horizontal(
+        let group = NSCollectionLayoutGroup.vertical(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .estimated(44)
             ),
-            subitem: item,
-            count: 1
+            subitems: [item]
         )
-        
         let section = NSCollectionLayoutSection(group: group)
         section.interGroupSpacing = 0
         let layout = UICollectionViewCompositionalLayout(section: section)
@@ -61,12 +63,13 @@ final class FeaturesTableViewCell: UITableViewCell {
         contentView.addSubview(collectionView)
         
         collectionView.snp.makeConstraints { make in
+            make.height.equalTo(1).priority(.medium)
             make.edges.equalToSuperview()
         }
     }
 }
 
-extension FeaturesTableViewCell: UICollectionViewDataSource {
+extension BenefitsTableViewCell: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return collection.numberOfSections()
@@ -77,7 +80,7 @@ extension FeaturesTableViewCell: UICollectionViewDataSource {
     }
 }
 
-extension FeaturesTableViewCell: UICollectionViewDelegate {
+extension BenefitsTableViewCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cellType = collection.cellType(at: indexPath),
@@ -86,26 +89,29 @@ extension FeaturesTableViewCell: UICollectionViewDelegate {
             fatalError("Cell cannot be dequeue")
         }
         
-        cell.update(model: cellModel)
-        
         if let cell = cell as? CollectionViewCell {
-            cell.horizontalOffset = (collectionView.bounds.width - itemMaxWidth) / 2
+            cell.iconColor = iconColor
+            cell.textColor = textColor
+            cell.containerWidth = itemMaxWidth
         }
+        
+        cell.update(model: cellModel)
         
         return cell
     }
 }
 
-extension FeaturesTableViewCell: QuickTableViewCellProtocol {
+extension BenefitsTableViewCell: QuickTableViewCellProtocol {
     
     func update(model: QuickTableViewCellModelProtocol) {
-        guard let model = model as? FeaturesTableViewCellModel else {
+        guard let model = model as? BenefitsTableViewCellModel else {
             return
         }
         
         collection.removeAll()
         
-        itemMaxWidth = model.items.map({ CollectionViewCell.calculateWidth(text: $0.text) }).max() ?? 0
+        iconColor = model.iconColor
+        textColor = model.textColor
         
         collection.update(sections: [
             QuickCollectionViewSection(
@@ -114,6 +120,8 @@ extension FeaturesTableViewCell: QuickTableViewCellProtocol {
                 })
             )
         ])
+        
+        itemMaxWidth = model.items.map({ CollectionViewCell.calculateWidth(text: $0.text) }).max() ?? 0
         
         collectionView.reloadData()
         collectionView.layoutIfNeeded()

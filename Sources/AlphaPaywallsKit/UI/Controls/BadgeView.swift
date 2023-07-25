@@ -6,9 +6,9 @@ import UIKit
 
 final class BadgeView: UIView {
     
-    var labelColor: UIColor = UIColor.label {
+    var textColor: UIColor = UIColor.label {
         didSet {
-            badgeLabel.textColor = labelColor
+            badgeLabel.textColor = textColor
         }
     }
     
@@ -23,7 +23,7 @@ final class BadgeView: UIView {
         label.numberOfLines = 0
         label.lineBreakMode = .byCharWrapping
         label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold)
-        label.textColor = labelColor
+        label.textColor = textColor
         return label
     }()
     

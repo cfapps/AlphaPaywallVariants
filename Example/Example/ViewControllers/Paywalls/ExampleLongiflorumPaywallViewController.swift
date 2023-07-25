@@ -32,11 +32,25 @@ final class ExampleLongiflorumPaywallViewController: LongiflorumPaywallViewContr
                 title: "Annual",
                 description: "First 7 days free.\n$9.99 / month",
                 details: "Get Premium with a Free 7-day Trial\nthen 59.99/year. No commitment. Cancel anytime."
+            ),
+            Self.ProductItemViewModel(
+                id: "3",
+                title: "Lifetie",
+                description: "First 7 days free.\n$9.99 / month",
+                details: "One time payment."
             )
         ]
         self.selectedProductId = "2"
         
         self.setContinueButton(text: "Start My Free Trial")
+        self.termsOfServiceButtonText = "Terms Of Service"
+        self.privacyPolicyButtonText = "Privacy Policy"
+        
+        self.awardItem = Self.AwardItemViewModel(
+            title: "Trusted by 10,000 Businesses Worldwide. Boost Your Business Growth with Get Invoice",
+            subTitle: "Featured in 12 countries",
+            details: "Apps for\nSmall Business"
+        )
     }
     
     required init?(coder: NSCoder) {

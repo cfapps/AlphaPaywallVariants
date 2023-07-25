@@ -6,21 +6,30 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-final class OptionsTableViewCell: UITableViewCell {
+final class ProductsTableViewCell: UITableViewCell {
     
-    private weak var model: OptionsTableViewCellModel?
+    private weak var model: ProductsTableViewCellModel?
     
     private let collection = QuickCollectionViewCollection()
     
-    private var labelColor: UIColor = UIColor.label {
+    private var containerBackgroundColor: UIColor = UIColor.systemBackground
+    
+    private var containerUnselectedColor: UIColor = UIColor.opaqueSeparator
+    
+    private var containerSelectedColor: UIColor = UIColor.systemBlue
+    
+    private var checkmarkColor: UIColor = UIColor.separator
+    
+    private var textColor: UIColor = UIColor.label {
         didSet {
-            titleLabel.textColor = labelColor
+            titleLabel.textColor = textColor
         }
     }
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .footnote, weight: .bold)
+        label.textColor = textColor
         label.textColor = .orange
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
@@ -45,7 +54,7 @@ final class OptionsTableViewCell: UITableViewCell {
         )
         group.interItemSpacing = NSCollectionLayoutSpacing.fixed(8)
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 0
+        section.interGroupSpacing = 8
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }()
@@ -80,6 +89,8 @@ final class OptionsTableViewCell: UITableViewCell {
         super.prepareForReuse()
         
         collection.removeAll()
+        
+        collectionView.isUserInteractionEnabled = true
     }
     
     private func setupUI() {
@@ -107,7 +118,7 @@ final class OptionsTableViewCell: UITableViewCell {
     }
 }
 
-extension OptionsTableViewCell: UICollectionViewDataSource {
+extension ProductsTableViewCell: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return collection.numberOfSections()
@@ -118,7 +129,7 @@ extension OptionsTableViewCell: UICollectionViewDataSource {
     }
 }
 
-extension OptionsTableViewCell: UICollectionViewDelegate {
+extension ProductsTableViewCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cellType = collection.cellType(at: indexPath),
@@ -128,6 +139,14 @@ extension OptionsTableViewCell: UICollectionViewDelegate {
         }
         
         cell.update(model: cellModel)
+        
+        if let cell = cell as? CollectionViewCell {
+            cell.containerBackgroundColor = containerBackgroundColor
+            cell.containerUnselectedColor = containerUnselectedColor
+            cell.containerSelectedColor = containerSelectedColor
+            cell.textColor = textColor
+            cell.checkmarkColor = checkmarkColor
+        }
         
         return cell
     }
@@ -151,16 +170,20 @@ extension OptionsTableViewCell: UICollectionViewDelegate {
     }
 }
 
-extension OptionsTableViewCell: QuickTableViewCellProtocol {
+extension ProductsTableViewCell: QuickTableViewCellProtocol {
     
     func update(model: QuickTableViewCellModelProtocol) {
-        guard let model = model as? OptionsTableViewCellModel else {
+        guard let model = model as? ProductsTableViewCellModel else {
             return
         }
         
         self.model = model
         
-        labelColor = model.labelColor
+        containerBackgroundColor = model.backgroundColor
+        containerUnselectedColor = model.unselectedColor
+        containerSelectedColor = model.selectedColor
+        textColor = model.textColor
+        checkmarkColor = model.checkmarkColor
         
         collection.removeAll()
         
@@ -174,15 +197,13 @@ extension OptionsTableViewCell: QuickTableViewCellProtocol {
                         descriptionText: item.descriptionText,
                         badge: item.badge.flatMap({
                             CollectionViewCellModel.Badge(text: $0.text, color: $0.color, textColor: $0.textColor)
-                        }),
-                        backgroundColor: model.backgroundColor,
-                        labelColor: model.labelColor,
-                        unselectedColor: model.unselectedColor,
-                        selectedColor: model.selectedColor
+                        })
                     )
                 })
             )
         ])
+        
+        collectionView.isUserInteractionEnabled = model.isEnable
         
         collectionView.reloadData()
         

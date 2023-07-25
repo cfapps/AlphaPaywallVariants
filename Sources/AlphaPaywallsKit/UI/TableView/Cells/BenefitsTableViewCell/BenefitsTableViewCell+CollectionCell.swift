@@ -6,27 +6,46 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-extension FeaturesTableViewCell {
+extension BenefitsTableViewCell {
     
     final class CollectionViewCell: UICollectionViewCell {
         
-        var primaryLabelColor: UIColor = UIColor.label {
+        var iconColor: UIColor = UIColor.label {
             didSet {
-                titleLabel.textColor = primaryLabelColor
+                iconImageView.image = iconImageView.image?.withTintColor(iconColor, renderingMode: .alwaysOriginal)
             }
         }
         
-        var horizontalOffset: CGFloat = 0 {
+        var textColor: UIColor = UIColor.label {
             didSet {
-                iconImageContainerView.snp.updateConstraints { make in
-                    make.left.equalToSuperview().offset(horizontalOffset)
+                titleLabel.textColor = textColor
+            }
+        }
+        
+        var containerWidth: CGFloat? {
+            didSet {
+                if let containerWidth = containerWidth {
+                    containerView.snp.remakeConstraints { make in
+                        make.top.bottom.equalToSuperview()
+                        make.left.greaterThanOrEqualToSuperview()
+                        make.right.lessThanOrEqualToSuperview()
+                        make.centerX.equalToSuperview()
+                        make.width.equalTo(containerWidth)
+                    }
+                } else {
+                    containerView.snp.remakeConstraints { make in
+                        make.top.bottom.equalToSuperview()
+                        make.left.greaterThanOrEqualToSuperview()
+                        make.right.lessThanOrEqualToSuperview()
+                        make.centerX.equalToSuperview()
+                    }
                 }
             }
         }
         
         var iconImage: UIImage? {
             didSet {
-                iconImageView.image = iconImage
+                iconImageView.image = iconImage?.withTintColor(iconColor, renderingMode: .alwaysOriginal)
             }
         }
         
@@ -47,9 +66,11 @@ extension FeaturesTableViewCell {
         private lazy var titleLabel: UILabel = {
             let label = UILabel()
             label.font = UIFont.preferredFont(forTextStyle: .body, weight: .regular)
-            label.textColor = primaryLabelColor
+            label.textColor = textColor
             return label
         }()
+        
+        private lazy var containerView = UIView()
         
         override init(frame: CGRect) {
             super.init(frame: frame)
@@ -69,8 +90,9 @@ extension FeaturesTableViewCell {
         
         private func setupUI() {
             iconImageContainerView.addSubview(iconImageView)
-            contentView.addSubview(iconImageContainerView)
-            contentView.addSubview(titleLabel)
+            containerView.addSubview(iconImageContainerView)
+            containerView.addSubview(titleLabel)
+            contentView.addSubview(containerView)
             
             iconImageContainerView.snp.makeConstraints { make in
                 make.height.width.equalTo(44)
@@ -92,15 +114,22 @@ extension FeaturesTableViewCell {
                 make.right.lessThanOrEqualToSuperview()
             }
             
-            contentView.backgroundColor = .orange
+            containerView.snp.makeConstraints { make in
+                make.top.bottom.equalToSuperview()
+                make.left.greaterThanOrEqualToSuperview()
+                make.right.lessThanOrEqualToSuperview()
+                make.centerX.equalToSuperview()
+            }
+            
+            titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         }
     }
 }
 
-extension FeaturesTableViewCell.CollectionViewCell: QuickCollectionViewCellProtocol {
+extension BenefitsTableViewCell.CollectionViewCell: QuickCollectionViewCellProtocol {
     
     func update(model: QuickCollectionViewCellModelProtocol) {
-        guard let model = model as? FeaturesTableViewCell.CollectionViewCellModel else {
+        guard let model = model as? BenefitsTableViewCell.CollectionViewCellModel else {
             return
         }
         
@@ -109,7 +138,7 @@ extension FeaturesTableViewCell.CollectionViewCell: QuickCollectionViewCellProto
     }
 }
 
-extension FeaturesTableViewCell.CollectionViewCell {
+extension BenefitsTableViewCell.CollectionViewCell {
     
     class func calculateWidth(text: String) -> CGFloat {
         let myText = text as NSString
@@ -124,7 +153,7 @@ extension FeaturesTableViewCell.CollectionViewCell {
     }
 }
 
-extension FeaturesTableViewCell {
+extension BenefitsTableViewCell {
     
     final class CollectionViewCellModel: QuickCollectionViewCellModelProtocol {
         
@@ -148,5 +177,4 @@ extension FeaturesTableViewCell {
             self.text = text
         }
     }
-
 }

@@ -5,41 +5,45 @@
 import UIKit
 import QuickTableKit
 
-extension OptionsTableViewCell {
+extension ProductsTableViewCell {
     
     class CollectionViewCell: UICollectionViewCell {
         
-        var cellBackgroundColor: UIColor = UIColor.systemBackground {
+        var containerBackgroundColor: UIColor = UIColor.systemBackground {
             didSet {
-                containerBackgroundView.backgroundColor = cellBackgroundColor
+                containerBackgroundView.backgroundColor = containerBackgroundColor
             }
         }
         
-        var unselectedColor: UIColor = UIColor.opaqueSeparator {
+        var containerUnselectedColor: UIColor = UIColor.opaqueSeparator {
             didSet {
-                unselectedCheckmarkView.image = unselectedCheckmarkView.image?.withTintColor(unselectedColor, renderingMode: .alwaysOriginal)
-                
                 if !isSelected {
-                    selectedContainerBackgroundView.layer.borderColor = unselectedColor.cgColor
+                    selectedContainerBackgroundView.layer.borderColor = containerUnselectedColor.cgColor
                 }
             }
         }
         
-        var selectedColor: UIColor = UIColor.systemBlue {
+        var containerSelectedColor: UIColor = UIColor.systemBlue {
             didSet {
-                selectedCheckmarkView.image = selectedCheckmarkView.image?.withTintColor(selectedColor, renderingMode: .alwaysOriginal)
+                selectedCheckmarkView.image = selectedCheckmarkView.image?.withTintColor(containerSelectedColor, renderingMode: .alwaysOriginal)
                 
                 if isSelected {
-                    selectedContainerBackgroundView.layer.backgroundColor = selectedColor.withAlphaComponent(0.08).cgColor
-                    selectedContainerBackgroundView.layer.borderColor = selectedColor.cgColor
+                    selectedContainerBackgroundView.layer.backgroundColor = containerSelectedColor.withAlphaComponent(0.08).cgColor
+                    selectedContainerBackgroundView.layer.borderColor = containerSelectedColor.cgColor
                 }
             }
         }
         
-        var labelColor: UIColor = UIColor(red: 0, green: 122 / 255, blue: 1, alpha: 1) {
+        var textColor: UIColor = UIColor(red: 0, green: 122 / 255, blue: 1, alpha: 1) {
             didSet {
-                titleLabel.textColor = labelColor
-                descriptionLabel.textColor = labelColor
+                titleLabel.textColor = textColor
+                descriptionLabel.textColor = textColor
+            }
+        }
+        
+        var checkmarkColor: UIColor = UIColor(red: 0, green: 122 / 255, blue: 1, alpha: 1) {
+            didSet {
+                unselectedCheckmarkView.image = unselectedCheckmarkView.image?.withTintColor(checkmarkColor, renderingMode: .alwaysOriginal)
             }
         }
         
@@ -49,9 +53,9 @@ extension OptionsTableViewCell {
             }
         }
         
-        var badgeLabelColor: UIColor = UIColor.white {
+        var badgeTextColor: UIColor = UIColor.white {
             didSet {
-                badgeView.labelColor = badgeLabelColor
+                badgeView.textColor = badgeTextColor
             }
         }
         
@@ -68,7 +72,7 @@ extension OptionsTableViewCell {
             view.layer.masksToBounds = true
             view.layer.backgroundColor = nil
             view.layer.borderWidth = 1
-            view.layer.borderColor = unselectedColor.cgColor
+            view.layer.borderColor = containerUnselectedColor.cgColor
             return view
         }()
         
@@ -78,7 +82,7 @@ extension OptionsTableViewCell {
             let imageView = UIImageView()
             imageView.image = UIImage(systemName: "circle")?
                 .withConfiguration(UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 22)))
-                .withTintColor(unselectedColor, renderingMode: .alwaysOriginal)
+                .withTintColor(containerUnselectedColor, renderingMode: .alwaysOriginal)
             return imageView
         }()
         
@@ -87,7 +91,7 @@ extension OptionsTableViewCell {
             imageView.isHidden = true
             imageView.image = UIImage(systemName: "checkmark.circle.fill")?
                 .withConfiguration(UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 22)))
-                .withTintColor(selectedColor, renderingMode: .alwaysOriginal)
+                .withTintColor(containerSelectedColor, renderingMode: .alwaysOriginal)
             return imageView
         }()
         
@@ -96,7 +100,7 @@ extension OptionsTableViewCell {
             view.layer.cornerRadius = 10
             view.layer.masksToBounds = true
             view.layer.backgroundColor = badgeColor.cgColor
-            view.labelColor = badgeLabelColor
+            view.textColor = badgeTextColor
             return view
         }()
         
@@ -110,7 +114,7 @@ extension OptionsTableViewCell {
             label.numberOfLines = 0
             label.lineBreakMode = .byWordWrapping
             label.font = UIFont.preferredFont(forTextStyle: .body, weight: .semibold)
-            label.textColor = labelColor
+            label.textColor = textColor
             return label
         }()
         
@@ -119,7 +123,7 @@ extension OptionsTableViewCell {
             label.numberOfLines = 0
             label.lineBreakMode = .byWordWrapping
             label.font = UIFont.preferredFont(forTextStyle: .caption1, weight: .regular)
-            label.textColor = labelColor
+            label.textColor = textColor
             return label
         }()
         
@@ -129,16 +133,16 @@ extension OptionsTableViewCell {
                     unselectedCheckmarkView.isHidden = true
                     selectedCheckmarkView.isHidden = false
                     
-                    selectedContainerBackgroundView.layer.backgroundColor = selectedColor.withAlphaComponent(0.08).cgColor
+                    selectedContainerBackgroundView.layer.backgroundColor = containerSelectedColor.withAlphaComponent(0.08).cgColor
                     selectedContainerBackgroundView.layer.borderWidth = 2
-                    selectedContainerBackgroundView.layer.borderColor = selectedColor.cgColor
+                    selectedContainerBackgroundView.layer.borderColor = containerSelectedColor.cgColor
                 } else {
                     unselectedCheckmarkView.isHidden = false
                     selectedCheckmarkView.isHidden = true
                     
                     selectedContainerBackgroundView.layer.backgroundColor = nil
                     selectedContainerBackgroundView.layer.borderWidth = 1
-                    selectedContainerBackgroundView.layer.borderColor = unselectedColor.cgColor
+                    selectedContainerBackgroundView.layer.borderColor = containerUnselectedColor.cgColor
                 }
             }
         }
@@ -159,7 +163,7 @@ extension OptionsTableViewCell {
             selectedCheckmarkView.isHidden = true
             selectedContainerBackgroundView.layer.backgroundColor = nil
             selectedContainerBackgroundView.layer.borderWidth = 1
-            selectedContainerBackgroundView.layer.borderColor = unselectedColor.cgColor
+            selectedContainerBackgroundView.layer.borderColor = containerUnselectedColor.cgColor
         }
         
         private func setupUI() {
@@ -248,54 +252,33 @@ extension OptionsTableViewCell {
         
         var badge: Badge?
         
-        let backgroundColor: UIColor
-        
-        let labelColor: UIColor
-        
-        let unselectedColor: UIColor
-        
-        let selectedColor: UIColor
-        
         init(id: Int? = nil,
              entity: IdentifiableEntity? = nil,
              titleText: String? = nil,
              descriptionText: String? = nil,
-             badge: Badge? = nil,
-             backgroundColor: UIColor,
-             labelColor: UIColor,
-             unselectedColor: UIColor,
-             selectedColor: UIColor) {
+             badge: Badge? = nil) {
             self.id = id
             self.entity = entity
             self.titleText = titleText
             self.descriptionText = descriptionText
             self.badge = badge
-            self.backgroundColor = backgroundColor
-            self.labelColor = labelColor
-            self.unselectedColor = unselectedColor
-            self.selectedColor = selectedColor
         }
     }
 }
 
-extension OptionsTableViewCell.CollectionViewCell: QuickCollectionViewCellProtocol {
+extension ProductsTableViewCell.CollectionViewCell: QuickCollectionViewCellProtocol {
     
     func update(model: QuickCollectionViewCellModelProtocol) {
-        guard let model = model as? OptionsTableViewCell.CollectionViewCellModel else {
+        guard let model = model as? ProductsTableViewCell.CollectionViewCellModel else {
             return
         }
-        
-        cellBackgroundColor = model.backgroundColor
-        labelColor = model.labelColor
-        unselectedColor = model.unselectedColor
-        selectedColor = model.selectedColor
         
         titleLabel.text = model.titleText
         descriptionLabel.text = model.descriptionText
         
         if let badge = model.badge {
             badgeColor = badge.color
-            badgeLabelColor = badge.textColor
+            badgeTextColor = badge.textColor
             badgeView.text = badge.text
             badgeView.isHidden = false
         } else {

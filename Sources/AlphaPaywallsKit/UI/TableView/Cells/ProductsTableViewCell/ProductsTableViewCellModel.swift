@@ -6,7 +6,7 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-final class OptionsTableViewCellModel: QuickTableViewCellModelProtocol {
+final class ProductsTableViewCellModel: QuickTableViewCellModelProtocol {
     
     struct Item {
         
@@ -30,7 +30,7 @@ final class OptionsTableViewCellModel: QuickTableViewCellModelProtocol {
         let textColor: UIColor
     }
     
-    static var type: QuickTableViewCellProtocol.Type { OptionsTableViewCell.self }
+    static var type: QuickTableViewCellProtocol.Type { ProductsTableViewCell.self }
     
     var id: Int?
     
@@ -44,13 +44,17 @@ final class OptionsTableViewCellModel: QuickTableViewCellModelProtocol {
     
     let inset: UIEdgeInsets
     
-    let backgroundColor: UIColor
+    var backgroundColor: UIColor
     
-    let unselectedColor: UIColor
+    var textColor: UIColor
     
-    let selectedColor: UIColor
+    var selectedColor: UIColor
     
-    let labelColor: UIColor
+    var unselectedColor: UIColor
+    
+    var checkmarkColor: UIColor
+    
+    var isEnable: Bool
     
     init(id: Int? = nil,
          entity: IdentifiableEntity? = nil,
@@ -59,9 +63,11 @@ final class OptionsTableViewCellModel: QuickTableViewCellModelProtocol {
          didSelectItem: ((Item) -> Void)? = nil,
          inset: UIEdgeInsets,
          backgroundColor: UIColor,
-         unselectedColor: UIColor,
+         textColor: UIColor,
          selectedColor: UIColor,
-         labelColor: UIColor) {
+         unselectedColor: UIColor,
+         checkmarkColor: UIColor,
+         isEnable: Bool = true) {
         self.id = id
         self.entity = entity
         self.items = items
@@ -69,8 +75,10 @@ final class OptionsTableViewCellModel: QuickTableViewCellModelProtocol {
         self.didSelectItem = didSelectItem
         self.inset = inset
         self.backgroundColor = backgroundColor
-        self.unselectedColor = unselectedColor
+        self.textColor = textColor
         self.selectedColor = selectedColor
-        self.labelColor = labelColor
+        self.unselectedColor = unselectedColor
+        self.checkmarkColor = checkmarkColor
+        self.isEnable = isEnable
     }
 }
