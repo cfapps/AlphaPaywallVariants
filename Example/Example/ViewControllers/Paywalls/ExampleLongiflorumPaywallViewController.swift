@@ -34,6 +34,9 @@ final class ExampleLongiflorumPaywallViewController: LongiflorumPaywallViewContr
                 details: "Get Premium with a Free 7-day Trial\nthen 59.99/year. No commitment. Cancel anytime."
             )
         ]
+        self.selectedProductId = "2"
+        
+        self.setContinueButton(text: "Start My Free Trial")
     }
     
     required init?(coder: NSCoder) {

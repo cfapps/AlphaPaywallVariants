@@ -22,7 +22,36 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         UIColor.white
     }
     
+    private lazy var continueButton: IncidactionButton = {
+        let button = IncidactionButton()
+        button.setBackgroundColor(color: accentColor, forState: .normal)
+        button.setBackgroundColor(color: accentColor.withAlphaComponent(0.7), forState: .disabled)
+        button.setBackgroundColor(color: accentColor.withAlphaComponent(0.7), forState: .highlighted)
+        button.indicationColor = accentLabelColor
+        button.setTitleColor(accentLabelColor, for: .normal)
+        button.titleLabel?.font = UIFont.preferredFont(forTextStyle: .body, weight: .semibold)
+        button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.lineBreakMode = .byWordWrapping
+        button.titleLabel?.textAlignment = .center
+        button.layer.cornerRadius = 12
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
+        return button
+    }()
+    
+    // MARK: Colors
+    
+    open var accentColor: UIColor {
+        UIColor.systemBlue
+    }
+    
+    open var accentLabelColor: UIColor {
+        UIColor.white
+    }
+    
     // MARK: Public properties
+    
+    weak open var delegate: LongiflorumPaywallDelegate?
     
     public var titleText: NSAttributedString = NSAttributedString()
     
@@ -114,7 +143,16 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     }
     
     private func setupUI() {
+        bottomView.addSubview(continueButton)
+        
         view.addSubview(bottomView)
+        
+        continueButton.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.top.equalToSuperview().inset(16)
+            make.leading.equalToSuperview().inset(16)
+            make.trailing.equalToSuperview().inset(16)
+        }
         
         bottomView.backgroundColor = .red
         bottomView.snp.makeConstraints { make in
@@ -122,6 +160,17 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             make.bottom.equalToSuperview()
             make.left.right.equalToSuperview()
         }
+    }
+    
+    @objc private func didTapContinueButton() {
+        delegate?.didTapContinue()
+    }
+}
+
+extension LongiflorumPaywallViewController {
+    
+    public func setContinueButton(text: String) {
+        continueButton.title = text
     }
 }
 
