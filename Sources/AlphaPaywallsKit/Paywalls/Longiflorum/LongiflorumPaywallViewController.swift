@@ -444,7 +444,9 @@ extension LongiflorumPaywallViewController {
             }
             
             collection.remove(sectionAt: index)
-            tableView.reloadData()
+            UIView.performWithoutAnimation {
+                tableView.deleteSections([index], with: .none)
+            }
         }
         
         func showSection() {
@@ -454,7 +456,9 @@ extension LongiflorumPaywallViewController {
             
             let index = collection.sections.count
             collection.add(section: cellModels.disclamerCloneSectionModel, at: index)
-            tableView.reloadData()
+            UIView.performWithoutAnimation {
+                tableView.insertSections([index], with: .none)
+            }
         }
         
         if isHidden {
