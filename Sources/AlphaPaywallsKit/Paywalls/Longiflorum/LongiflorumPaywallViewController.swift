@@ -26,7 +26,7 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     }()
     
     override open var contentBackgroundColor: UIColor {
-        UIColor.white
+        apperance.primaryBackgroundColor
     }
     
     private lazy var continueButton: IncidactionButton = {
@@ -238,8 +238,6 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     }
     
     private func setupUI() {
-        contentBackgroundColor = apperance.primaryBackgroundColor
-        
         bottomButtonsContainer.addSubview(termsOfServiceButton)
         bottomButtonsContainer.addSubview(privacyPolicyButton)
         bottomButtonsContainer.addSubview(bottomButtonsBorderView)
