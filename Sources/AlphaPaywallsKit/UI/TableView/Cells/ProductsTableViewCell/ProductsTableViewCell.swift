@@ -231,7 +231,7 @@ extension ProductsTableViewCell: QuickTableViewCellProtocol {
             )
         ])
         
-        collectionView.isUserInteractionEnabled = model.isEnable
+        set(isEnabled: model.isEnabled)
         
         collectionView.reloadData()
         
@@ -259,5 +259,12 @@ extension ProductsTableViewCell: QuickTableViewCellProtocol {
                 }
             }
         }
+    }
+}
+
+extension ProductsTableViewCell: EnableTableViewCellProtocol {
+    
+    func set(isEnabled: Bool) {
+        collectionView.isUserInteractionEnabled = isEnabled
     }
 }

@@ -6,7 +6,7 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-class ProductsTableViewCellModel: QuickTableViewCellModelProtocol {
+class ProductsTableViewCellModel: QuickTableViewCellModelProtocol, EnableTableViewCellModelProtocol {
     
     struct Item {
         
@@ -54,7 +54,7 @@ class ProductsTableViewCellModel: QuickTableViewCellModelProtocol {
     
     var checkmarkColor: UIColor
     
-    var isEnable: Bool
+    var isEnabled: Bool
     
     init(id: Int? = nil,
          entity: IdentifiableEntity? = nil,
@@ -67,7 +67,7 @@ class ProductsTableViewCellModel: QuickTableViewCellModelProtocol {
          selectedColor: UIColor,
          unselectedColor: UIColor,
          checkmarkColor: UIColor,
-         isEnable: Bool = true) {
+         isEnabled: Bool = true) {
         self.id = id
         self.entity = entity
         self.items = items
@@ -79,6 +79,6 @@ class ProductsTableViewCellModel: QuickTableViewCellModelProtocol {
         self.selectedColor = selectedColor
         self.unselectedColor = unselectedColor
         self.checkmarkColor = checkmarkColor
-        self.isEnable = isEnable
+        self.isEnabled = isEnabled
     }
 }

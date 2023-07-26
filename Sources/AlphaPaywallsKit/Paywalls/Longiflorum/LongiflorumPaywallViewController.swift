@@ -432,9 +432,11 @@ extension LongiflorumPaywallViewController {
     }
     
     public func setContent(isEnable: Bool) {
-        cellModels.productsItemsCellModel.isEnable = isEnable
-        
-        tableView.reloadData()
+        if isEnable {
+            collection.enableCells(in: tableView)
+        } else {
+            collection.disableCells(in: tableView)
+        }
     }
     
     public func setDisclamer(isHidden: Bool) {
