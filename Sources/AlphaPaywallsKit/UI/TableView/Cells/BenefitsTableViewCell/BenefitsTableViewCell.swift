@@ -60,6 +60,8 @@ final class BenefitsTableViewCell: UITableViewCell {
     }
     
     private func setupUI() {
+        backgroundColor = .clear
+        
         contentView.addSubview(collectionView)
         
         collectionView.snp.makeConstraints { make in
