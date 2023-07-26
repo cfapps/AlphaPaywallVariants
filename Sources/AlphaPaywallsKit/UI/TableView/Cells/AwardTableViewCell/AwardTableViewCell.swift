@@ -28,7 +28,7 @@ final class AwardTableViewCell: UITableViewCell {
         didSet {
             backgroundContentView.snp.updateConstraints { make in
                 make.top.equalToSuperview().inset(containerInsets.top)
-                make.bottom.equalToSuperview().inset(containerInsets.bottom)
+                make.bottom.equalToSuperview().inset(containerInsets.bottom).priority(.medium)
                 make.left.equalToSuperview().inset(containerInsets.left)
                 make.right.equalToSuperview().inset(containerInsets.right)
             }
@@ -106,8 +106,9 @@ final class AwardTableViewCell: UITableViewCell {
         contentView.addSubview(contentContainerView)
         
         backgroundContentView.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(0)
             make.horizontalEdges.equalToSuperview().inset(0)
+            make.top.equalToSuperview().inset(0)
+            make.bottom.equalToSuperview().inset(0).priority(.medium)
         }
         
         contentContainerView.snp.makeConstraints { make in

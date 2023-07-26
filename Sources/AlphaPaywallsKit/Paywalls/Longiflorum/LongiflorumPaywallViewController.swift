@@ -131,9 +131,9 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             }
             
             cellModels.featuresHeaderModel.titleText = features.titleText
-//            cellModels.featuresCellModel.nameHeaderText = features.nameHeaderText
-//            cellModels.featuresCellModel.noSubscriptionHeaderText = features.noSubscriptionHeaderText
-//            cellModels.featuresCellModel.withSubscriptionHeaderText = features.withSubscriptionHeaderText
+            cellModels.featuresCellModel.nameColumnHeader = features.nameHeaderText
+            cellModels.featuresCellModel.aColumnHeader = features.noSubscriptionHeaderText
+            cellModels.featuresCellModel.bColumnHeader = features.withSubscriptionHeaderText
             cellModels.featuresCellModel.items = features.items
         }
     }
@@ -216,15 +216,17 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         cellModels.awardItemCellModel.textColor = apperance.accentColor
         
         cellModels.featuresHeaderModel.textColor = apperance.primaryLabelColor
-//        cellModels.featuresCellModel.contentColor = apperance.
-//        cellModels.featuresCellModel.textColor = apperance.primaryLabelColor
-        
+        cellModels.featuresCellModel.backgroundColor = apperance.accentColor.withAlphaComponent(0.08)
+        cellModels.featuresCellModel.headerTextColor = apperance.accentColor
+        cellModels.featuresCellModel.textColor = apperance.primaryLabelColor
+        cellModels.featuresCellModel.positiveColor = apperance.accentColor
+        cellModels.featuresCellModel.negativeColor = UIColor.systemRed
         
         collection.update(with: [
             cellModels.benefitsSectionModel,
             cellModels.productsSectionModel,
             cellModels.awardSectionModel,
-//            cellModels.featuresSectionModel,
+            cellModels.featuresSectionModel,
 //            cellModels.productsSectionModel
         ])
     }
@@ -408,15 +410,23 @@ extension LongiflorumPaywallViewController {
     
     public struct FeaturesItemViewModel {
         
-        let titleText: String
+        public let titleText: String
         
-        let nameHeaderText: String
+        public let nameHeaderText: String
         
-        let noSubscriptionHeaderText: String
+        public let noSubscriptionHeaderText: String
         
-        let withSubscriptionHeaderText: String
+        public let withSubscriptionHeaderText: String
         
-        let items: [String]
+        public let items: [String]
+        
+        public init(titleText: String, nameHeaderText: String, noSubscriptionHeaderText: String, withSubscriptionHeaderText: String, items: [String]) {
+            self.titleText = titleText
+            self.nameHeaderText = nameHeaderText
+            self.noSubscriptionHeaderText = noSubscriptionHeaderText
+            self.withSubscriptionHeaderText = withSubscriptionHeaderText
+            self.items = items
+        }
     }
 }
 

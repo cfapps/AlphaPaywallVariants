@@ -24,7 +24,7 @@ final class ExampleLongiflorumPaywallViewController: LongiflorumPaywallViewContr
             Self.ProductItemViewModel(
                 id: "1",
                 title: "Monthly",
-                description: "First 7 days free.\n$9.99 / month",
+                description: "First 7 days free.",
                 details: "Get Premium with a Free 7-day Trial\nthen 59.99/month. No commitment. Cancel anytime."
             ),
             Self.ProductItemViewModel(
@@ -50,6 +50,21 @@ final class ExampleLongiflorumPaywallViewController: LongiflorumPaywallViewContr
             title: "Trusted by 10,000 Businesses Worldwide. Boost Your Business Growth with Get Invoice",
             subTitle: "Featured in 12 countries",
             details: "Apps for\nSmall Business"
+        )
+        
+        self.features = FeaturesItemViewModel(
+            titleText: "Great Features You will Love",
+            nameHeaderText: "Feature",
+            noSubscriptionHeaderText: "FREE",
+            withSubscriptionHeaderText: "PRO",
+            items: [
+                "Unlimited Invoices",
+                "Follow-up Reminders",
+                "Custom Templates",
+                "Custom Reports",
+                "Add-Free Experience",
+                "Priority Support"
+            ]
         )
     }
     

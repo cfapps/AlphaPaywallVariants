@@ -37,6 +37,8 @@ final class ProductsTableViewCell: UITableViewCell {
         return label
     }()
     
+    private lazy var titleLabelContainerView = UIView()
+    
     private lazy var collectionViewLayout: UICollectionViewLayout = {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
@@ -68,7 +70,7 @@ final class ProductsTableViewCell: UITableViewCell {
         
         collectionView.layoutMargins = .zero
         
-        collectionView.register(cellType: CollectionViewCellModel.type)
+        collectionView.register(cellType: CollectionViewCell.self)
         
         return collectionView
     }()
@@ -93,21 +95,41 @@ final class ProductsTableViewCell: UITableViewCell {
         collectionView.isUserInteractionEnabled = true
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let h = calculateTitleHeight("\n", width: 10)
+        if titleLabelContainerView.frame.height != h {
+            titleLabelContainerView.snp.updateConstraints { make in
+                make.height.equalTo(h)
+            }
+        }
+    }
+    
     private func setupUI() {
         backgroundColor = UIColor.clear
         
-        containerView.addSubview(titleLabel)
+        titleLabelContainerView.addSubview(titleLabel)
+        containerView.addSubview(titleLabelContainerView)
         containerView.addSubview(collectionView)
         contentView.addSubview(containerView)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.greaterThanOrEqualToSuperview()
+            make.bottom.lessThanOrEqualToSuperview()
+            make.centerY.equalToSuperview()
             make.directionalHorizontalEdges.equalToSuperview()
+        }
+        
+        titleLabelContainerView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.right.equalToSuperview()
+            make.height.equalTo(0)
         }
         
         collectionView.snp.makeConstraints { make in
             make.height.equalTo(1).priority(.medium)
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.top.equalTo(titleLabelContainerView.snp.bottom).offset(16)
             make.bottom.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
         }
@@ -115,6 +137,14 @@ final class ProductsTableViewCell: UITableViewCell {
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(0)
         }
+    }
+    
+    private func calculateTitleHeight(_ text: String, width: CGFloat) -> CGFloat {
+        let label = UILabel()
+        label.font = titleLabel.font
+        label.text = text
+        let size = label.sizeThatFits(CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
+        return size.height
     }
 }
 
@@ -191,8 +221,6 @@ extension ProductsTableViewCell: QuickTableViewCellProtocol {
             QuickCollectionViewSection(
                 items: model.items.map({ item in
                     return CollectionViewCellModel(
-                        id: nil,
-                        entity: nil,
                         titleText: item.titleText,
                         descriptionText: item.descriptionText,
                         badge: item.badge.flatMap({

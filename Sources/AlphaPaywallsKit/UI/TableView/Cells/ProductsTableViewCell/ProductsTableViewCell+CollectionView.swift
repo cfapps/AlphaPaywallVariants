@@ -111,17 +111,18 @@ extension ProductsTableViewCell {
         
         private lazy var titleLabel: UILabel = {
             let label = UILabel()
-            label.numberOfLines = 0
-            label.lineBreakMode = .byWordWrapping
+            label.numberOfLines = 1
             label.font = UIFont.preferredFont(forTextStyle: .body, weight: .semibold)
             label.textColor = textColor
             return label
         }()
         
+        private lazy var descriptionLabelContainerView = UIView()
+        
         private lazy var descriptionLabel: UILabel = {
             let label = UILabel()
-            label.numberOfLines = 0
-            label.lineBreakMode = .byWordWrapping
+            label.numberOfLines = 2
+            label.lineBreakMode = .byTruncatingTail
             label.font = UIFont.preferredFont(forTextStyle: .caption1, weight: .regular)
             label.textColor = textColor
             return label
@@ -166,6 +167,17 @@ extension ProductsTableViewCell {
             selectedContainerBackgroundView.layer.borderColor = containerUnselectedColor.cgColor
         }
         
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            
+            let h = calculateDescriptionHeight("\n", width: contentView.frame.width + 28)
+            if descriptionLabelContainerView.frame.height != h {
+                descriptionLabelContainerView.snp.updateConstraints { make in
+                    make.width.equalTo(h)
+                }
+            }
+        }
+        
         private func setupUI() {
             contentView.addSubview(containerBackgroundView)
             contentView.addSubview(selectedContainerBackgroundView)
@@ -173,9 +185,10 @@ extension ProductsTableViewCell {
             checkmarkContainerView.addSubview(selectedCheckmarkView)
             topContainerView.addSubview(checkmarkContainerView)
             topContainerView.addSubview(badgeView)
+            descriptionLabelContainerView.addSubview(descriptionLabel)
             contentView.addSubview(topContainerView)
             contentView.addSubview(titleLabel)
-            contentView.addSubview(descriptionLabel)
+            contentView.addSubview(descriptionLabelContainerView)
             
             containerBackgroundView.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
@@ -220,12 +233,27 @@ extension ProductsTableViewCell {
                 make.trailing.equalToSuperview().inset(14)
             }
             
-            descriptionLabel.snp.makeConstraints { make in
+            descriptionLabelContainerView.snp.makeConstraints { make in
                 make.top.equalTo(titleLabel.snp.bottom).offset(2)
                 make.bottom.equalToSuperview().inset(16).priority(.medium)
-                make.leading.equalToSuperview().inset(14)
-                make.trailing.equalToSuperview().inset(14)
+                make.left.equalToSuperview().inset(14)
+                make.right.equalToSuperview().inset(14)
+                make.width.equalTo(0)
             }
+            
+            descriptionLabel.snp.makeConstraints { make in
+                make.directionalHorizontalEdges.equalToSuperview()
+                make.top.equalToSuperview()
+                make.bottom.lessThanOrEqualToSuperview()
+            }
+        }
+        
+        private func calculateDescriptionHeight(_ text: String, width: CGFloat) -> CGFloat {
+            let label = UILabel()
+            label.font = descriptionLabel.font
+            label.text = text
+            let size = label.sizeThatFits(CGSize(width: width, height: CGFloat.greatestFiniteMagnitude))
+            return size.height
         }
     }
     

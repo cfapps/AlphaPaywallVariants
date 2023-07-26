@@ -9,31 +9,19 @@ import SnapKit
 
 final class ObjectComparisonTableViewCell: UITableViewCell {
     
+    private let collection = QuickCollectionViewCollection()
+    
     var contentBackgroundColor: UIColor = UIColor.tertiarySystemBackground {
         didSet {
             backgroundContentView.backgroundColor = contentBackgroundColor
         }
     }
     
-    var textLabelColor: UIColor = UIColor.label {
-        didSet {
-            itemHeaderLabel.textColor = textLabelColor
-            firstOptionHeaderLabel.textColor = textLabelColor
-            secondOptionHeaderLabel.textColor = textLabelColor
-        }
-    }
+    var textLabelColor: UIColor = UIColor.label
     
-    var positiveColor: UIColor = UIColor.label {
-        didSet {
-            
-        }
-    }
+    var positiveColor: UIColor = UIColor.label
     
-    var negativeColor: UIColor = UIColor.red {
-        didSet {
-            
-        }
-    }
+    var negativeColor: UIColor = UIColor.red
     
     var containerInsets: UIEdgeInsets = .zero {
         didSet {
@@ -52,12 +40,6 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
         view.layer.masksToBounds = true
         view.backgroundColor = contentBackgroundColor
         return view
-    }()
-    
-    private lazy var contentContainerView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        return stackView
     }()
     
     private lazy var itemHeaderLabel: UILabel = {
@@ -86,6 +68,41 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
     
     private lazy var contentHeaderView = UIView()
     
+    private lazy var contentContainerView = UIView()
+    
+    private lazy var collectionViewLayout: UICollectionViewLayout = {
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(44)
+            )
+        )
+        let group = NSCollectionLayoutGroup.vertical(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(44)
+            ),
+            subitems: [item]
+        )
+        let section = NSCollectionLayoutSection(group: group)
+        section.interGroupSpacing = 0
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
+    }()
+    
+    private lazy var collectionView: UICollectionView = {
+        let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        collectionView.register(cellType: CollectionViewCellModel.type)
+        collectionView.allowsSelection = false
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.isScrollEnabled = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.backgroundColor = .clear
+        return collectionView
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -94,6 +111,23 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private var optionColumnWidth: CGFloat?
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        updateOptionColumnWidth()
+        
+        if let width = optionColumnWidth, firstOptionHeaderLabel.frame.width != width {
+            firstOptionHeaderLabel.snp.updateConstraints { make in
+                make.width.equalTo(width).priority(.medium)
+            }
+            secondOptionHeaderLabel.snp.updateConstraints { make in
+                make.width.equalTo(width).priority(.medium)
+            }
+        }
     }
     
     private func setupUI() {
@@ -105,7 +139,8 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
         contentHeaderView.addSubview(firstOptionHeaderLabel)
         contentHeaderView.addSubview(secondOptionHeaderLabel)
         
-        contentContainerView.addArrangedSubview(contentHeaderView)
+        contentContainerView.addSubview(contentHeaderView)
+        contentContainerView.addSubview(collectionView)
         
         contentView.addSubview(backgroundContentView)
         contentView.addSubview(contentContainerView)
@@ -119,83 +154,82 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
         }
         
         itemHeaderLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(-16)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalTo(firstOptionHeaderLabel.snp.left).offset(-8)
+            make.verticalEdges.equalToSuperview().inset(16)
+            make.left.equalToSuperview().inset(16)
+            make.right.lessThanOrEqualTo(firstOptionHeaderLabel.snp.left).offset(-8)
         }
         
         firstOptionHeaderLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(-16)
-            make.right.equalTo(secondOptionHeaderLabel.snp.left).offset(-24)
+            make.verticalEdges.equalToSuperview().inset(16)
+            make.right.equalTo(secondOptionHeaderLabel.snp.left)
+            make.width.equalTo(0).priority(.medium)
         }
         
         secondOptionHeaderLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(-16)
-            make.right.equalToSuperview().offset(-16)
+            make.verticalEdges.equalToSuperview().inset(16)
+            make.right.equalToSuperview()
+            make.width.equalTo(0).priority(.medium)
+        }
+        
+        contentHeaderView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+        }
+        
+        collectionView.snp.makeConstraints { make in
+            make.top.equalTo(contentHeaderView.snp.bottom)
+            make.bottom.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(1).priority(.medium)
         }
     }
     
-    private func addOption(text: String) {
-        func makeCheckmarkView() -> UIView {
-            let imageView = UIImageView(
-                image: UIImage(systemName: "checkmark")?
-                    .withTintColor(positiveColor, renderingMode: .alwaysOriginal)
-                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .subheadline, weight: .heavy)))
-            )
-            imageView.contentMode = .center
-            return imageView
-        }
+    @discardableResult
+    private func updateOptionColumnWidth() -> CGFloat {
+        let maxWidth = collectionView.frame.width * 0.4
+        var calculatedWidth = [secondOptionHeaderLabel.text, secondOptionHeaderLabel.text]
+            .compactMap({ $0 })
+            .map({ UILabel.calculateSize($0, font: UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold), width: maxWidth / 2).width })
+            .max() ?? 0
         
-        func makeXmarkView() -> UIView {
-            let imageView = UIImageView(
-                image: UIImage(systemName: "xmark")?
-                    .withTintColor(negativeColor, renderingMode: .alwaysOriginal)
-                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .subheadline, weight: .heavy)))
-            )
-            imageView.contentMode = .center
-            return imageView
-        }
-        
-        let containerView = UIView()
-        let titleLabel = UILabel()
-        titleLabel.numberOfLines = 0
-        titleLabel.lineBreakMode = .byCharWrapping
-        titleLabel.textAlignment = .left
-        titleLabel.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold)
-        titleLabel.textColor = .black
-        titleLabel.text = text
-        
-        let xmarkView = makeXmarkView()
-        let checkmarkView = makeCheckmarkView()
-        
-        containerView.addSubview(titleLabel)
-        containerView.addSubview(xmarkView)
-        containerView.addSubview(checkmarkView)
-        
-        contentContainerView.addArrangedSubview(containerView)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(-16)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalTo(itemHeaderLabel.snp.right)
-        }
-        
-        xmarkView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.centerX.equalTo(firstOptionHeaderLabel.snp.centerX)
-        }
-        
-        checkmarkView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.centerX.equalTo(secondOptionHeaderLabel.snp.centerX)
-        }
+        calculatedWidth = min(calculatedWidth + 24, maxWidth)
+        optionColumnWidth = calculatedWidth > 0 ? calculatedWidth : nil
+        return calculatedWidth
     }
 }
 
+extension ObjectComparisonTableViewCell: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return collection.numberOfSections()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return collection.numberOfItems(in: section)
+    }
+}
+
+extension ObjectComparisonTableViewCell: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cellType = collection.cellType(at: indexPath),
+              let cell = collectionView.dequeue(cellType: cellType, for: indexPath) as? QuickCollectionViewCellProtocol,
+              let cellModel = collection.cell(at: indexPath) else {
+            fatalError("Cell cannot be dequeue")
+        }
+        
+        cell.update(model: cellModel)
+        
+        if let cell = cell as? CollectionViewCell {
+            cell.textColor = textLabelColor
+            cell.positiveColor = positiveColor
+            cell.negativeColor = negativeColor
+            cell.optionWidth = optionColumnWidth ?? updateOptionColumnWidth()
+        }
+        
+        return cell
+    }
+}
 extension ObjectComparisonTableViewCell: QuickTableViewCellProtocol {
     
     func update(model: QuickTableViewCellModelProtocol) {
@@ -203,23 +237,33 @@ extension ObjectComparisonTableViewCell: QuickTableViewCellProtocol {
             return
         }
         
-        contentContainerView.arrangedSubviews.dropFirst().forEach { v in
-            contentContainerView.removeArrangedSubview(v)
-        }
+        optionColumnWidth = nil
+        
+        itemHeaderLabel.textColor = model.headerTextColor
+        firstOptionHeaderLabel.textColor = model.headerTextColor
+        secondOptionHeaderLabel.textColor = model.headerTextColor
         
         textLabelColor = model.textColor
-        contentBackgroundColor = model.contentColor
+        contentBackgroundColor = model.backgroundColor
         
-        positiveColor = model.textColor
-        negativeColor = UIColor(red: 1, green: 0.23, blue: 0.19, alpha: 1)
+        positiveColor = model.positiveColor
+        negativeColor = model.negativeColor
         
-        itemHeaderLabel.text = "Feature"
-        firstOptionHeaderLabel.text = "Free"
-        secondOptionHeaderLabel.text = "Pro"
+        itemHeaderLabel.text = model.nameColumnHeader
+        firstOptionHeaderLabel.text = model.aColumnHeader
+        secondOptionHeaderLabel.text = model.bColumnHeader
         
-        for item in model.items {
-            addOption(text: item)
-        }
+        updateOptionColumnWidth()
+        
+        collection.update(sections: [
+            QuickCollectionViewSection(
+                items: model.items.map({
+                    CollectionViewCellModel(text: $0)
+                })
+            )
+        ])
+        
+        collectionView.reloadData()
         
         containerInsets = model.insets
     }

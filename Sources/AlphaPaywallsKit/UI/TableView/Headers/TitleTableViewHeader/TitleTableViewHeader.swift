@@ -16,7 +16,7 @@ final class TitleTableViewHeader: UITableViewHeaderFooterView {
     
     var containerInsets: UIEdgeInsets = .zero {
         didSet {
-            titelLabel.snp.makeConstraints { make in
+            titelLabel.snp.updateConstraints { make in
                 make.leading.equalToSuperview().inset(containerInsets.left)
                 make.trailing.equalToSuperview().inset(containerInsets.right)
                 make.top.equalToSuperview().inset(containerInsets.top)

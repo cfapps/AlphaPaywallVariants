@@ -95,9 +95,15 @@ final class LongiflorumPaywallCellModels {
     )
     
     lazy var featuresCellModel = ObjectComparisonTableViewCellModel(
+        nameColumnHeader: "",
+        aColumnHeader: "",
+        bColumnHeader: "",
         items: [],
-        insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16),
-        contentColor: UIColor(red: 0, green: 0.48, blue: 1, alpha: 0.08),
-        textColor: UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
+        backgroundColor: UIColor.secondarySystemBackground,
+        headerTextColor: UIColor.label,
+        textColor: UIColor.label,
+        positiveColor: UIColor.green,
+        negativeColor: UIColor.red,
+        insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     )
 }
