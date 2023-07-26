@@ -147,7 +147,7 @@ extension ObjectComparisonTableViewCell {
     
     final class CollectionViewCellModel: QuickCollectionViewCellModelProtocol {
         
-        static var type: QuickCollectionViewCellProtocol.Type { CollectionViewCell.self }
+        var type: QuickCollectionViewCellProtocol.Type { CollectionViewCell.self }
         
         var id: Int?
         

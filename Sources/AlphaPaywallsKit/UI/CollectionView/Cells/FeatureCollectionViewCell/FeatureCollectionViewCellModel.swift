@@ -8,7 +8,7 @@ import QuickTableKit
 
 final class FeatureCollectionViewCellModel: QuickCollectionViewCellModelProtocol {
     
-    static var type: QuickCollectionViewCellProtocol.Type { FeatureCollectionViewCell.self }
+    var type: QuickCollectionViewCellProtocol.Type { FeatureCollectionViewCell.self }
     
     var id: Int?
     

@@ -66,6 +66,55 @@ final class ExampleLongiflorumPaywallViewController: LongiflorumPaywallViewContr
                 "Priority Support"
             ]
         )
+        
+        self.reviewSection = Self.ReviewsItemViewModel(
+            titleText: "Trusted by Thousands",
+            items: [
+                Self.ReviewsItemViewModel.Item(
+                    name: "HandyMatt",
+                    title: "Amazing Invoicing App",
+                    body: "I've been able to organize my clients and documents and get paid faster"
+                ),
+                Self.ReviewsItemViewModel.Item(
+                    name: "NYPlumber07",
+                    title: "I am happy",
+                    body: "As a small business owner, I appreciate how straightforward it was to set up and generate invoices. Thank you for simplifying the process for us"
+                ),
+                Self.ReviewsItemViewModel.Item(
+                    name: "BigMikeLA",
+                    title: "Love this app!!",
+                    body: "This is an excellent application for invoice creation. Ease of use and significantly simplifies my workflow"
+                )
+            ]
+        )
+        
+        self.helpSection = Self.HelpSectionItemViewModel(
+            title: "Most Asked Questions",
+            items: [
+                .init(
+                    question: "Can I share my subscription with a family member?",
+                    answer: "Yes, absolutely! Your subscription will be automatically shared with everyone you’ve shared your Apple ID account."
+                ),
+                .init(
+                    question: "Do subscriptions renew automatically?",
+                    answer: "All GetInvoice Subscriptions are automatically renewed to ensure constant access for you. If you choose to cancel the automatic renewal, your subscription will expire."
+                ),
+                .init(
+                    question: "How can I cancel subscription?",
+                    answer: "Open Settings of your iPhone or iPad > Click your Name > Subscriptions > Select GetInvoice > Tap Cancel Subscription."
+                ),
+                .init(
+                    question: "Can i get my money back if i change my mind?",
+                    answer: "If you’re not satisfied with your subscription, it’s possible to apply for a refund from AppStore. Go to https://reportaproblem.apple.com/. Log in with your Apple ID. Select \"Request a refund\". Select a reason for refund, then select the subscription."
+                )
+            ]
+        )
+        
+        self.disclamerSection = Self.DisclamerItemViewModel(
+            iconSystemName: "checkmark.shield.fill",
+            iconColor: UIColor.systemGreen,
+            text: "No payments now"
+        )
     }
     
     required init?(coder: NSCoder) {

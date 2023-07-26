@@ -3,11 +3,12 @@
 //
 
 import Foundation
+import UIKit
 import QuickTableKit
 
 final class ReviewTableViewCellModel: QuickTableViewCellModelProtocol {
     
-    static var type: QuickTableViewCellProtocol.Type { ReviewTableViewCell.self }
+    var type: QuickTableViewCellProtocol.Type { ReviewTableViewCell.self }
     
     var id: Int?
     
@@ -19,23 +20,35 @@ final class ReviewTableViewCellModel: QuickTableViewCellModelProtocol {
     
     var name: String
     
-    var topInset: CGFloat
+    var backgroundColor: UIColor
     
-    var bottomInset: CGFloat
+    var titleColor: UIColor
+    
+    var descriptionColor: UIColor
+    
+    var nameColor: UIColor
+    
+    var insets: UIEdgeInsets
     
     init(id: Int? = nil,
          entity: IdentifiableEntity? = nil,
          title: String,
          description: String,
          name: String,
-         topInset: CGFloat = 0,
-         bottomInset: CGFloat = 0) {
+         backgroundColor: UIColor,
+         titleColor: UIColor,
+         descriptionColor: UIColor,
+         nameColor: UIColor,
+         insets: UIEdgeInsets = UIEdgeInsets.zero) {
         self.id = id
         self.entity = entity
         self.title = title
         self.description = description
         self.name = name
-        self.topInset = topInset
-        self.bottomInset = bottomInset
+        self.backgroundColor = backgroundColor
+        self.titleColor = titleColor
+        self.descriptionColor = descriptionColor
+        self.nameColor = nameColor
+        self.insets = insets
     }
 }

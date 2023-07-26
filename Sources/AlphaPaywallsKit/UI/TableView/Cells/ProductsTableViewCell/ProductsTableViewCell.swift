@@ -6,7 +6,7 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-final class ProductsTableViewCell: UITableViewCell {
+class ProductsTableViewCell: UITableViewCell {
     
     private weak var model: ProductsTableViewCellModel?
     

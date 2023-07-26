@@ -6,7 +6,7 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-final class ProductsTableViewCellModel: QuickTableViewCellModelProtocol {
+class ProductsTableViewCellModel: QuickTableViewCellModelProtocol {
     
     struct Item {
         
@@ -30,7 +30,7 @@ final class ProductsTableViewCellModel: QuickTableViewCellModelProtocol {
         let textColor: UIColor
     }
     
-    static var type: QuickTableViewCellProtocol.Type { ProductsTableViewCell.self }
+    var type: QuickTableViewCellProtocol.Type { ProductsTableViewCell.self }
     
     var id: Int?
     

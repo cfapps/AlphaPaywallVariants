@@ -23,7 +23,23 @@ final class ReviewTableViewCell: UITableViewCell {
     var secondaryLabelColor: UIColor = UIColor.secondaryLabel {
         didSet {
             descriptionLabel.textColor = secondaryLabelColor
-            nameLabel.textColor = secondaryLabelColor.withAlphaComponent(0.3)
+        }
+    }
+    
+    var nameLabelColor: UIColor = UIColor.secondaryLabel {
+        didSet {
+            nameLabel.textColor = nameLabelColor
+        }
+    }
+    
+    var containerInsets: UIEdgeInsets = .zero {
+        didSet {
+            backgroundContentView.snp.updateConstraints { make in
+                make.top.equalToSuperview().inset(containerInsets.top)
+                make.bottom.equalToSuperview().inset(containerInsets.bottom).priority(.medium)
+                make.left.equalToSuperview().inset(containerInsets.left)
+                make.right.equalToSuperview().inset(containerInsets.right)
+            }
         }
     }
     
@@ -63,7 +79,7 @@ final class ReviewTableViewCell: UITableViewCell {
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .right
         label.font = UIFont.preferredFont(forTextStyle: .callout, weight: .regular)
-        label.textColor = secondaryLabelColor.withAlphaComponent(0.3)
+        label.textColor = nameLabelColor
         return label
     }()
     
@@ -72,7 +88,7 @@ final class ReviewTableViewCell: UITableViewCell {
             return UIImageView(
                 image: UIImage(systemName: "star.fill")?.applyingSymbolConfiguration(
                     UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .subheadline, weight: .regular))
-                )?.withTintColor(UIColor.orange, renderingMode: .alwaysOriginal)
+                )?.withTintColor(UIColor.systemOrange, renderingMode: .alwaysOriginal)
             )
         }
         
@@ -113,14 +129,12 @@ final class ReviewTableViewCell: UITableViewCell {
         
         backgroundContentView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(0)
-            make.bottom.equalToSuperview().inset(0)
-            make.horizontalEdges.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview().inset(0).priority(.medium)
+            make.horizontalEdges.equalToSuperview().inset(0)
         }
         
         contentContainerView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(16)
-            make.bottom.equalToSuperview().inset(16)
-            make.horizontalEdges.equalToSuperview().inset(32)
+            make.edges.equalTo(backgroundContentView).inset(16)
         }
         
         titleLabel.snp.makeConstraints { make in
@@ -155,18 +169,15 @@ extension ReviewTableViewCell: QuickTableViewCellProtocol {
             return
         }
         
+        contentBackgroundColor = model.backgroundColor
+        primaryLabelColor = model.titleColor
+        secondaryLabelColor = model.descriptionColor
+        nameLabelColor = model.nameColor
+        
         titleLabel.text = model.title
         descriptionLabel.text = model.description
         nameLabel.text = model.name
         
-        backgroundContentView.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(model.topInset)
-            make.bottom.equalToSuperview().inset(model.bottomInset)
-        }
-        
-        contentContainerView.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(16 + model.topInset)
-            make.bottom.equalToSuperview().inset(16 + model.bottomInset)
-        }
+        containerInsets = model.insets
     }
 }

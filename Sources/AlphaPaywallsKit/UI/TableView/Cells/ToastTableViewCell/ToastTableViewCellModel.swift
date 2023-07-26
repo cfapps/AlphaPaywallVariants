@@ -6,22 +6,17 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-final class BenefitsTableViewCellModel: QuickTableViewCellModelProtocol {
+final class ToastTableViewCellModel: QuickTableViewCellModelProtocol {
     
-    struct Item {
-        
-        let icon: UIImage
-        
-        let text: String
-    }
-    
-    var type: QuickTableViewCellProtocol.Type { BenefitsTableViewCell.self }
+    var type: QuickTableViewCellProtocol.Type { ToastTableViewCell.self }
     
     var id: Int?
     
     var entity: IdentifiableEntity?
     
-    var items: [Item]
+    var iconName: String
+    
+    var text: String
     
     var iconColor: UIColor
     
@@ -29,14 +24,15 @@ final class BenefitsTableViewCellModel: QuickTableViewCellModelProtocol {
     
     init(id: Int? = nil,
          entity: IdentifiableEntity? = nil,
-         items: [Item],
+         iconName: String,
+         text: String,
          iconColor: UIColor,
          textColor: UIColor) {
         self.id = id
         self.entity = entity
-        self.items = items
+        self.iconName = iconName
+        self.text = text
         self.iconColor = iconColor
         self.textColor = textColor
     }
 }
-

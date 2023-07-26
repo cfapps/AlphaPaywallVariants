@@ -259,7 +259,7 @@ extension ProductsTableViewCell {
     
     class CollectionViewCellModel: QuickCollectionViewCellModelProtocol {
         
-        static var type: QuickCollectionViewCellProtocol.Type { CollectionViewCell.self }
+        var type: QuickCollectionViewCellProtocol.Type { CollectionViewCell.self }
         
         struct Badge {
             

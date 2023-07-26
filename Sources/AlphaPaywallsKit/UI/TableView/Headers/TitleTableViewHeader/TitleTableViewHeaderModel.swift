@@ -8,7 +8,7 @@ import QuickTableKit
 
 final class TitleTableViewHeaderModel: QuickTableViewHeaderFooterModelProtocol {
     
-    static var type: QuickTableViewHeaderFooterViewProtocol.Type { TitleTableViewHeader.self }
+    var type: QuickTableViewHeaderFooterViewProtocol.Type { TitleTableViewHeader.self }
     
     var titleText: String?
     

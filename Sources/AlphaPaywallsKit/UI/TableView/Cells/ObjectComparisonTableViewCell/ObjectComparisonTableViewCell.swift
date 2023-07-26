@@ -92,7 +92,7 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.register(cellType: CollectionViewCellModel.type)
+        collectionView.register(cellType: CollectionViewCell.self)
         collectionView.allowsSelection = false
         collectionView.dataSource = self
         collectionView.delegate = self

@@ -138,6 +138,57 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         }
     }
     
+    public var reviewSection: ReviewsItemViewModel? {
+        didSet {
+            cellModels.reviewsHeaderModel.titleText = reviewSection?.titleText
+            
+            var models: [ReviewTableViewCellModel] = []
+            let itemsCount = (reviewSection?.items ?? []).count
+            for (index, item) in (reviewSection?.items ?? []).enumerated() {
+                models.append(cellModels.makeReviewCellModel(
+                    item: item,
+                    isFirst: index == 0,
+                    isLast: index == itemsCount - 1,
+                    apperance: apperance
+                ))
+            }
+            
+            cellModels.reviewsSectionModel.update(with: models)
+        }
+    }
+    
+    public var helpSection: HelpSectionItemViewModel? {
+        didSet {
+            cellModels.helpHeaderModel.titleText = helpSection?.title
+            
+            var models: [QuestionTableViewCellModel] = []
+            let itemsCount = (helpSection?.items ?? []).count
+            for (index, item) in (helpSection?.items ?? []).enumerated() {
+                models.append(cellModels.makeHelpCellModel(
+                    item: item,
+                    separator: index != itemsCount - 1,
+                    apperance: apperance
+                ))
+            }
+            
+            cellModels.helpSectionModel.update(with: models)
+        }
+    }
+    
+    public var disclamerSection: DisclamerItemViewModel? {
+        didSet {
+            if let disclamerSection = disclamerSection {
+                cellModels.disclamerCellModel.iconName = disclamerSection.iconSystemName
+                cellModels.disclamerCellModel.iconColor = disclamerSection.iconColor
+                cellModels.disclamerCellModel.text = disclamerSection.text
+                
+                if let index = collection.index(sectionWithType: SectionId.disclamer) {
+                    tableView.reloadSections([index], with: .none)
+                }
+            }
+        }
+    }
+    
     public init() {
         super.init(style: .grouped)
     }
@@ -167,15 +218,16 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         tableView.allowsSelection = false
         tableView.separatorStyle = .none
         
-        tableView.register(headerFooterType: AttributedTitleTableViewHeaderModel.type)
-        tableView.register(headerFooterType: TitleTableViewHeaderModel.type)
+        tableView.register(headerFooterType: AttributedTitleTableViewHeader.self)
+        tableView.register(headerFooterType: TitleTableViewHeader.self)
         
-        tableView.register(cellType: BenefitsTableViewCellModel.type)
-        tableView.register(cellType: AwardTableViewCellModel.type)
-        tableView.register(cellType: ObjectComparisonTableViewCellModel.type)
-        tableView.register(cellType: ReviewTableViewCellModel.type)
-        tableView.register(cellType: QuestionTableViewCellModel.type)
-        tableView.register(cellType: ProductsTableViewCellModel.type)
+        tableView.register(cellType: BenefitsTableViewCell.self)
+        tableView.register(cellType: AwardTableViewCell.self)
+        tableView.register(cellType: ObjectComparisonTableViewCell.self)
+        tableView.register(cellType: ReviewTableViewCell.self)
+        tableView.register(cellType: QuestionTableViewCell.self)
+        tableView.register(cellType: ProductsTableViewCell.self)
+        tableView.register(cellType: ToastTableViewCell.self)
         
         tableView.configureEmptyHeaderView()
         tableView.configureEmptyFooterView()
@@ -193,6 +245,7 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             BenefitsTableViewCellModel.Item(icon: $0.image, text: $0.text)
         })
         
+        // Products
         cellModels.productsItemsCellModel.backgroundColor = apperance.primaryBackgroundColor
         cellModels.productsItemsCellModel.textColor = apperance.accentColor
         cellModels.productsItemsCellModel.selectedColor = apperance.accentColor
@@ -209,12 +262,38 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         })
         cellModels.productsItemsCellModel.selectedItemId = selectedProductId
         cellModels.productsItemsCellModel.didSelectItem = { [weak self] (item) in
+            self?.cellModels.productsCloneItemsCellModel.selectedItemId = item.id
+            
             self?.delegate?.didSelectProduct(withId: item.id)
         }
         
+        // Products clone
+        cellModels.productsCloneItemsCellModel.backgroundColor = apperance.primaryBackgroundColor
+        cellModels.productsCloneItemsCellModel.textColor = apperance.accentColor
+        cellModels.productsCloneItemsCellModel.selectedColor = apperance.accentColor
+        cellModels.productsCloneItemsCellModel.unselectedColor = apperance.separatorColor
+        cellModels.productsCloneItemsCellModel.checkmarkColor = apperance.quaternaryLabelColor
+        cellModels.productsCloneItemsCellModel.items = productItems.map({
+            return ProductsTableViewCellModel.Item(
+                id: $0.id,
+                titleText: $0.title,
+                descriptionText: $0.description,
+                detailsText: $0.details,
+                badge: nil
+            )
+        })
+        cellModels.productsCloneItemsCellModel.selectedItemId = selectedProductId
+        cellModels.productsCloneItemsCellModel.didSelectItem = { [weak self] (item) in
+            self?.cellModels.productsItemsCellModel.selectedItemId = item.id
+            
+            self?.delegate?.didSelectProduct(withId: item.id)
+        }
+        
+        // Award
         cellModels.awardItemCellModel.contentColor = apperance.accentColor.withAlphaComponent(0.08)
         cellModels.awardItemCellModel.textColor = apperance.accentColor
         
+        // Features
         cellModels.featuresHeaderModel.textColor = apperance.primaryLabelColor
         cellModels.featuresCellModel.backgroundColor = apperance.accentColor.withAlphaComponent(0.08)
         cellModels.featuresCellModel.headerTextColor = apperance.accentColor
@@ -222,13 +301,51 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         cellModels.featuresCellModel.positiveColor = apperance.accentColor
         cellModels.featuresCellModel.negativeColor = UIColor.systemRed
         
-        collection.update(with: [
+        // Reviews
+        cellModels.reviewsHeaderModel.textColor = apperance.primaryLabelColor
+        for item in cellModels.reviewsSectionModel.items {
+            guard let item = item as? ReviewTableViewCellModel else {
+                continue
+            }
+            
+            item.backgroundColor = apperance.secondaryBackgroundColor
+            item.titleColor = apperance.primaryLabelColor
+            item.descriptionColor = apperance.secondaryLabelColor
+            item.nameColor = apperance.tertiaryLabelColor
+        }
+        
+        // Help
+        cellModels.helpHeaderModel.textColor = apperance.primaryLabelColor
+        for item in cellModels.helpSectionModel.items {
+            guard let item = item as? QuestionTableViewCellModel else {
+                continue
+            }
+            
+            item.primaryLabelColor = apperance.primaryLabelColor
+            item.secondaryLabelColor = apperance.secondaryLabelColor
+            item.collapsedChevronColor = apperance.tertiaryLabelColor
+            item.expandedChevronColor = apperance.secondaryLabelColor
+            item.separatorColor = apperance.separatorColor
+        }
+        
+        // Disclamer
+        cellModels.disclamerCellModel.textColor = apperance.primaryLabelColor
+        
+        var sectionModels: [QuickTableViewSection] = [
             cellModels.benefitsSectionModel,
             cellModels.productsSectionModel,
             cellModels.awardSectionModel,
             cellModels.featuresSectionModel,
-//            cellModels.productsSectionModel
-        ])
+            cellModels.reviewsSectionModel,
+            cellModels.helpSectionModel,
+            cellModels.productsCloneSectionModel
+        ]
+        
+        if disclamerSection != nil {
+            sectionModels.append(cellModels.disclamerCloneSectionModel)
+        }
+        
+        collection.update(with: sectionModels)
     }
     
     open override func viewDidLayoutSubviews() {
@@ -319,6 +436,33 @@ extension LongiflorumPaywallViewController {
         
         tableView.reloadData()
     }
+    
+    public func setDisclamer(isHidden: Bool) {
+        func hideSection() {
+            guard let index = collection.index(sectionWithType: SectionId.disclamer) else {
+                return
+            }
+            
+            collection.remove(sectionAt: index)
+            tableView.reloadData()
+        }
+        
+        func showSection() {
+            guard collection.index(sectionWithType: SectionId.disclamer) == nil else {
+                return
+            }
+            
+            let index = collection.sections.count
+            collection.add(section: cellModels.disclamerCloneSectionModel, at: index)
+            tableView.reloadData()
+        }
+        
+        if isHidden {
+            hideSection()
+        } else {
+            showSection()
+        }
+    }
 }
 
 extension LongiflorumPaywallViewController {
@@ -341,12 +485,12 @@ extension LongiflorumPaywallViewController {
         }
         
         switch sectionId {
-        case .benefits:
+        case .benefits, .products, .award, .features, .reviews, .help:
             return 40
-        case .products:
-            return 40
-        case .award:
-            return 40
+        case .productsClone:
+            return 16
+        case .disclamer:
+            return 32
         default:
             return collection.hasFooter(at: section) ? UITableView.automaticDimension : 0
         }
@@ -426,6 +570,72 @@ extension LongiflorumPaywallViewController {
             self.noSubscriptionHeaderText = noSubscriptionHeaderText
             self.withSubscriptionHeaderText = withSubscriptionHeaderText
             self.items = items
+        }
+    }
+    
+    public struct ReviewsItemViewModel {
+        
+        public struct Item {
+            
+            public let name: String
+            
+            public let title: String
+            
+            public let body: String
+            
+            public init(name: String, title: String, body: String) {
+                self.name = name
+                self.title = title
+                self.body = body
+            }
+        }
+        
+        public let titleText: String
+        
+        public let items: [Item]
+        
+        public init(titleText: String, items: [Item]) {
+            self.titleText = titleText
+            self.items = items
+        }
+    }
+    
+    public struct HelpSectionItemViewModel {
+        
+        public struct Item {
+            
+            public let question: String
+            
+            public let answer: String
+            
+            public init(question: String, answer: String) {
+                self.question = question
+                self.answer = answer
+            }
+        }
+        
+        public let title: String
+        
+        public let items: [Item]
+        
+        public init(title: String, items: [Item]) {
+            self.title = title
+            self.items = items
+        }
+    }
+    
+    public struct DisclamerItemViewModel {
+        
+        public let iconSystemName: String
+        
+        public let iconColor: UIColor
+        
+        public let text: String
+        
+        public init(iconSystemName: String, iconColor: UIColor, text: String) {
+            self.iconSystemName = iconSystemName
+            self.iconColor = iconColor
+            self.text = text
         }
     }
 }

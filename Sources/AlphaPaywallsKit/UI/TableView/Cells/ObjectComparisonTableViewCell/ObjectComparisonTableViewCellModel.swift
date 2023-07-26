@@ -8,7 +8,7 @@ import QuickTableKit
 
 final class ObjectComparisonTableViewCellModel: QuickTableViewCellModelProtocol {
     
-    static var type: QuickTableViewCellProtocol.Type { ObjectComparisonTableViewCell.self }
+    var type: QuickTableViewCellProtocol.Type { ObjectComparisonTableViewCell.self }
     
     var id: Int?
     

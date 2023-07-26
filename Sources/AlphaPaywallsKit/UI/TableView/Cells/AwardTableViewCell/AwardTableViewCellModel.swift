@@ -8,7 +8,7 @@ import QuickTableKit
 
 final class AwardTableViewCellModel: QuickTableViewCellModelProtocol {
     
-    static var type: QuickTableViewCellProtocol.Type { AwardTableViewCell.self }
+    var type: QuickTableViewCellProtocol.Type { AwardTableViewCell.self }
     
     var id: Int?
     

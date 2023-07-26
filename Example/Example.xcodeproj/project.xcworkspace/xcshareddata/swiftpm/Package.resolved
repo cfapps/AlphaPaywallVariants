@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/QuickTableKit/QuickTableKit.git",
       "state" : {
-        "revision" : "3dd2e0e05a24f990f504088686b85aa0c32ca608",
-        "version" : "0.1.8"
+        "branch" : "feature/init",
+        "revision" : "a6e3b344a7d17d9a6ab2aeee41682b775628dae6"
       }
     },
     {

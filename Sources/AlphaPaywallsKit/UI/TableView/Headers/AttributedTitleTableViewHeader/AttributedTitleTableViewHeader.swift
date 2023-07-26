@@ -37,8 +37,9 @@ final class AttributedTitleTableViewHeader: UITableViewHeaderFooterView {
         contentView.addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(0)
-            make.leading.trailing.equalToSuperview().inset(0)
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview().priority(.medium)
+            make.leading.trailing.equalToSuperview()
         }
     }
 }
@@ -54,7 +55,7 @@ extension AttributedTitleTableViewHeader: QuickTableViewHeaderFooterViewProtocol
         
         titleLabel.snp.updateConstraints { make in
             make.top.equalToSuperview().inset(model.inset.top)
-            make.bottom.equalToSuperview().inset(model.inset.bottom)
+            make.bottom.equalToSuperview().inset(model.inset.bottom).priority(.medium)
             make.leading.equalToSuperview().inset(model.inset.left)
             make.trailing.equalToSuperview().inset(model.inset.right)
         }

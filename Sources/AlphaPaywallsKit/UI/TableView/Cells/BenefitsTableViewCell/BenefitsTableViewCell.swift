@@ -38,7 +38,7 @@ final class BenefitsTableViewCell: UITableViewCell {
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = DynamicHeightCollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.register(cellType: CollectionViewCellModel.type)
+        collectionView.register(cellType: CollectionViewCell.self)
         collectionView.allowsSelection = false
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -64,7 +64,8 @@ final class BenefitsTableViewCell: UITableViewCell {
         
         collectionView.snp.makeConstraints { make in
             make.height.equalTo(1).priority(.medium)
-            make.edges.equalToSuperview()
+            make.horizontalEdges.top.equalToSuperview()
+            make.bottom.equalToSuperview().priority(.medium)
         }
     }
 }
