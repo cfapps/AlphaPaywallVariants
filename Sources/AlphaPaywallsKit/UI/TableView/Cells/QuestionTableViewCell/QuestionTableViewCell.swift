@@ -112,6 +112,8 @@ final class QuestionTableViewCell: UITableViewCell {
     }
     
     private func setupUI() {
+        backgroundColor = .clear
+        
         chevronContainerView.addSubview(chevronImageView)
         
         titleContainerView.addSubview(titleLabel)

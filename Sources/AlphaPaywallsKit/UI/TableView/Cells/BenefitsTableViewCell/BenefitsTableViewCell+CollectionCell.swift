@@ -89,6 +89,8 @@ extension BenefitsTableViewCell {
         }
         
         private func setupUI() {
+            backgroundColor = .clear
+            
             iconImageContainerView.addSubview(iconImageView)
             containerView.addSubview(iconImageContainerView)
             containerView.addSubview(titleLabel)
