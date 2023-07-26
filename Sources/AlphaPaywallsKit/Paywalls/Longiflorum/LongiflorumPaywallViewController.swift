@@ -238,6 +238,8 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     }
     
     private func setupUI() {
+        contentBackgroundColor = apperance.primaryBackgroundColor
+        
         bottomButtonsContainer.addSubview(termsOfServiceButton)
         bottomButtonsContainer.addSubview(privacyPolicyButton)
         bottomButtonsContainer.addSubview(bottomButtonsBorderView)
