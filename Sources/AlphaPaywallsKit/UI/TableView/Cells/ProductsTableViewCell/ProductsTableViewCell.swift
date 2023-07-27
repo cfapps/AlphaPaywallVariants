@@ -108,6 +108,7 @@ class ProductsTableViewCell: UITableViewCell {
     
     private func setupUI() {
         backgroundColor = UIColor.clear
+        selectionStyle = .none
         
         titleLabelContainerView.addSubview(titleLabel)
         containerView.addSubview(titleLabelContainerView)
@@ -189,13 +190,6 @@ extension ProductsTableViewCell: UICollectionViewDelegate {
         titleLabel.text = item.detailsText
         model?.selectedItemId = item.id
         
-        if let tableView = self.superview as? UITableView {
-            UIView.performWithoutAnimation {
-                tableView.beginUpdates()
-                tableView.endUpdates()
-            }
-        }
-        
         model?.didSelectItem?(item)
     }
 }
@@ -249,15 +243,6 @@ extension ProductsTableViewCell: QuickTableViewCellProtocol {
             make.bottom.equalToSuperview().inset(model.inset.bottom)
             make.left.equalToSuperview().inset(model.inset.left)
             make.right.equalToSuperview().inset(model.inset.right)
-        }
-        
-        DispatchQueue.main.async {
-            if let tableView = self.superview as? UITableView {
-                UIView.performWithoutAnimation {
-                    tableView.beginUpdates()
-                    tableView.endUpdates()
-                }
-            }
         }
     }
 }

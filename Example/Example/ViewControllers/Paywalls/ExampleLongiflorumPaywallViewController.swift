@@ -11,52 +11,112 @@ final class ExampleLongiflorumPaywallViewController: LongiflorumPaywallViewContr
     override init() {
         super.init()
         
-        self.titleText = makeTitle()
-        
-        self.benefitItems = [
-            LongiflorumPaywallViewController.BenefitItemViewModel(image: UIImage(systemName: "person.2")!, text: "Create unlimited clients"),
-            LongiflorumPaywallViewController.BenefitItemViewModel(image: UIImage(systemName: "doc.plaintext")!, text: "Create unlimited documents"),
-            LongiflorumPaywallViewController.BenefitItemViewModel(image: UIImage(systemName: "envelope.arrow.triangle.branch")!, text: "Set-up follow-up emails"),
-            LongiflorumPaywallViewController.BenefitItemViewModel(image: UIImage(systemName: "chart.line.uptrend.xyaxis")!, text: "Build custom reports"),
-            LongiflorumPaywallViewController.BenefitItemViewModel(image: UIImage(systemName: "checkmark.seal")!, text: "Work without ads or limits"),
-        ]
-        self.productItems = [
-            Self.ProductItemViewModel(
-                id: "1",
-                title: "Monthly",
-                description: "First 7 days free.",
-                details: "Get Premium with a Free 7-day Trial\nthen 59.99/month. No commitment. Cancel anytime."
-            ),
-            Self.ProductItemViewModel(
-                id: "2",
-                title: "Annual",
-                description: "First 7 days free.\n$9.99 / month",
-                details: "Get Premium with a Free 7-day Trial\nthen 59.99/year. No commitment. Cancel anytime."
-            ),
-            Self.ProductItemViewModel(
-                id: "3",
-                title: "Lifetie",
-                description: "First 7 days free.\n$9.99 / month",
-                details: "One time payment."
-            )
-        ]
-        self.selectedProductId = "2"
-        
-        self.setContinueButton(text: "Start My Free Trial")
-        self.termsOfServiceButtonText = "Terms Of Service"
+        self.dataSource = self
+        self.delegate = self
         self.privacyPolicyButtonText = "Privacy Policy"
+        self.termsOfServiceButtonText = "Terms of Service"
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension ExampleLongiflorumPaywallViewController: LongiflorumPaywallDataSource {
+    
+    func getTitle() -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(string: "Create Unlimited Invoices with ")
+        let highlitedString = NSAttributedString(string: "Premium Subscription")
+        attributedString.append(highlitedString)
         
-        self.awardItem = Self.AwardItemViewModel(
+        attributedString.addAttribute(
+            .foregroundColor,
+            value: UIColor.systemBlue,
+            range: NSRange(location: attributedString.length - highlitedString.length, length: highlitedString.length)
+        )
+        return attributedString
+    }
+    
+    func getProductSection() -> LongiflorumPaywallViewController.ProductsItemViewModel {
+        return .init(
+            items: [
+                .init(
+                    id: "1",
+                    title: "Monthly",
+                    description: "First 7 days free.\n$9.99 / month",
+                    details: "Get Premium with a Free 7-day Trial\nthen 19.99/month. No commitment. Cancel anytime.",
+                    badge: nil
+                ),
+                .init(
+                    id: "2",
+                    title: "Yearly",
+                    description: "First 7 days free.\n$59.99/year",
+                    details: "Get Premium with a Free 7-day Trial\nthen 59.99/year. No commitment. Cancel anytime.",
+                    badge: .init(
+                        text: "Save 50%",
+                        color: UIColor.systemBlue,
+                        textColor: UIColor.white
+                    )
+                ),
+                .init(
+                    id: "3",
+                    title: "Yearly",
+                    description: "First 7 days free.\n$59.99/year",
+                    details: "Get Premium with a Free 7-day Trial\nthen 59.99/year. No commitment. Cancel anytime.",
+                    badge: nil
+                )
+            ],
+            selectedItemId: "2"
+        )
+    }
+    
+    func getBenefitSection() -> LongiflorumPaywallViewController.BenefitsItemViewModel {
+        func getImage(_ name: String) -> UIImage {
+            return UIImage(systemName: name)!
+                .applyingSymbolConfiguration(imgConfig)!
+                .withTintColor(.systemBlue, renderingMode: .alwaysOriginal)
+        }
+        
+        let imgConfig = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 20, weight: .bold))
+        
+        return .init(items: [
+            .init(
+                image: getImage("person.2"),
+                text: "Create unlimited clients"
+            ),
+            .init(
+                image: getImage("doc.plaintext"),
+                text: "Create unlimited documents"
+            ),
+            .init(
+                image: getImage("envelope.arrow.triangle.branch"),
+                text: "Set-up follow-up emails"
+            ),
+            .init(
+                image: getImage("chart.line.uptrend.xyaxis"),
+                text: "Build custom reports"
+            ),
+            .init(
+                image: getImage("checkmark.seal"),
+                text: "Work without ads or limits"
+            )
+        ])
+    }
+    
+    func getAwardSection() -> LongiflorumPaywallViewController.AwardItemViewModel? {
+        return .init(
             title: "Trusted by 10,000 Businesses Worldwide. Boost Your Business Growth with Get Invoice",
             subTitle: "Featured in 12 countries",
             details: "Apps for\nSmall Business"
         )
-        
-        self.features = FeaturesItemViewModel(
+    }
+    
+    func getFeatureSection() -> LongiflorumPaywallViewController.FeaturesItemViewModel? {
+        return .init(
             titleText: "Great Features You will Love",
             nameHeaderText: "Feature",
-            noSubscriptionHeaderText: "FREE",
-            withSubscriptionHeaderText: "PRO",
+            noSubscriptionHeaderText: "Free",
+            withSubscriptionHeaderText: "Pro",
             items: [
                 "Unlimited Invoices",
                 "Follow-up Reminders",
@@ -66,29 +126,33 @@ final class ExampleLongiflorumPaywallViewController: LongiflorumPaywallViewContr
                 "Priority Support"
             ]
         )
-        
-        self.reviewSection = Self.ReviewsItemViewModel(
+    }
+    
+    func getReviewSection() -> LongiflorumPaywallViewController.ReviewsItemViewModel? {
+        return .init(
             titleText: "Trusted by Thousands",
             items: [
-                Self.ReviewsItemViewModel.Item(
+                .init(
                     name: "HandyMatt",
-                    title: "Amazing Invoicing App",
+                    subject: "Amazing Invoicing App",
                     body: "I've been able to organize my clients and documents and get paid faster"
                 ),
-                Self.ReviewsItemViewModel.Item(
+                .init(
                     name: "NYPlumber07",
-                    title: "I am happy",
+                    subject: "I am happy",
                     body: "As a small business owner, I appreciate how straightforward it was to set up and generate invoices. Thank you for simplifying the process for us"
                 ),
-                Self.ReviewsItemViewModel.Item(
+                .init(
                     name: "BigMikeLA",
-                    title: "Love this app!!",
+                    subject: "Love this app!!",
                     body: "This is an excellent application for invoice creation. Ease of use and significantly simplifies my workflow"
                 )
             ]
         )
-        
-        self.helpSection = Self.HelpSectionItemViewModel(
+    }
+    
+    func getHelpSection() -> LongiflorumPaywallViewController.HelpSectionItemViewModel? {
+        return .init(
             title: "Most Asked Questions",
             items: [
                 .init(
@@ -109,28 +173,100 @@ final class ExampleLongiflorumPaywallViewController: LongiflorumPaywallViewContr
                 )
             ]
         )
-        
-        self.disclamerSection = Self.DisclamerItemViewModel(
-            iconSystemName: "checkmark.shield.fill",
-            iconColor: UIColor.systemGreen,
-            text: "No payments now"
-        )
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func getTodoSection(forProduct id: String) -> LongiflorumPaywallViewController.TodosItemViewModel? {
+        if id == "1" {
+            return .init(
+                titleText: "What Happens Next",
+                items: [
+                    .init(
+                        iconName: "bolt.fill",
+                        titleText: "Today",
+                        subTitleText: "Unlock instant access to explore how GetInvoice can revolutionize your business operations."
+                    ),
+                    .init(
+                        iconName: "bell.fill",
+                        titleText: "Day 5",
+                        subTitleText: "We'll send you a friendly email and notification reminder before your trial ends."
+                    ),
+                    .init(
+                        iconName: "staroflife.fill",
+                        titleText: "Day 7",
+                        subTitleText: "You’ll be charged on July 18. Feel free to cancel at any time prior to this date."
+                    )
+                ]
+            )
+        } else if id == "2" {
+            return .init(
+                titleText: "What Happens Next 2",
+                items: [
+                    .init(
+                        iconName: "bolt.fill",
+                        titleText: "Today 2",
+                        subTitleText: "Unlock instant access to explore how GetInvoice can revolutionize your business operations."
+                    ),
+                    .init(
+                        iconName: "bell.fill",
+                        titleText: "Day 99",
+                        subTitleText: "We'll send you a friendly email and notification reminder before your trial ends."
+                    ),
+                    .init(
+                        iconName: "staroflife.fill",
+                        titleText: "Day 1479",
+                        subTitleText: "You’ll be charged on July 18. Feel free to cancel at any time prior to this date."
+                    )
+                ]
+            )
+        } else {
+            return nil
+        }
     }
     
-    private func makeTitle() -> NSAttributedString {
-        let attributedString = NSMutableAttributedString(string: "Create Unlimited Invoices with ")
-        let highlitedString = NSAttributedString(string: "Premium Subscription")
-        attributedString.append(highlitedString)
+    func getDisclamerSection(forProduct id: String) -> LongiflorumPaywallViewController.DisclamerItemViewModel? {
+        if id == "1" {
+            return .init(
+                iconSystemName: "checkmark.shield.fill",
+                iconColor: UIColor.systemGreen,
+                text: "No payments now"
+            )
+        } else if id == "2" {
+            return .init(
+                iconSystemName: "checkmark.shield.fill",
+                iconColor: UIColor.systemGreen,
+                text: "With payments now"
+            )
+        } else {
+            return nil
+        }
+    }
+    
+    func getContinueButtonText(forProduct id: String) -> String {
+        return "Start My Free Trial"
+    }
+}
+
+extension ExampleLongiflorumPaywallViewController: LongiflorumPaywallDelegate {
+    
+    func didSelectProduct(withId id: String) {
         
-        attributedString.addAttribute(
-            .foregroundColor,
-            value: UIColor.systemBlue,
-            range: NSRange(location: attributedString.length - highlitedString.length, length: highlitedString.length)
-        )
-        return attributedString
+    }
+    
+    func didTapContinue() {
+        self.setContent(isEnable: false)
+        self.setContinueButton(isIndicating: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+            self.setContent(isEnable: true)
+            self.setContinueButton(isIndicating: false)
+        }
+    }
+    
+    func didTapTermsOfService() {
+        
+    }
+    
+    func didTapPrivacyPolicy() {
+        
     }
 }

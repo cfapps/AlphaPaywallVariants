@@ -6,16 +6,18 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-final class BenefitsTableViewCellModel: QuickTableViewCellModelProtocol {
+final class StepsTableViewCellModel: QuickTableViewCellModelProtocol {
     
     struct Item {
         
-        let icon: UIImage
+        let iconImage: UIImage
         
-        let title: String
+        let titleText: String
+        
+        let subTitleText: String
     }
     
-    var type: QuickTableViewCellProtocol.Type { BenefitsTableViewCell.self }
+    var type: QuickTableViewCellProtocol.Type { StepsTableViewCell.self }
     
     var id: Int?
     
@@ -23,20 +25,23 @@ final class BenefitsTableViewCellModel: QuickTableViewCellModelProtocol {
     
     var items: [Item]
     
-    var iconColor: UIColor
-    
     var titleLabelColor: UIColor
+    
+    var subTitleLabelColor: UIColor
+    
+    let insets: UIEdgeInsets
     
     init(id: Int? = nil,
          entity: IdentifiableEntity? = nil,
          items: [Item],
-         iconColor: UIColor,
-         titleLabelColor: UIColor) {
+         titleLabelColor: UIColor,
+         subTitleLabelColor: UIColor,
+         insets: UIEdgeInsets = .zero) {
         self.id = id
         self.entity = entity
         self.items = items
-        self.iconColor = iconColor
         self.titleLabelColor = titleLabelColor
+        self.subTitleLabelColor = subTitleLabelColor
+        self.insets = insets
     }
 }
-

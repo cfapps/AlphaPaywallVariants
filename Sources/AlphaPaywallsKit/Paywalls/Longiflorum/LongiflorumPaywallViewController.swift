@@ -13,6 +13,8 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     
     private let cellModels = LongiflorumPaywallCellModels()
     
+    private var headerHeightCache: [Int: CGFloat] = [:]
+    
     private lazy var bottomView: UIView = {
         let view = UIView()
         view.backgroundColor = apperance.primaryBackgroundColor
@@ -90,9 +92,9 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     
     weak open var delegate: LongiflorumPaywallDelegate?
     
-    public var apperance = ApperanceConfiguration.default
+    weak open var dataSource: LongiflorumPaywallDataSource?
     
-    public var titleText = NSAttributedString()
+    public var apperance = ApperanceConfiguration.default
     
     public var termsOfServiceButtonText: String? {
         didSet {
@@ -106,100 +108,8 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         }
     }
     
-    public var benefitItems: [BenefitItemViewModel] = []
-    
-    public var productItems: [ProductItemViewModel] = []
-    
-    public var selectedProductId: String? = nil
-    
-    public var awardItem: AwardItemViewModel? {
-        didSet {
-            guard let awardItem = awardItem else {
-                return
-            }
-            
-            cellModels.awardItemCellModel.title = awardItem.title
-            cellModels.awardItemCellModel.subTitle = awardItem.subTitle
-            cellModels.awardItemCellModel.details = awardItem.details
-        }
-    }
-    
-    public var features: FeaturesItemViewModel? {
-        didSet {
-            guard let features = features else {
-                return
-            }
-            
-            cellModels.featuresHeaderModel.titleText = features.titleText
-            cellModels.featuresCellModel.nameColumnHeader = features.nameHeaderText
-            cellModels.featuresCellModel.aColumnHeader = features.noSubscriptionHeaderText
-            cellModels.featuresCellModel.bColumnHeader = features.withSubscriptionHeaderText
-            cellModels.featuresCellModel.items = features.items
-        }
-    }
-    
-    public var reviewSection: ReviewsItemViewModel? {
-        didSet {
-            cellModels.reviewsHeaderModel.titleText = reviewSection?.titleText
-            
-            var models: [ReviewTableViewCellModel] = []
-            let itemsCount = (reviewSection?.items ?? []).count
-            for (index, item) in (reviewSection?.items ?? []).enumerated() {
-                models.append(cellModels.makeReviewCellModel(
-                    item: item,
-                    isFirst: index == 0,
-                    isLast: index == itemsCount - 1,
-                    apperance: apperance
-                ))
-            }
-            
-            cellModels.reviewsSectionModel.update(with: models)
-        }
-    }
-    
-    public var helpSection: HelpSectionItemViewModel? {
-        didSet {
-            cellModels.helpHeaderModel.titleText = helpSection?.title
-            
-            var models: [QuestionTableViewCellModel] = []
-            let itemsCount = (helpSection?.items ?? []).count
-            for (index, item) in (helpSection?.items ?? []).enumerated() {
-                models.append(cellModels.makeHelpCellModel(
-                    item: item,
-                    separator: index != itemsCount - 1,
-                    apperance: apperance
-                ))
-            }
-            
-            cellModels.helpSectionModel.update(with: models)
-        }
-    }
-    
-    public var disclamerSection: DisclamerItemViewModel? {
-        didSet {
-            if let disclamerSection = disclamerSection {
-                cellModels.disclamerCellModel.iconName = disclamerSection.iconSystemName
-                cellModels.disclamerCellModel.iconColor = disclamerSection.iconColor
-                cellModels.disclamerCellModel.text = disclamerSection.text
-                
-                if let index = collection.index(sectionWithType: SectionId.disclamer) {
-                    tableView.reloadSections([index], with: .none)
-                }
-            }
-        }
-    }
-    
     public init() {
         super.init(style: .grouped)
-    }
-    
-    public convenience init(
-        products: [ProductItemViewModel],
-        selectedProductId: String?) {
-        self.init()
-        
-        self.productItems = products
-        self.selectedProductId = selectedProductId
     }
     
     required public init?(coder: NSCoder) {
@@ -215,8 +125,10 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     open override func setupTableView() {
         super.setupTableView()
         
-        tableView.allowsSelection = false
+        tableView.allowsSelection = true
         tableView.separatorStyle = .none
+        
+        tableView.showsVerticalScrollIndicator = false
         
         tableView.register(headerFooterType: AttributedTitleTableViewHeader.self)
         tableView.register(headerFooterType: TitleTableViewHeader.self)
@@ -224,10 +136,11 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         tableView.register(cellType: BenefitsTableViewCell.self)
         tableView.register(cellType: AwardTableViewCell.self)
         tableView.register(cellType: ObjectComparisonTableViewCell.self)
-        tableView.register(cellType: ReviewTableViewCell.self)
+        tableView.register(cellType: ReviewsTableViewCell.self)
         tableView.register(cellType: QuestionTableViewCell.self)
         tableView.register(cellType: ProductsTableViewCell.self)
         tableView.register(cellType: ToastTableViewCell.self)
+        tableView.register(cellType: StepsTableViewCell.self)
         
         tableView.configureEmptyHeaderView()
         tableView.configureEmptyFooterView()
@@ -237,115 +150,139 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     }
     
     open override func setupTableData() {
-        cellModels.benefitsHeaderModel.text = titleText
-        
-        cellModels.benefitsItemsCellModel.iconColor = apperance.accentColor
-        cellModels.benefitsItemsCellModel.textColor = apperance.primaryLabelColor
-        cellModels.benefitsItemsCellModel.items = benefitItems.map({
-            BenefitsTableViewCellModel.Item(icon: $0.image, text: $0.text)
-        })
-        
-        // Products
-        cellModels.productsItemsCellModel.backgroundColor = apperance.primaryBackgroundColor
-        cellModels.productsItemsCellModel.textColor = apperance.accentColor
-        cellModels.productsItemsCellModel.selectedColor = apperance.accentColor
-        cellModels.productsItemsCellModel.unselectedColor = apperance.separatorColor
-        cellModels.productsItemsCellModel.checkmarkColor = apperance.quaternaryLabelColor
-        cellModels.productsItemsCellModel.items = productItems.map({
-            return ProductsTableViewCellModel.Item(
-                id: $0.id,
-                titleText: $0.title,
-                descriptionText: $0.description,
-                detailsText: $0.details,
-                badge: nil
-            )
-        })
-        cellModels.productsItemsCellModel.selectedItemId = selectedProductId
-        cellModels.productsItemsCellModel.didSelectItem = { [weak self] (item) in
-            self?.cellModels.productsCloneItemsCellModel.selectedItemId = item.id
-            
-            self?.delegate?.didSelectProduct(withId: item.id)
+        guard let dataSource = dataSource else {
+            fatalError("Field dataSource not set")
         }
         
-        // Products clone
-        cellModels.productsCloneItemsCellModel.backgroundColor = apperance.primaryBackgroundColor
-        cellModels.productsCloneItemsCellModel.textColor = apperance.accentColor
-        cellModels.productsCloneItemsCellModel.selectedColor = apperance.accentColor
-        cellModels.productsCloneItemsCellModel.unselectedColor = apperance.separatorColor
-        cellModels.productsCloneItemsCellModel.checkmarkColor = apperance.quaternaryLabelColor
-        cellModels.productsCloneItemsCellModel.items = productItems.map({
-            return ProductsTableViewCellModel.Item(
-                id: $0.id,
-                titleText: $0.title,
-                descriptionText: $0.description,
-                detailsText: $0.details,
-                badge: nil
-            )
-        })
-        cellModels.productsCloneItemsCellModel.selectedItemId = selectedProductId
-        cellModels.productsCloneItemsCellModel.didSelectItem = { [weak self] (item) in
-            self?.cellModels.productsItemsCellModel.selectedItemId = item.id
-            
-            self?.delegate?.didSelectProduct(withId: item.id)
+        var selectedProductId: String?
+        
+        cellModels.benefitsHeaderModel.text = dataSource.getTitle()
+        
+        do {
+            let benefit = dataSource.getBenefitSection()
+            cellModels.benefitsItemsCellModel.items = benefit.items.map {
+                return BenefitsTableViewCellModel.Item(icon: $0.image, title: $0.text)
+            }
         }
+        collection.add(section: cellModels.benefitsSectionModel)
         
-        // Award
-        cellModels.awardItemCellModel.contentColor = apperance.accentColor.withAlphaComponent(0.08)
-        cellModels.awardItemCellModel.textColor = apperance.accentColor
-        
-        // Features
-        cellModels.featuresHeaderModel.textColor = apperance.primaryLabelColor
-        cellModels.featuresCellModel.backgroundColor = apperance.accentColor.withAlphaComponent(0.08)
-        cellModels.featuresCellModel.headerTextColor = apperance.accentColor
-        cellModels.featuresCellModel.textColor = apperance.primaryLabelColor
-        cellModels.featuresCellModel.positiveColor = apperance.accentColor
-        cellModels.featuresCellModel.negativeColor = UIColor.systemRed
-        
-        // Reviews
-        cellModels.reviewsHeaderModel.textColor = apperance.primaryLabelColor
-        for item in cellModels.reviewsSectionModel.items {
-            guard let item = item as? ReviewTableViewCellModel else {
-                continue
+        do {
+            let product = dataSource.getProductSection()
+            selectedProductId = product.selectedItemId
+            
+            let productItems = product.items.map {
+                ProductsTableViewCellModel.Item(
+                    id: $0.id,
+                    titleText: $0.title,
+                    descriptionText: $0.description,
+                    detailsText: $0.details,
+                    badge: $0.badge.flatMap {
+                        ProductsTableViewCellModel.Badge(
+                            text: $0.text,
+                            color: $0.color,
+                            textColor: $0.textColor
+                        )
+                    }
+                )
             }
             
-            item.backgroundColor = apperance.secondaryBackgroundColor
-            item.titleColor = apperance.primaryLabelColor
-            item.descriptionColor = apperance.secondaryLabelColor
-            item.nameColor = apperance.tertiaryLabelColor
-        }
-        
-        // Help
-        cellModels.helpHeaderModel.textColor = apperance.primaryLabelColor
-        for item in cellModels.helpSectionModel.items {
-            guard let item = item as? QuestionTableViewCellModel else {
-                continue
+            cellModels.productsItemsCellModel.items = productItems
+            cellModels.productsItemsCellModel.selectedItemId = selectedProductId
+            cellModels.productsItemsCellModel.didSelectItem = { [weak self] (item) in
+                guard let self = self else { return }
+                
+                self.cellModels.productsCloneItemsCellModel.selectedItemId = item.id
+                self.didChangeSelectedProduct(item.id)
             }
             
-            item.primaryLabelColor = apperance.primaryLabelColor
-            item.secondaryLabelColor = apperance.secondaryLabelColor
-            item.collapsedChevronColor = apperance.tertiaryLabelColor
-            item.expandedChevronColor = apperance.secondaryLabelColor
-            item.separatorColor = apperance.separatorColor
+            cellModels.productsCloneItemsCellModel.items = productItems
+            cellModels.productsCloneItemsCellModel.selectedItemId = selectedProductId
+            cellModels.productsCloneItemsCellModel.didSelectItem = { [weak self] (item) in
+                guard let self = self else { return }
+                
+                self.cellModels.productsItemsCellModel.selectedItemId = item.id
+                self.didChangeSelectedProduct(item.id)
+            }
         }
         
-        // Disclamer
-        cellModels.disclamerCellModel.textColor = apperance.primaryLabelColor
+        collection.add(section: cellModels.productsSectionModel)
         
-        var sectionModels: [QuickTableViewSection] = [
-            cellModels.benefitsSectionModel,
-            cellModels.productsSectionModel,
-            cellModels.awardSectionModel,
-            cellModels.featuresSectionModel,
-            cellModels.reviewsSectionModel,
-            cellModels.helpSectionModel,
-            cellModels.productsCloneSectionModel
-        ]
-        
-        if disclamerSection != nil {
-            sectionModels.append(cellModels.disclamerCloneSectionModel)
+        if let item = dataSource.getAwardSection() {
+            cellModels.awardItemCellModel.title = item.title
+            cellModels.awardItemCellModel.subTitle = item.subTitle
+            cellModels.awardItemCellModel.details = item.details
+            
+//            collection.add(section: cellModels.awardSectionModel)
         }
         
-        collection.update(with: sectionModels)
+        if let productId = selectedProductId, let item = dataSource.getTodoSection(forProduct: productId) {
+            cellModels.todoHeaderModel.titleText = item.titleText
+            cellModels.todoItemCellModel.items = item.items.map {
+                StepsTableViewCellModel.Item(
+                    iconImage: UIImage(systemName: $0.iconName)!,
+                    titleText: $0.titleText,
+                    subTitleText: $0.subTitleText
+                )
+            }
+            
+            collection.add(section: cellModels.todoSectionModel)
+        }
+        
+        if let item = dataSource.getFeatureSection() {
+            cellModels.featuresHeaderModel.titleText = item.titleText
+            cellModels.featuresCellModel.headerNameText = item.nameHeaderText
+            cellModels.featuresCellModel.headerOptionOneText = item.noSubscriptionHeaderText
+            cellModels.featuresCellModel.headerOptionTwoText = item.withSubscriptionHeaderText
+            cellModels.featuresCellModel.items = item.items.map {
+                return ObjectComparisonTableViewCellModel.Item(
+                    text: $0,
+                    hasOptionOne: false,
+                    hasOptionTwo: true
+                )
+            }
+            
+            collection.add(section: cellModels.featuresSectionModel)
+        }
+        
+        if let item = dataSource.getReviewSection() {
+            cellModels.reviewsHeaderModel.titleText = item.titleText
+            cellModels.reviewItemCellModel.items = item.items.map {
+                .init(name: $0.name, subject: $0.subject, body: $0.body)
+            }
+            
+            collection.add(section: cellModels.reviewsSectionModel)
+        }
+        
+        if let help = dataSource.getHelpSection() {
+            cellModels.helpHeaderModel.titleText = help.title
+            cellModels.helpSectionModel.update(with: [])
+            for (index, item) in help.items.enumerated() {
+                cellModels.helpSectionModel.add(
+                    item: cellModels.makeHelpCellModel(
+                        item: item,
+                        separator: index < help.items.count - 1,
+                        apperance: apperance
+                    )
+                )
+            }
+            
+            collection.add(section: cellModels.helpSectionModel)
+        }
+        
+        collection.add(section: cellModels.productsCloneSectionModel)
+        
+        if let productId = selectedProductId, let disclamer = dataSource.getDisclamerSection(forProduct: productId) {
+            cellModels.disclamerCellModel.iconName = disclamer.iconSystemName
+            cellModels.disclamerCellModel.text = disclamer.text
+            cellModels.disclamerCellModel.iconColor = disclamer.iconColor
+            cellModels.disclamerCellModel.textColor = apperance.primaryLabelColor
+            
+            collection.add(section: cellModels.disclamerCloneSectionModel)
+        }
+        
+        if let productId = selectedProductId {
+            continueButton.title = dataSource.getContinueButtonText(forProduct: productId)
+        }
     }
     
     open override func viewDidLayoutSubviews() {
@@ -357,6 +294,8 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     }
     
     private func setupUI() {
+        configureApperance()
+        
         bottomButtonsContainer.addSubview(termsOfServiceButton)
         bottomButtonsContainer.addSubview(privacyPolicyButton)
         bottomButtonsContainer.addSubview(bottomButtonsBorderView)
@@ -410,18 +349,117 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             make.bottom.equalToSuperview()
             make.left.right.equalToSuperview()
         }
+        
+        tableView.performBatchUpdates { }
     }
     
     @objc private func didTapContinueButton() {
         delegate?.didTapContinue()
     }
+    
+    private func configureApperance() {
+        cellModels.benefitsItemsCellModel.iconColor = apperance.accentColor
+        cellModels.benefitsItemsCellModel.titleLabelColor = apperance.primaryLabelColor
+        
+        cellModels.productsItemsCellModel.backgroundColor = apperance.primaryBackgroundColor
+        cellModels.productsItemsCellModel.textColor = apperance.accentColor
+        cellModels.productsItemsCellModel.selectedColor = apperance.accentColor
+        cellModels.productsItemsCellModel.unselectedColor = apperance.separatorColor
+        cellModels.productsItemsCellModel.checkmarkColor = apperance.quaternaryLabelColor
+        
+        cellModels.productsCloneItemsCellModel.backgroundColor = apperance.primaryBackgroundColor
+        cellModels.productsCloneItemsCellModel.textColor = apperance.accentColor
+        cellModels.productsCloneItemsCellModel.selectedColor = apperance.accentColor
+        cellModels.productsCloneItemsCellModel.unselectedColor = apperance.separatorColor
+        cellModels.productsCloneItemsCellModel.checkmarkColor = apperance.quaternaryLabelColor
+        
+        cellModels.awardItemCellModel.contentColor = apperance.accentColor.withAlphaComponent(0.08)
+        cellModels.awardItemCellModel.textColor = apperance.accentColor
+        
+        cellModels.todoItemCellModel.titleLabelColor = apperance.primaryLabelColor
+        cellModels.todoItemCellModel.subTitleLabelColor = apperance.secondaryLabelColor
+        
+        cellModels.featuresHeaderModel.textColor = apperance.primaryLabelColor
+        cellModels.featuresCellModel.contentBackgroundColor = apperance.accentColor.withAlphaComponent(0.08)
+        cellModels.featuresCellModel.headerLabelColor = apperance.accentColor
+        cellModels.featuresCellModel.itemLabelColor = apperance.primaryLabelColor
+        cellModels.featuresCellModel.checkedColor = apperance.accentColor
+        cellModels.featuresCellModel.uncheckedColor = UIColor.systemRed
+        
+        cellModels.reviewsHeaderModel.textColor = apperance.primaryLabelColor
+        cellModels.reviewItemCellModel.contentBackgroundColor = apperance.secondaryBackgroundColor
+        cellModels.reviewItemCellModel.nameLabelColor = apperance.tertiaryLabelColor
+        cellModels.reviewItemCellModel.subjectLabelColor = apperance.primaryLabelColor
+        cellModels.reviewItemCellModel.bodyLabelColor = apperance.secondaryLabelColor
+        
+        cellModels.helpHeaderModel.textColor = apperance.primaryLabelColor
+        for item in cellModels.helpSectionModel.items {
+            guard let item = item as? QuestionTableViewCellModel else {
+                continue
+            }
+            
+            item.primaryLabelColor = apperance.primaryLabelColor
+            item.secondaryLabelColor = apperance.secondaryLabelColor
+            item.collapsedChevronColor = apperance.tertiaryLabelColor
+            item.expandedChevronColor = apperance.secondaryLabelColor
+            item.separatorColor = apperance.separatorColor
+        }
+        
+        cellModels.disclamerCellModel.textColor = apperance.primaryLabelColor
+    }
+    
+    private func didChangeSelectedProduct(_ id: String) {
+        var neddUpdateTableView: Bool = false
+        
+        if let todoSection = dataSource?.getTodoSection(forProduct: id) {
+            cellModels.todoHeaderModel.titleText = todoSection.titleText
+            cellModels.todoItemCellModel.items = todoSection.items.map {
+                return StepsTableViewCellModel.Item(
+                    iconImage: UIImage(systemName: $0.iconName)!,
+                    titleText: $0.titleText,
+                    subTitleText: $0.subTitleText
+                )
+            }
+            
+            if collection.index(sectionWithType: SectionId.todo) != nil {
+                neddUpdateTableView = true
+            } else if let index = collection.index(sectionWithType: SectionId.products) {
+                collection.add(section: cellModels.todoSectionModel, at: index + 1)
+                neddUpdateTableView = true
+            }
+        } else {
+            if let index = collection.index(sectionWithType: SectionId.todo) {
+                collection.remove(sectionAt: index)
+                neddUpdateTableView = true
+            }
+        }
+        
+        if let disclamer = dataSource?.getDisclamerSection(forProduct: id) {
+            cellModels.disclamerCellModel.text = disclamer.text
+            cellModels.disclamerCellModel.iconName = disclamer.iconSystemName
+            cellModels.disclamerCellModel.iconColor = disclamer.iconColor
+            
+            if collection.index(sectionWithType: SectionId.disclamer) != nil {
+                neddUpdateTableView = true
+            } else {
+                let index = collection.sections.count
+                collection.add(section: cellModels.disclamerCloneSectionModel, at: index)
+                neddUpdateTableView = true
+            }
+        } else if let index = collection.index(sectionWithType: SectionId.disclamer) {
+            collection.remove(sectionAt: index)
+            neddUpdateTableView = true
+        }
+        
+        if neddUpdateTableView {
+            tableView.reloadData()
+        }
+        
+        delegate?.didSelectProduct(withId: id)
+    }
 }
 
 extension LongiflorumPaywallViewController {
-    
-    public func setContinueButton(text: String) {
-        continueButton.title = text
-    }
     
     public func setContinueButton(isIndicating: Bool) {
         if isIndicating {
@@ -477,6 +515,23 @@ extension LongiflorumPaywallViewController {
 
 extension LongiflorumPaywallViewController {
     
+    open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let cellId: CellId = collection.identifier(for: indexPath) else {
+            return nil
+        }
+        
+        switch cellId {
+        case .helpItem:
+            return indexPath
+        default:
+            return nil
+        }
+    }
+    
+    open func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return headerHeightCache[section] ?? UITableView.automaticDimension
+    }
+    
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return collection.hasHeader(at: section) ? UITableView.automaticDimension : 0
     }
@@ -495,7 +550,7 @@ extension LongiflorumPaywallViewController {
         }
         
         switch sectionId {
-        case .benefits, .products, .award, .features, .reviews, .help:
+        case .benefits, .products, .award, .features, .reviews, .help, .todo:
             return 40
         case .productsClone:
             return 16
@@ -513,203 +568,24 @@ extension LongiflorumPaywallViewController {
         
         return tableViewDataSource.dequeue(tableView, viewForFooterInSection: section)
     }
-}
-
-extension LongiflorumPaywallViewController {
     
-    public struct BenefitItemViewModel {
-        
-        let image: UIImage
-        
-        let text: String
-        
-        public init(image: UIImage, text: String) {
-            self.image = image
-            self.text = text
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cellId: CellId = collection.identifier(for: indexPath) else {
+            return
         }
-    }
-    
-    public struct ProductItemViewModel {
         
-        let id: String
-        
-        let title: String
-        
-        let description: String
-        
-        let details: String
-        
-        public init(id: String, title: String, description: String, details: String) {
-            self.id = id
-            self.title = title
-            self.description = description
-            self.details = details
-        }
-    }
-    
-    public struct AwardItemViewModel {
-        
-        public let title: String?
-        
-        public let subTitle: String?
-        
-        public let details: String?
-        
-        public init(title: String?, subTitle: String?, details: String?) {
-            self.title = title
-            self.subTitle = subTitle
-            self.details = details
-        }
-    }
-    
-    public struct FeaturesItemViewModel {
-        
-        public let titleText: String
-        
-        public let nameHeaderText: String
-        
-        public let noSubscriptionHeaderText: String
-        
-        public let withSubscriptionHeaderText: String
-        
-        public let items: [String]
-        
-        public init(titleText: String, nameHeaderText: String, noSubscriptionHeaderText: String, withSubscriptionHeaderText: String, items: [String]) {
-            self.titleText = titleText
-            self.nameHeaderText = nameHeaderText
-            self.noSubscriptionHeaderText = noSubscriptionHeaderText
-            self.withSubscriptionHeaderText = withSubscriptionHeaderText
-            self.items = items
-        }
-    }
-    
-    public struct ReviewsItemViewModel {
-        
-        public struct Item {
-            
-            public let name: String
-            
-            public let title: String
-            
-            public let body: String
-            
-            public init(name: String, title: String, body: String) {
-                self.name = name
-                self.title = title
-                self.body = body
+        switch cellId {
+        case .helpItem:
+            guard let cell = tableView.cellForRow(at: indexPath) as? QuestionTableViewCell else { return }
+            tableView.performBatchUpdates {
+                cell.toggle()
             }
-        }
-        
-        public let titleText: String
-        
-        public let items: [Item]
-        
-        public init(titleText: String, items: [Item]) {
-            self.titleText = titleText
-            self.items = items
+        default:
+            break
         }
     }
     
-    public struct HelpSectionItemViewModel {
-        
-        public struct Item {
-            
-            public let question: String
-            
-            public let answer: String
-            
-            public init(question: String, answer: String) {
-                self.question = question
-                self.answer = answer
-            }
-        }
-        
-        public let title: String
-        
-        public let items: [Item]
-        
-        public init(title: String, items: [Item]) {
-            self.title = title
-            self.items = items
-        }
-    }
-    
-    public struct DisclamerItemViewModel {
-        
-        public let iconSystemName: String
-        
-        public let iconColor: UIColor
-        
-        public let text: String
-        
-        public init(iconSystemName: String, iconColor: UIColor, text: String) {
-            self.iconSystemName = iconSystemName
-            self.iconColor = iconColor
-            self.text = text
-        }
-    }
-}
-
-extension LongiflorumPaywallViewController {
-    
-    public struct ApperanceConfiguration {
-        
-        public let accentColor: UIColor
-        
-        public let accentLabelColor: UIColor
-        
-        public let primaryLabelColor: UIColor
-        
-        public let secondaryLabelColor: UIColor
-        
-        /// Color of checkmark in product cell
-        public let quaternaryLabelColor: UIColor
-        
-        public let tertiaryLabelColor: UIColor
-        
-        public let invertPrimaryLabelColor: UIColor
-        
-        public let separatorColor: UIColor
-        
-        public let primaryBackgroundColor: UIColor
-        
-        public let secondaryBackgroundColor: UIColor
-        
-        static var `default`: ApperanceConfiguration {
-            ApperanceConfiguration(
-                accentColor: UIColor.systemBlue,
-                accentLabelColor: UIColor.white,
-                primaryLabelColor: UIColor.black,
-                secondaryLabelColor: UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 0.6),
-                quaternaryLabelColor: UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 0.18),
-                tertiaryLabelColor: UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 0.3),
-                invertPrimaryLabelColor: UIColor.white,
-                separatorColor: UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 0.12),
-                primaryBackgroundColor: UIColor.white,
-                secondaryBackgroundColor: UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 1)
-            )
-        }
-        
-        public init(accentColor: UIColor,
-                    accentLabelColor: UIColor,
-                    primaryLabelColor: UIColor,
-                    secondaryLabelColor: UIColor,
-                    quaternaryLabelColor: UIColor,
-                    tertiaryLabelColor: UIColor,
-                    invertPrimaryLabelColor: UIColor,
-                    separatorColor: UIColor,
-                    primaryBackgroundColor: UIColor,
-                    secondaryBackgroundColor: UIColor) {
-            self.accentColor = accentColor
-            self.accentLabelColor = accentLabelColor
-            self.primaryLabelColor = primaryLabelColor
-            self.secondaryLabelColor = secondaryLabelColor
-            self.quaternaryLabelColor = quaternaryLabelColor
-            self.tertiaryLabelColor = tertiaryLabelColor
-            self.invertPrimaryLabelColor = invertPrimaryLabelColor
-            self.separatorColor = separatorColor
-            self.primaryBackgroundColor = primaryBackgroundColor
-            self.secondaryBackgroundColor = secondaryBackgroundColor
-        }
+    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        headerHeightCache[section] = view.frame.size.height
     }
 }

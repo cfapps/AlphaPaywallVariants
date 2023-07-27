@@ -22,9 +22,21 @@ final class QuestionTableViewCell: UITableViewCell {
         }
     }
     
-    var collapsedChevronColor: UIColor = UIColor.opaqueSeparator
+    var collapsedChevronColor: UIColor = UIColor.opaqueSeparator {
+        didSet {
+            guard !isExpand else { return }
+            
+            chevronImageView.image = chevronImageView.image?.withTintColor(collapsedChevronColor, renderingMode: .alwaysOriginal)
+        }
+    }
     
-    var expandedChevronColor: UIColor = UIColor.separator
+    var expandedChevronColor: UIColor = UIColor.separator {
+        didSet {
+            guard isExpand else { return }
+            
+            chevronImageView.image = chevronImageView.image?.withTintColor(expandedChevronColor, renderingMode: .alwaysOriginal)
+        }
+    }
     
     var separatorColor: UIColor = UIColor.separator {
         didSet {
@@ -111,8 +123,13 @@ final class QuestionTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func toggle() {
+        isExpand = !isExpand
+    }
+    
     private func setupUI() {
         backgroundColor = .clear
+        selectionStyle = .none
         
         chevronContainerView.addSubview(chevronImageView)
         
@@ -166,12 +183,6 @@ final class QuestionTableViewCell: UITableViewCell {
             make.left.equalToSuperview()
             make.right.equalToSuperview()
         }
-        
-        titleContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapExpand)))
-    }
-    
-    @objc private func didTapExpand() {
-        isExpand = !isExpand
     }
     
     private func setChevron(color: UIColor) {
@@ -190,14 +201,15 @@ extension QuestionTableViewCell {
             make.bottom.equalToSuperview()
         }
         
+        layoutIfNeeded()
+        
         UIView.animate(withDuration: 0.3, animations: {
+            self.layoutIfNeeded()
             self.setChevron(color: self.expandedChevronColor)
             self.chevronImageView.transform = CGAffineTransformMakeRotation(2 * Double.pi)
-            
-            if let tableView = self.superview as? UITableView {
-                tableView.beginUpdates()
-                tableView.endUpdates()
-            }
+//            if let tableView = self.superview as? UITableView {
+//                tableView.performBatchUpdates { }
+//            }
         })
     }
     
@@ -208,13 +220,12 @@ extension QuestionTableViewCell {
         }
         
         UIView.animate(withDuration: 0.3, animations: {
+            self.layoutIfNeeded()
             self.setChevron(color: self.collapsedChevronColor)
             self.chevronImageView.transform = CGAffineTransformMakeRotation(-Double.pi)
-            
-            if let tableView = self.superview as? UITableView {
-                tableView.beginUpdates()
-                tableView.endUpdates()
-            }
+//            if let tableView = self.superview as? UITableView {
+//                tableView.performBatchUpdates { }
+//            }
         }, completion: { _ in
             self.descriptionContainerView.removeFromSuperview()
             self.descriptionContainerView.snp.removeConstraints()

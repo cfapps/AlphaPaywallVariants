@@ -1,16 +1,14 @@
 //
-// Copyright © 2023 ___ORGANIZATIONNAME___. All rights reserved.
+// Copyright © 2023 Alpha Apps LLC. All rights reserved.
 //
 
 import Foundation
 import UIKit
 import QuickTableKit
 
-final class BenefitsTableViewCell: UITableViewCell {
+final class ReviewsTableViewCell: UITableViewCell {
     
     private let collection = QuickCollectionViewCollection()
-    
-    private var itemMaxWidth: CGFloat = 0
     
     private lazy var collectionViewLayout: UICollectionViewLayout = {
         let item = NSCollectionLayoutItem(
@@ -27,7 +25,7 @@ final class BenefitsTableViewCell: UITableViewCell {
             subitems: [item]
         )
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 0
+        section.interGroupSpacing = 16
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }()
@@ -45,9 +43,13 @@ final class BenefitsTableViewCell: UITableViewCell {
         return collectionView
     }()
     
-    var iconColor: UIColor = UIColor.systemBlue
+    var contentBackgroundColor: UIColor = UIColor.systemBackground
     
-    var titleLabelColor: UIColor = UIColor.label
+    var nameLabelColor: UIColor = UIColor.tertiaryLabel
+    
+    var subjectLabelColor: UIColor = UIColor.tertiaryLabel
+    
+    var bodyLabelColor: UIColor = UIColor.tertiaryLabel
     
     var insets: UIEdgeInsets = .zero {
         didSet {
@@ -90,7 +92,7 @@ final class BenefitsTableViewCell: UITableViewCell {
     }
 }
 
-extension BenefitsTableViewCell: UICollectionViewDataSource {
+extension ReviewsTableViewCell: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return collection.numberOfSections()
@@ -101,7 +103,7 @@ extension BenefitsTableViewCell: UICollectionViewDataSource {
     }
 }
 
-extension BenefitsTableViewCell: UICollectionViewDelegate {
+extension ReviewsTableViewCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cellType = collection.cellType(at: indexPath),
@@ -111,9 +113,10 @@ extension BenefitsTableViewCell: UICollectionViewDelegate {
         }
         
         if let cell = cell as? CollectionViewCell {
-            cell.iconColor = iconColor
-            cell.titleLabelColor = titleLabelColor
-            cell.containerWidth = itemMaxWidth
+            cell.contentBackgroundColor = contentBackgroundColor
+            cell.nameLabelColor = nameLabelColor
+            cell.subjectLabelColor = subjectLabelColor
+            cell.bodyLabelColor = bodyLabelColor
         }
         
         cell.update(model: cellModel)
@@ -122,27 +125,27 @@ extension BenefitsTableViewCell: UICollectionViewDelegate {
     }
 }
 
-extension BenefitsTableViewCell: QuickTableViewCellProtocol {
+extension ReviewsTableViewCell: QuickTableViewCellProtocol {
     
     func update(model: QuickTableViewCellModelProtocol) {
-        guard let model = model as? BenefitsTableViewCellModel else {
+        guard let model = model as? ReviewsTableViewCellModel else {
             return
         }
         
-        iconColor = model.iconColor
-        titleLabelColor = model.titleLabelColor
+        contentBackgroundColor = model.contentBackgroundColor
+        nameLabelColor = model.nameLabelColor
+        subjectLabelColor = model.subjectLabelColor
+        bodyLabelColor = model.bodyLabelColor
+        insets = model.insets
         
         collection.update(sections: [
             QuickCollectionViewSection(
                 items: model.items.map({
-                    CollectionViewCellModel(icon: $0.icon, text: $0.title)
+                    CollectionViewCellModel(name: $0.name, subject: $0.subject, body: $0.body)
                 })
             )
         ])
         
-        itemMaxWidth = model.items.map({ CollectionViewCell.calculateWidth(text: $0.title) }).max() ?? 0
-        
         collectionView.reloadData()
-        collectionView.layoutIfNeeded()
     }
 }

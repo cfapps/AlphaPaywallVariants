@@ -66,6 +66,7 @@ final class ToastTableViewCell: UITableViewCell {
     
     private func setupUI() {
         backgroundColor = .clear
+        selectionStyle = .none
         
         contentView.addSubview(iconImageView)
         contentView.addSubview(titleLabel)

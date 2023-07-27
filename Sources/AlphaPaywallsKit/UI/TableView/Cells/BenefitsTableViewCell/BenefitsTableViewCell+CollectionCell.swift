@@ -16,9 +16,9 @@ extension BenefitsTableViewCell {
             }
         }
         
-        var textColor: UIColor = UIColor.label {
+        var titleLabelColor: UIColor = UIColor.label {
             didSet {
-                titleLabel.textColor = textColor
+                titleLabel.textColor = titleLabelColor
             }
         }
         
@@ -66,7 +66,8 @@ extension BenefitsTableViewCell {
         private lazy var titleLabel: UILabel = {
             let label = UILabel()
             label.font = UIFont.preferredFont(forTextStyle: .body, weight: .regular)
-            label.textColor = textColor
+            label.textColor = titleLabelColor
+            label.setContentHuggingPriority(.defaultLow, for: .horizontal)
             return label
         }()
         
@@ -122,8 +123,6 @@ extension BenefitsTableViewCell {
                 make.right.lessThanOrEqualToSuperview()
                 make.centerX.equalToSuperview()
             }
-            
-            titleLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         }
     }
 }

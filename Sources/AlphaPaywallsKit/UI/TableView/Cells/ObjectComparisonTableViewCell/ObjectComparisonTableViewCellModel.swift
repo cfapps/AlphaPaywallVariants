@@ -8,55 +8,64 @@ import QuickTableKit
 
 final class ObjectComparisonTableViewCellModel: QuickTableViewCellModelProtocol {
     
+    struct Item {
+        
+        let text: String
+        
+        let hasOptionOne: Bool
+        
+        let hasOptionTwo: Bool
+    }
+    
     var type: QuickTableViewCellProtocol.Type { ObjectComparisonTableViewCell.self }
     
     var id: Int?
     
     var entity: IdentifiableEntity?
     
-    var nameColumnHeader: String
+    var headerNameText: String
     
-    var aColumnHeader: String
+    var headerOptionOneText: String
     
-    var bColumnHeader: String
+    var headerOptionTwoText: String
     
-    var items: [String]
+    var items: [Item]
     
-    var backgroundColor: UIColor
+    var contentBackgroundColor: UIColor
     
-    var headerTextColor: UIColor
+    var headerLabelColor: UIColor
     
-    var textColor: UIColor
+    var itemLabelColor: UIColor
     
-    var positiveColor: UIColor
+    var checkedColor: UIColor
     
-    var negativeColor: UIColor
+    var uncheckedColor: UIColor
     
     var insets: UIEdgeInsets
     
     init(id: Int? = nil,
          entity: IdentifiableEntity? = nil,
-         nameColumnHeader: String,
-         aColumnHeader: String,
-         bColumnHeader: String,
-         items: [String],
-         backgroundColor: UIColor,
-         headerTextColor: UIColor,
-         textColor: UIColor,
-         positiveColor: UIColor,
-         negativeColor: UIColor,
+         headerNameText: String,
+         headerOptionOneText: String,
+         headerOptionTwoText: String,
+         items: [Item],
+         contentBackgroundColor: UIColor,
+         headerLabelColor: UIColor,
+         itemLabelColor: UIColor,
+         checkedColor: UIColor,
+         uncheckedColor: UIColor,
          insets: UIEdgeInsets) {
         self.id = id
         self.entity = entity
-        self.nameColumnHeader = nameColumnHeader
-        self.aColumnHeader = aColumnHeader
-        self.bColumnHeader = bColumnHeader
+        self.headerNameText = headerNameText
+        self.headerOptionOneText = headerOptionOneText
+        self.headerOptionTwoText = headerOptionTwoText
         self.items = items
-        self.backgroundColor = backgroundColor
-        self.headerTextColor = headerTextColor
-        self.textColor = textColor
-        self.positiveColor = positiveColor
-        self.negativeColor = negativeColor
+        self.contentBackgroundColor = contentBackgroundColor
+        self.headerLabelColor = headerLabelColor
+        self.itemLabelColor = itemLabelColor
+        self.checkedColor = checkedColor
+        self.uncheckedColor = uncheckedColor
         self.insets = insets
     }
 }

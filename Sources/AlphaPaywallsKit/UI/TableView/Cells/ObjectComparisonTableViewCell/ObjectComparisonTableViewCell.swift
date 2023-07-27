@@ -17,19 +17,27 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
         }
     }
     
-    var textLabelColor: UIColor = UIColor.label
+    var headerLabelColor: UIColor = UIColor.label {
+        didSet {
+            headerNameLabel.textColor = headerLabelColor
+            headerOptionOneLabel.textColor = headerLabelColor
+            headerOptionTwoLabel.textColor = headerLabelColor
+        }
+    }
     
-    var positiveColor: UIColor = UIColor.label
+    var itemLabelColor: UIColor = UIColor.label
     
-    var negativeColor: UIColor = UIColor.red
+    var checkedColor: UIColor = UIColor.systemGreen
     
-    var containerInsets: UIEdgeInsets = .zero {
+    var unchecked: UIColor = UIColor.systemRed
+    
+    var insets: UIEdgeInsets = .zero {
         didSet {
             backgroundContentView.snp.updateConstraints { make in
-                make.top.equalToSuperview().inset(containerInsets.top)
-                make.bottom.equalToSuperview().inset(containerInsets.bottom)
-                make.left.equalToSuperview().inset(containerInsets.left)
-                make.right.equalToSuperview().inset(containerInsets.right)
+                make.top.equalToSuperview().inset(insets.top)
+                make.bottom.equalToSuperview().inset(insets.bottom)
+                make.left.equalToSuperview().inset(insets.left)
+                make.right.equalToSuperview().inset(insets.right)
             }
         }
     }
@@ -42,27 +50,27 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
         return view
     }()
     
-    private lazy var itemHeaderLabel: UILabel = {
+    private lazy var headerNameLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold)
-        label.textColor = textLabelColor
+        label.textColor = headerLabelColor
         return label
     }()
     
-    private lazy var firstOptionHeaderLabel: UILabel = {
+    private lazy var headerOptionOneLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold)
-        label.textColor = textLabelColor
+        label.textColor = headerLabelColor
         return label
     }()
     
-    private lazy var secondOptionHeaderLabel: UILabel = {
+    private lazy var headerOptionTwoLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold)
-        label.textColor = textLabelColor
+        label.textColor = headerLabelColor
         return label
     }()
     
@@ -74,13 +82,13 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(44)
+                heightDimension: .estimated(50)
             )
         )
         let group = NSCollectionLayoutGroup.vertical(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(44)
+                heightDimension: .fractionalHeight(50)
             ),
             subitems: [item]
         )
@@ -120,52 +128,52 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
         
         updateOptionColumnWidth()
         
-        if let width = optionColumnWidth, firstOptionHeaderLabel.frame.width != width {
-            firstOptionHeaderLabel.snp.updateConstraints { make in
+        if let width = optionColumnWidth, headerOptionOneLabel.frame.width != width {
+            headerOptionOneLabel.snp.updateConstraints { make in
                 make.width.equalTo(width).priority(.medium)
             }
-            secondOptionHeaderLabel.snp.updateConstraints { make in
+            headerOptionTwoLabel.snp.updateConstraints { make in
                 make.width.equalTo(width).priority(.medium)
             }
         }
     }
     
     private func setupUI() {
-        backgroundView = UIView()
-        selectedBackgroundView = UIView()
         backgroundColor = .clear
+        selectionStyle = .none
         
-        contentHeaderView.addSubview(itemHeaderLabel)
-        contentHeaderView.addSubview(firstOptionHeaderLabel)
-        contentHeaderView.addSubview(secondOptionHeaderLabel)
+        contentHeaderView.addSubview(headerNameLabel)
+        contentHeaderView.addSubview(headerOptionOneLabel)
+        contentHeaderView.addSubview(headerOptionTwoLabel)
         
         contentContainerView.addSubview(contentHeaderView)
         contentContainerView.addSubview(collectionView)
         
+        backgroundContentView.addSubview(contentContainerView)
+        
         contentView.addSubview(backgroundContentView)
-        contentView.addSubview(contentContainerView)
         
         backgroundContentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
         contentContainerView.snp.makeConstraints { make in
-            make.edges.equalTo(backgroundContentView).inset(8)
+            make.edges.equalToSuperview().inset(8)
         }
         
-        itemHeaderLabel.snp.makeConstraints { make in
+        headerNameLabel.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(16)
             make.left.equalToSuperview().inset(16)
-            make.right.lessThanOrEqualTo(firstOptionHeaderLabel.snp.left).offset(-8)
+            make.right.lessThanOrEqualTo(headerOptionOneLabel.snp.left).offset(-8)
         }
         
-        firstOptionHeaderLabel.snp.makeConstraints { make in
+        headerOptionOneLabel.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(16)
-            make.right.equalTo(secondOptionHeaderLabel.snp.left)
+            make.right.equalTo(headerOptionTwoLabel.snp.left)
             make.width.equalTo(0).priority(.medium)
         }
         
-        secondOptionHeaderLabel.snp.makeConstraints { make in
+        headerOptionTwoLabel.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview().inset(16)
             make.right.equalToSuperview()
             make.width.equalTo(0).priority(.medium)
@@ -187,7 +195,7 @@ final class ObjectComparisonTableViewCell: UITableViewCell {
     @discardableResult
     private func updateOptionColumnWidth() -> CGFloat {
         let maxWidth = collectionView.frame.width * 0.4
-        var calculatedWidth = [secondOptionHeaderLabel.text, secondOptionHeaderLabel.text]
+        var calculatedWidth = [headerOptionTwoLabel.text, headerOptionTwoLabel.text]
             .compactMap({ $0 })
             .map({ UILabel.calculateSize($0, font: UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold), width: maxWidth / 2).width })
             .max() ?? 0
@@ -221,9 +229,9 @@ extension ObjectComparisonTableViewCell: UICollectionViewDelegate {
         cell.update(model: cellModel)
         
         if let cell = cell as? CollectionViewCell {
-            cell.textColor = textLabelColor
-            cell.positiveColor = positiveColor
-            cell.negativeColor = negativeColor
+            cell.labelColor = itemLabelColor
+            cell.checkedColor = checkedColor
+            cell.uncheckedColor = unchecked
             cell.optionWidth = optionColumnWidth ?? updateOptionColumnWidth()
         }
         
@@ -239,32 +247,30 @@ extension ObjectComparisonTableViewCell: QuickTableViewCellProtocol {
         
         optionColumnWidth = nil
         
-        itemHeaderLabel.textColor = model.headerTextColor
-        firstOptionHeaderLabel.textColor = model.headerTextColor
-        secondOptionHeaderLabel.textColor = model.headerTextColor
+        contentBackgroundColor = model.contentBackgroundColor
+        headerLabelColor = model.headerLabelColor
+        itemLabelColor = model.itemLabelColor
+        checkedColor = model.checkedColor
+        unchecked = model.uncheckedColor
         
-        textLabelColor = model.textColor
-        contentBackgroundColor = model.backgroundColor
-        
-        positiveColor = model.positiveColor
-        negativeColor = model.negativeColor
-        
-        itemHeaderLabel.text = model.nameColumnHeader
-        firstOptionHeaderLabel.text = model.aColumnHeader
-        secondOptionHeaderLabel.text = model.bColumnHeader
-        
-        updateOptionColumnWidth()
+        headerNameLabel.text = model.headerNameText
+        headerOptionOneLabel.text = model.headerOptionOneText
+        headerOptionTwoLabel.text = model.headerOptionTwoText
         
         collection.update(sections: [
             QuickCollectionViewSection(
                 items: model.items.map({
-                    CollectionViewCellModel(text: $0)
+                    CollectionViewCellModel(
+                        titleText: $0.text,
+                        hasOptionOne: $0.hasOptionOne,
+                        hasOptionTwo: $0.hasOptionTwo
+                    )
                 })
             )
         ])
         
         collectionView.reloadData()
         
-        containerInsets = model.insets
+        insets = model.insets
     }
 }

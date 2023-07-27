@@ -16,7 +16,7 @@ final class TitleTableViewHeaderModel: QuickTableViewHeaderFooterModelProtocol {
     
     var insets: UIEdgeInsets
     
-    init(titleText: String?,
+    init(titleText: String? = nil,
          textColor: UIColor,
          insets: UIEdgeInsets = .zero) {
         self.titleText = titleText

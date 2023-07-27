@@ -6,11 +6,9 @@ import Foundation
 import UIKit
 import QuickTableKit
 
-final class BenefitsTableViewCell: UITableViewCell {
+final class StepsTableViewCell: UITableViewCell {
     
     private let collection = QuickCollectionViewCollection()
-    
-    private var itemMaxWidth: CGFloat = 0
     
     private lazy var collectionViewLayout: UICollectionViewLayout = {
         let item = NSCollectionLayoutItem(
@@ -27,7 +25,7 @@ final class BenefitsTableViewCell: UITableViewCell {
             subitems: [item]
         )
         let section = NSCollectionLayoutSection(group: group)
-        section.interGroupSpacing = 0
+        section.interGroupSpacing = 16
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }()
@@ -45,9 +43,9 @@ final class BenefitsTableViewCell: UITableViewCell {
         return collectionView
     }()
     
-    var iconColor: UIColor = UIColor.systemBlue
-    
     var titleLabelColor: UIColor = UIColor.label
+    
+    var subTitleLabelColor: UIColor = UIColor.secondaryLabel
     
     var insets: UIEdgeInsets = .zero {
         didSet {
@@ -90,7 +88,7 @@ final class BenefitsTableViewCell: UITableViewCell {
     }
 }
 
-extension BenefitsTableViewCell: UICollectionViewDataSource {
+extension StepsTableViewCell: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return collection.numberOfSections()
@@ -101,7 +99,7 @@ extension BenefitsTableViewCell: UICollectionViewDataSource {
     }
 }
 
-extension BenefitsTableViewCell: UICollectionViewDelegate {
+extension StepsTableViewCell: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cellType = collection.cellType(at: indexPath),
@@ -111,9 +109,8 @@ extension BenefitsTableViewCell: UICollectionViewDelegate {
         }
         
         if let cell = cell as? CollectionViewCell {
-            cell.iconColor = iconColor
             cell.titleLabelColor = titleLabelColor
-            cell.containerWidth = itemMaxWidth
+            cell.subTitleLabelColor = subTitleLabelColor
         }
         
         cell.update(model: cellModel)
@@ -122,27 +119,27 @@ extension BenefitsTableViewCell: UICollectionViewDelegate {
     }
 }
 
-extension BenefitsTableViewCell: QuickTableViewCellProtocol {
+extension StepsTableViewCell: QuickTableViewCellProtocol {
     
     func update(model: QuickTableViewCellModelProtocol) {
-        guard let model = model as? BenefitsTableViewCellModel else {
+        guard let model = model as? StepsTableViewCellModel else {
             return
         }
         
-        iconColor = model.iconColor
         titleLabelColor = model.titleLabelColor
+        subTitleLabelColor = model.subTitleLabelColor
+        insets = model.insets
         
         collection.update(sections: [
             QuickCollectionViewSection(
                 items: model.items.map({
-                    CollectionViewCellModel(icon: $0.icon, text: $0.title)
+                    CollectionViewCellModel(
+                        iconImage: $0.iconImage,
+                        titleText: $0.titleText,
+                        subTitleText: $0.subTitleText
+                    )
                 })
             )
         ])
-        
-        itemMaxWidth = model.items.map({ CollectionViewCell.calculateWidth(text: $0.title) }).max() ?? 0
-        
-        collectionView.reloadData()
-        collectionView.layoutIfNeeded()
     }
 }

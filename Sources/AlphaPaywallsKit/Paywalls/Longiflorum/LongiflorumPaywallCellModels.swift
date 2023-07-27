@@ -13,6 +13,7 @@ final class LongiflorumPaywallCellModels {
         case benefits
         case products
         case award
+        case todo
         case features
         case reviews
         case help
@@ -27,6 +28,8 @@ final class LongiflorumPaywallCellModels {
         case productsItems
         
         case awardItem
+        
+        case todo
         
         case featureItem
         
@@ -48,15 +51,15 @@ final class LongiflorumPaywallCellModels {
     )
     
     lazy var benefitsHeaderModel = AttributedTitleTableViewHeaderModel(
-        text: NSAttributedString(),
-        inset: UIEdgeInsets(top: 24, left: 32, bottom: 32, right: 32)
+            text: NSAttributedString(),
+            inset: UIEdgeInsets(top: 24, left: 32, bottom: 32, right: 32)
     )
     
     lazy var benefitsItemsCellModel = BenefitsTableViewCellModel(
         id: CellId.benefitsItems.rawValue,
         items: [],
         iconColor: UIColor.systemBlue,
-        textColor: UIColor.label
+        titleLabelColor: UIColor.label
     )
     
     // MARK: Section - Products
@@ -96,6 +99,27 @@ final class LongiflorumPaywallCellModels {
         textColor: UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
     )
     
+    // MARK: Section - Steps
+    
+    lazy var todoSectionModel = QuickTableViewSection(
+        id: SectionId.todo.rawValue,
+        header: todoHeaderModel,
+        items: [todoItemCellModel]
+    )
+    
+    lazy var todoHeaderModel = TitleTableViewHeaderModel(
+        textColor: .black,
+        insets: UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
+    )
+    
+    lazy var todoItemCellModel = StepsTableViewCellModel(
+        id: CellId.todo.rawValue,
+        items: [],
+        titleLabelColor: UIColor.label,
+        subTitleLabelColor: UIColor.secondaryLabel,
+        insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    )
+    
     // MARK: Section - Features
     
     lazy var featuresSectionModel = QuickTableViewSection(
@@ -112,15 +136,15 @@ final class LongiflorumPaywallCellModels {
     
     lazy var featuresCellModel = ObjectComparisonTableViewCellModel(
         id: CellId.featureItem.rawValue,
-        nameColumnHeader: "",
-        aColumnHeader: "",
-        bColumnHeader: "",
+        headerNameText: "",
+        headerOptionOneText: "",
+        headerOptionTwoText: "",
         items: [],
-        backgroundColor: UIColor.secondarySystemBackground,
-        headerTextColor: UIColor.label,
-        textColor: UIColor.label,
-        positiveColor: UIColor.green,
-        negativeColor: UIColor.red,
+        contentBackgroundColor: UIColor.secondarySystemBackground,
+        headerLabelColor: UIColor.label,
+        itemLabelColor: UIColor.label,
+        checkedColor: UIColor.green,
+        uncheckedColor: UIColor.red,
         insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     )
     
@@ -129,7 +153,17 @@ final class LongiflorumPaywallCellModels {
     lazy var reviewsSectionModel = QuickTableViewSection(
         id: SectionId.reviews.rawValue,
         header: reviewsHeaderModel,
-        items: []
+        items: [reviewItemCellModel]
+    )
+    
+    lazy var reviewItemCellModel = ReviewsTableViewCellModel(
+        id: CellId.reviewItem.rawValue,
+        items: [],
+        contentBackgroundColor: UIColor.tertiarySystemBackground,
+        nameLabelColor: UIColor.label,
+        subjectLabelColor: UIColor.secondaryLabel,
+        bodyLabelColor: UIColor.quaternaryLabel,
+        insets: UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
     )
     
     lazy var reviewsHeaderModel = TitleTableViewHeaderModel(
@@ -137,28 +171,6 @@ final class LongiflorumPaywallCellModels {
         textColor: .black,
         insets: UIEdgeInsets(top: 0, left: 16, bottom: 16, right: 16)
     )
-    
-    func makeReviewCellModel(item: LongiflorumPaywallViewController.ReviewsItemViewModel.Item,
-                             isFirst: Bool,
-                             isLast: Bool,
-                             apperance: LongiflorumPaywallViewController.ApperanceConfiguration) -> ReviewTableViewCellModel {
-        return ReviewTableViewCellModel(
-            id: CellId.reviewItem.rawValue,
-            title: item.title,
-            description: item.body,
-            name: item.name,
-            backgroundColor: apperance.secondaryBackgroundColor,
-            titleColor: apperance.primaryLabelColor,
-            descriptionColor: apperance.secondaryLabelColor,
-            nameColor: apperance.tertiaryLabelColor,
-            insets: UIEdgeInsets(
-                top: isFirst ? 0 : 8,
-                left: 16,
-                bottom: isLast ? 0 : 8,
-                right: 16
-            )
-        )
-    }
     
     // MARK: Section - Help
     
@@ -178,6 +190,7 @@ final class LongiflorumPaywallCellModels {
                            separator: Bool,
                            apperance: LongiflorumPaywallViewController.ApperanceConfiguration) -> QuestionTableViewCellModel {
         return QuestionTableViewCellModel(
+            id: CellId.helpItem.rawValue,
             titleText: item.question,
             descriptionText: item.answer,
             showSeparator: separator,

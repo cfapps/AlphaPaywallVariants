@@ -93,9 +93,8 @@ final class AwardTableViewCell: UITableViewCell {
     }
     
     private func setupUI() {
-        backgroundView = UIView()
-        selectedBackgroundView = UIView()
         backgroundColor = .clear
+        selectionStyle = .none
         
         contentContainerView.addSubview(iconImageView)
         contentContainerView.addSubview(titleLabel)

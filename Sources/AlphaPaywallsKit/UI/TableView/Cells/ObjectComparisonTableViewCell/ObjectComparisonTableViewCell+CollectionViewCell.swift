@@ -10,21 +10,23 @@ extension ObjectComparisonTableViewCell {
     
     final class CollectionViewCell: UICollectionViewCell {
         
-        var textColor: UIColor = UIColor.label {
+        var labelColor: UIColor = UIColor.label {
             didSet {
-                titleLabel.textColor = textColor
+                titleLabel.textColor = labelColor
             }
         }
         
-        var positiveColor: UIColor = UIColor.green {
+        var checkedColor: UIColor = UIColor.green {
             didSet {
-                checkmarkView.image = checkmarkView.image?.withTintColor(positiveColor, renderingMode: .alwaysOriginal)
+                optionOneCheckmark.checkedColor = checkedColor
+                optionTwoCheckmark.checkedColor = checkedColor
             }
         }
         
-        var negativeColor: UIColor = UIColor.red {
+        var uncheckedColor: UIColor = UIColor.red {
             didSet {
-                xmarkView.image = xmarkView.image?.withTintColor(negativeColor, renderingMode: .alwaysOriginal)
+                optionOneCheckmark.uncheckedColor = uncheckedColor
+                optionTwoCheckmark.uncheckedColor = uncheckedColor
             }
         }
         
@@ -36,10 +38,10 @@ extension ObjectComparisonTableViewCell {
         
         var optionWidth: CGFloat = 0 {
             didSet {
-                firstOptionView.snp.updateConstraints { make in
+                optionOneCheckmark.snp.updateConstraints { make in
                     make.width.equalTo(optionWidth)
                 }
-                secondOptionView.snp.updateConstraints { make in
+                optionTwoCheckmark.snp.updateConstraints { make in
                     make.width.equalTo(optionWidth)
                 }
             }
@@ -48,33 +50,23 @@ extension ObjectComparisonTableViewCell {
         private lazy var titleLabel: UILabel = {
             let label = UILabel()
             label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .bold)
-            label.textColor = textColor
+            label.textColor = labelColor
             return label
         }()
         
-        private lazy var checkmarkView: UIImageView = {
-            let imageView = UIImageView(
-                image: UIImage(systemName: "checkmark")?
-                    .withTintColor(positiveColor, renderingMode: .alwaysOriginal)
-                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .subheadline, weight: .heavy)))
-            )
-            imageView.contentMode = .center
-            return imageView
+        private lazy var optionOneCheckmark: CheckmarkView = {
+            let checkmark = CheckmarkView()
+            checkmark.uncheckedColor = uncheckedColor
+            checkmark.checkedColor = checkedColor
+            return checkmark
         }()
         
-        private lazy var xmarkView: UIImageView = {
-            let imageView = UIImageView(
-                image: UIImage(systemName: "xmark")?
-                    .withTintColor(negativeColor, renderingMode: .alwaysOriginal)
-                    .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .subheadline, weight: .heavy)))
-            )
-            imageView.contentMode = .center
-            return imageView
+        private lazy var optionTwoCheckmark: CheckmarkView = {
+            let checkmark = CheckmarkView()
+            checkmark.uncheckedColor = uncheckedColor
+            checkmark.checkedColor = checkedColor
+            return checkmark
         }()
-        
-        private lazy var firstOptionView = UIView()
-        
-        private lazy var secondOptionView = UIView()
         
         override init(frame: CGRect) {
             super.init(frame: frame)
@@ -93,41 +85,34 @@ extension ObjectComparisonTableViewCell {
         }
         
         private func setupUI() {
-            firstOptionView.addSubview(xmarkView)
-            secondOptionView.addSubview(checkmarkView)
             contentView.addSubview(titleLabel)
-            contentView.addSubview(firstOptionView)
-            contentView.addSubview(secondOptionView)
-            
-            checkmarkView.snp.makeConstraints { make in
-                make.center.equalToSuperview().priority(.medium)
-                make.top.left.greaterThanOrEqualToSuperview()
-                make.right.bottom.lessThanOrEqualToSuperview()
-            }
-            
-            xmarkView.snp.makeConstraints { make in
-                make.center.equalToSuperview().priority(.medium)
-                make.top.left.greaterThanOrEqualToSuperview()
-                make.right.bottom.lessThanOrEqualToSuperview()
-            }
+            contentView.addSubview(optionOneCheckmark)
+            contentView.addSubview(optionTwoCheckmark)
             
             titleLabel.snp.makeConstraints { make in
                 make.top.bottom.equalToSuperview().inset(16)
                 make.left.equalToSuperview().inset(16)
-                make.right.equalTo(firstOptionView.snp.left)
+                make.right.equalTo(optionOneCheckmark.snp.left)
             }
             
-            firstOptionView.snp.makeConstraints { make in
+            optionOneCheckmark.snp.makeConstraints { make in
                 make.verticalEdges.equalToSuperview()
-                make.right.equalTo(secondOptionView.snp.left)
+                make.right.equalTo(optionTwoCheckmark.snp.left)
                 make.width.equalTo(0)
             }
             
-            secondOptionView.snp.makeConstraints { make in
+            optionTwoCheckmark.snp.makeConstraints { make in
                 make.verticalEdges.equalToSuperview()
                 make.right.equalToSuperview()
                 make.width.equalTo(0)
             }
+        }
+        
+        private func makeCheckmark(_ exist: Bool) -> UIImageView {
+            let imageView = UIImageView()
+            
+            imageView.contentMode = .center
+            return imageView
         }
     }
 }
@@ -139,7 +124,9 @@ extension ObjectComparisonTableViewCell.CollectionViewCell: QuickCollectionViewC
             return
         }
         
-        titleText = model.text
+        titleText = model.titleText
+        optionOneCheckmark.isChecked = model.hasOptionOne
+        optionTwoCheckmark.isChecked = model.hasOptionTwo
     }
 }
 
@@ -153,14 +140,90 @@ extension ObjectComparisonTableViewCell {
         
         var entity: IdentifiableEntity?
         
-        var text: String
+        var titleText: String
+        
+        var hasOptionOne: Bool
+        
+        var hasOptionTwo: Bool
         
         init(id: Int? = nil,
              entity: IdentifiableEntity? = nil,
-             text: String) {
+             titleText: String,
+             hasOptionOne: Bool,
+             hasOptionTwo: Bool) {
             self.id = id
             self.entity = entity
-            self.text = text
+            self.titleText = titleText
+            self.hasOptionOne = hasOptionOne
+            self.hasOptionTwo = hasOptionTwo
+        }
+    }
+}
+
+private class CheckmarkView: UIView {
+    
+    var uncheckedColor: UIColor = UIColor.red {
+        didSet {
+            guard !isChecked else { return }
+            imageView.image = uncheckedImage?.withTintColor(uncheckedColor, renderingMode: .alwaysOriginal)
+        }
+    }
+    
+    var checkedColor: UIColor = UIColor.green {
+        didSet {
+            guard isChecked else { return }
+            imageView.image = checkedImage?.withTintColor(checkedColor, renderingMode: .alwaysOriginal)
+        }
+    }
+    
+    private var uncheckedImage: UIImage? = {
+        UIImage(systemName: "xmark")?
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .subheadline, weight: .heavy)))
+    }()
+    
+    private var checkedImage: UIImage? = {
+        UIImage(systemName: "checkmark")?
+            .applyingSymbolConfiguration(UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .subheadline, weight: .heavy)))
+    }()
+    
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = uncheckedImage?.withTintColor(uncheckedColor, renderingMode: .alwaysOriginal)
+        imageView.contentMode = .center
+        return imageView
+    }()
+    
+    var isChecked: Bool = false {
+        didSet {
+            if isChecked {
+                imageView.image = checkedImage?.withTintColor(checkedColor, renderingMode: .alwaysOriginal)
+            } else {
+                imageView.image = uncheckedImage?.withTintColor(uncheckedColor, renderingMode: .alwaysOriginal)
+            }
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupUI()
+    }
+    
+    convenience init() {
+        self.init(frame: .zero)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints { make in
+            make.top.left.greaterThanOrEqualToSuperview()
+            make.bottom.right.lessThanOrEqualToSuperview()
+            make.center.equalToSuperview()
         }
     }
 }
