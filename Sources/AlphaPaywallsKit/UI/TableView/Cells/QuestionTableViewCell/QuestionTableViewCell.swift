@@ -78,7 +78,7 @@ final class QuestionTableViewCell: UITableViewCell {
     private lazy var chevronImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .center
-        imageView.transform = CGAffineTransformMakeRotation(180 * Double.pi / 180)
+        imageView.transform = CGAffineTransformMakeRotation(-Double.pi)
         imageView.image = UIImage(systemName: "chevron.up")?
             .applyingSymbolConfiguration(
                 UIImage.SymbolConfiguration(font: UIFont.preferredFont(forTextStyle: .body, weight: .bold))
@@ -192,7 +192,7 @@ extension QuestionTableViewCell {
         
         UIView.animate(withDuration: 0.3, animations: {
             self.setChevron(color: self.expandedChevronColor)
-            self.chevronImageView.transform = CGAffineTransformMakeRotation(0 * Double.pi / 180)
+            self.chevronImageView.transform = CGAffineTransformMakeRotation(2 * Double.pi)
             
             if let tableView = self.superview as? UITableView {
                 tableView.beginUpdates()
@@ -209,7 +209,7 @@ extension QuestionTableViewCell {
         
         UIView.animate(withDuration: 0.3, animations: {
             self.setChevron(color: self.collapsedChevronColor)
-            self.chevronImageView.transform = CGAffineTransformMakeRotation(180 * Double.pi / 180)
+            self.chevronImageView.transform = CGAffineTransformMakeRotation(-Double.pi)
             
             if let tableView = self.superview as? UITableView {
                 tableView.beginUpdates()
