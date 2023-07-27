@@ -431,6 +431,10 @@ extension LongiflorumPaywallViewController {
         }
     }
     
+    public func setContinueButton(isEnabled: Bool) {
+        continueButton.isEnabled = isEnabled
+    }
+    
     public func setContent(isEnable: Bool) {
         if isEnable {
             collection.enableCells(in: tableView)
