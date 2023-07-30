@@ -211,7 +211,7 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             cellModels.awardItemCellModel.subTitle = item.subTitle
             cellModels.awardItemCellModel.details = item.details
             
-//            collection.add(section: cellModels.awardSectionModel)
+            collection.add(section: cellModels.awardSectionModel)
         }
         
         if let productId = selectedProductId, let item = dataSource.getTodoSection(forProduct: productId) {
