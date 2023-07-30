@@ -37,6 +37,10 @@ extension ExampleLongiflorumPaywallViewController: LongiflorumPaywallDataSource 
         return attributedString
     }
     
+    func getTitle() -> String {
+        return "Subscription"
+    }
+    
     func getProductSection() -> LongiflorumPaywallViewController.ProductsItemViewModel {
         return .init(
             items: [

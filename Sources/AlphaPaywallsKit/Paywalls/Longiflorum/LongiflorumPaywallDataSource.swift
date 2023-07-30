@@ -8,6 +8,8 @@ import Foundation
     
     func getTitle() -> NSAttributedString
     
+    func getTitle() -> String
+    
     func getProductSection() -> LongiflorumPaywallViewController.ProductsItemViewModel
     
     func getBenefitSection() -> LongiflorumPaywallViewController.BenefitsItemViewModel

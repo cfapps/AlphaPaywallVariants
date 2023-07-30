@@ -455,6 +455,8 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             tableView.reloadData()
         }
         
+        continueButton.title = dataSource?.getContinueButtonText(forProduct: id)
+        
         delegate?.didSelectProduct(withId: id)
     }
 }
@@ -587,5 +589,15 @@ extension LongiflorumPaywallViewController {
     
     open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         headerHeightCache[section] = view.frame.size.height
+    }
+    
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let originalOffset = view.safeAreaInsets.top + scrollView.contentOffset.y
+        
+        if let headerView = tableView.headerView(forSection: 0), originalOffset <= headerView.frame.height - 32 {
+            navigationItem.title = nil
+        } else {
+            navigationItem.title = dataSource?.getTitle()
+        }
     }
 }
