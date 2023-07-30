@@ -44,6 +44,7 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         button.titleLabel?.textAlignment = .center
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         button.addTarget(self, action: #selector(didTapContinueButton), for: .touchUpInside)
         return button
     }()
