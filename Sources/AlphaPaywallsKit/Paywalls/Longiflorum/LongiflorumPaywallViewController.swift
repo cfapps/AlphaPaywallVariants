@@ -31,16 +31,6 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         apperance.primaryBackgroundColor
     }
     
-    private var navigationItemTitle: String? = nil {
-        didSet {
-            guard let navigationItem = self.findLastParentNavigationController()?.navigationItem else {
-                return
-            }
-            
-            navigationItem.title = navigationItemTitle
-        }
-    }
-    
     private lazy var continueButton: IncidactionButton = {
         let button = IncidactionButton()
         button.setBackgroundColor(color: apperance.accentColor, forState: .normal)
@@ -606,9 +596,9 @@ extension LongiflorumPaywallViewController {
         let originalOffset = view.safeAreaInsets.top + scrollView.contentOffset.y
         
         if let headerView = tableView.headerView(forSection: 0), originalOffset <= headerView.frame.height - 32 {
-            navigationItemTitle = nil
+            navigationItem.title = nil
         } else {
-            navigationItemTitle = dataSource?.getTitle()
+            navigationItem.title = dataSource?.getTitle()
         }
     }
 }
