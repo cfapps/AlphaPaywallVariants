@@ -26,5 +26,5 @@ import Foundation
     
     func getDisclamerSection(forProduct id: String) -> LongiflorumPaywallViewController.DisclamerItemViewModel?
     
-    func getContinueButtonText(forProduct id: String) -> String
+    func getContinueButtonText(forProduct id: String) -> String?
 }

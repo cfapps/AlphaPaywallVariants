@@ -606,9 +606,9 @@ extension LongiflorumPaywallViewController {
         let originalOffset = view.safeAreaInsets.top + scrollView.contentOffset.y
         
         if let headerView = tableView.headerView(forSection: 0), originalOffset <= headerView.frame.height - 32 {
-            navigationItem.title = nil
+            navigationItemTitle = nil
         } else {
-            navigationItem.title = dataSource?.getTitle()
+            navigationItemTitle = dataSource?.getTitle()
         }
     }
 }
