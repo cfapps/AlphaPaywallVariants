@@ -13,8 +13,6 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     
     private let cellModels = LongiflorumPaywallCellModels()
     
-    private var headerHeightCache: [Int: CGFloat] = [:]
-    
     private lazy var bottomView: UIView = {
         let view = UIView()
         view.backgroundColor = apperance.primaryBackgroundColor
@@ -410,28 +408,28 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     }
     
     private func didChangeSelectedProduct(_ id: String) {
-        var neddUpdateTableView: Bool = false
-        
         if let todoSection = dataSource?.getTodoSection(forProduct: id) {
             cellModels.todoHeaderModel.titleText = todoSection.titleText
             cellModels.todoItemCellModel.items = todoSection.items.map {
                 return StepsTableViewCellModel.Item(
-                    iconImage: UIImage(systemName: $0.iconName)!,
+                    iconImage: UIImage(systemName: $0.iconName)!.applyingSymbolConfiguration(
+                        UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 26, weight: .semibold))
+                    )!.withTintColor(apperance.accentColor, renderingMode: .alwaysOriginal),
                     titleText: $0.titleText,
                     subTitleText: $0.subTitleText
                 )
             }
             
-            if collection.index(sectionWithType: SectionId.todo) != nil {
-                neddUpdateTableView = true
+            if let index = collection.index(sectionWithType: SectionId.todo) {
+                tableView.reloadSections([index], with: .fade)
             } else if let index = collection.index(sectionWithType: SectionId.products) {
                 collection.add(section: cellModels.todoSectionModel, at: index + 1)
-                neddUpdateTableView = true
+                tableView.insertSections([index + 1], with: .fade)
             }
         } else {
             if let index = collection.index(sectionWithType: SectionId.todo) {
                 collection.remove(sectionAt: index)
-                neddUpdateTableView = true
+                tableView.deleteSections([index], with: .fade)
             }
         }
         
@@ -440,20 +438,16 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             cellModels.disclamerCellModel.iconName = disclamer.iconSystemName
             cellModels.disclamerCellModel.iconColor = disclamer.iconColor
             
-            if collection.index(sectionWithType: SectionId.disclamer) != nil {
-                neddUpdateTableView = true
+            if let index = collection.index(sectionWithType: SectionId.disclamer) {
+                tableView.reloadSections([index], with: .fade)
             } else {
                 let index = collection.sections.count
                 collection.add(section: cellModels.disclamerCloneSectionModel, at: index)
-                neddUpdateTableView = true
+                tableView.insertSections([index], with: .fade)
             }
         } else if let index = collection.index(sectionWithType: SectionId.disclamer) {
             collection.remove(sectionAt: index)
-            neddUpdateTableView = true
-        }
-        
-        if neddUpdateTableView {
-            tableView.reloadData()
+            tableView.deleteSections([index], with: .fade)
         }
         
         continueButton.title = dataSource?.getContinueButtonText(forProduct: id)
@@ -532,7 +526,7 @@ extension LongiflorumPaywallViewController {
     }
     
     open func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return headerHeightCache[section] ?? UITableView.automaticDimension
+        return UITableView.automaticDimension
     }
     
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -555,12 +549,8 @@ extension LongiflorumPaywallViewController {
         switch sectionId {
         case .benefits, .products, .award, .features, .reviews, .help, .todo:
             return 40
-        case .productsClone:
+        case .productsClone, .disclamer:
             return 16
-        case .disclamer:
-            return 32
-        default:
-            return collection.hasFooter(at: section) ? UITableView.automaticDimension : 0
         }
     }
     
@@ -586,10 +576,6 @@ extension LongiflorumPaywallViewController {
         default:
             break
         }
-    }
-    
-    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        headerHeightCache[section] = view.frame.size.height
     }
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {

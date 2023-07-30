@@ -214,11 +214,6 @@ extension ExampleLongiflorumPaywallViewController: LongiflorumPaywallDataSource 
                         iconName: "bell.fill",
                         titleText: "Day 99",
                         subTitleText: "We'll send you a friendly email and notification reminder before your trial ends."
-                    ),
-                    .init(
-                        iconName: "staroflife.fill",
-                        titleText: "Day 1479",
-                        subTitleText: "You’ll be charged on July 18. Feel free to cancel at any time prior to this date."
                     )
                 ]
             )
@@ -245,7 +240,7 @@ extension ExampleLongiflorumPaywallViewController: LongiflorumPaywallDataSource 
         }
     }
     
-    func getContinueButtonText(forProduct id: String) -> String {
+    func getContinueButtonText(forProduct id: String) -> String? {
         return "Start My Free Trial"
     }
 }
