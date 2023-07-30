@@ -31,6 +31,16 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         apperance.primaryBackgroundColor
     }
     
+    private var navigationItemTitle: String? = nil {
+        didSet {
+            guard let navigationItem = self.findLastParentNavigationController()?.navigationItem else {
+                return
+            }
+            
+            navigationItem.title = navigationItemTitle
+        }
+    }
+    
     private lazy var continueButton: IncidactionButton = {
         let button = IncidactionButton()
         button.setBackgroundColor(color: apperance.accentColor, forState: .normal)
