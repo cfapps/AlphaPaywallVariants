@@ -173,7 +173,7 @@ extension ProductsTableViewCell {
             let h = calculateDescriptionHeight("\n", width: contentView.frame.width + 28)
             if descriptionLabelContainerView.frame.height != h {
                 descriptionLabelContainerView.snp.updateConstraints { make in
-                    make.width.equalTo(h)
+                    make.height.equalTo(h)
                 }
             }
         }
@@ -238,7 +238,7 @@ extension ProductsTableViewCell {
                 make.bottom.equalToSuperview().inset(16).priority(.medium)
                 make.left.equalToSuperview().inset(14)
                 make.right.equalToSuperview().inset(14)
-                make.width.equalTo(0)
+                make.height.equalTo(0)
             }
             
             descriptionLabel.snp.makeConstraints { make in

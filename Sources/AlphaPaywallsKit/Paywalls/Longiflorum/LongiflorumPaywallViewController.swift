@@ -11,6 +11,9 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
     private typealias SectionId = LongiflorumPaywallCellModels.SectionId
     private typealias CellId = LongiflorumPaywallCellModels.CellId
     
+    private var headerHeightCache: [SectionId: CGFloat] = [:]
+    private var cellHeightCache: [CellId: CGFloat] = [:]
+    
     private let cellModels = LongiflorumPaywallCellModels()
     
     private lazy var bottomView: UIView = {
@@ -422,7 +425,7 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             
             if let index = collection.index(sectionWithType: SectionId.todo) {
                 tableView.reloadSections([index], with: .fade)
-            } else if let index = collection.index(sectionWithType: SectionId.products) {
+            } else if let index = collection.index(sectionWithType: SectionId.award) {
                 collection.add(section: cellModels.todoSectionModel, at: index + 1)
                 tableView.insertSections([index + 1], with: .fade)
             }
@@ -512,25 +515,38 @@ extension LongiflorumPaywallViewController {
 
 extension LongiflorumPaywallViewController {
     
-    open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        guard let cellId: CellId = collection.identifier(for: indexPath) else {
-            return nil
-        }
-        
-        switch cellId {
-        case .helpItem:
-            return indexPath
-        default:
-            return nil
-        }
-    }
+    // MARK: Headers
     
     open func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
+        guard let sectionId: SectionId = collection.sectionId(at: section) else {
+            return collection.hasHeader(at: section) ? 44 : 0
+        }
+        
+        return headerHeightCache[sectionId] ?? 44
     }
     
     open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return collection.hasHeader(at: section) ? UITableView.automaticDimension : 0
+    }
+    
+    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        guard let sectionId: SectionId = collection.sectionId(at: section) else {
+            return
+        }
+        
+        if view.frame.height > 0 {
+            headerHeightCache[sectionId] = view.frame.height
+        }
+    }
+    
+    open func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
+        guard let sectionId: SectionId = collection.sectionId(at: section) else {
+            return
+        }
+        
+        if view.frame.height > 0 {
+            headerHeightCache[sectionId] = view.frame.height
+        }
     }
     
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -539,6 +555,21 @@ extension LongiflorumPaywallViewController {
         }
         
         return tableViewDataSource.dequeue(tableView, viewForHeaderInSection: section)
+    }
+    
+    // MARK: Footers
+    
+    open func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        guard let sectionId: SectionId = collection.sectionId(at: section) else {
+            return collection.hasFooter(at: section) ? UITableView.automaticDimension : 0
+        }
+        
+        switch sectionId {
+        case .benefits, .products, .award, .features, .reviews, .help, .todo:
+            return 40
+        case .productsClone, .disclamer:
+            return 16
+        }
     }
     
     open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -562,6 +593,49 @@ extension LongiflorumPaywallViewController {
         return tableViewDataSource.dequeue(tableView, viewForFooterInSection: section)
     }
     
+    // MARK: Cells
+    
+    open func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let cellId: CellId = collection.identifier(for: indexPath) else {
+            return UITableView.automaticDimension
+        }
+        
+        return cellHeightCache[cellId] ?? UITableView.automaticDimension
+    }
+    
+    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cellId: CellId = collection.identifier(for: indexPath) else {
+            return
+        }
+        
+        if cell.frame.height > 0 {
+            cellHeightCache[cellId] = cell.frame.height
+        }
+    }
+    
+    open func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cellId: CellId = collection.identifier(for: indexPath) else {
+            return
+        }
+        
+        if cell.frame.height > 0 {
+            cellHeightCache[cellId] = cell.frame.height
+        }
+    }
+    
+    open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        guard let cellId: CellId = collection.identifier(for: indexPath) else {
+            return nil
+        }
+        
+        switch cellId {
+        case .helpItem:
+            return indexPath
+        default:
+            return nil
+        }
+    }
+    
     open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cellId: CellId = collection.identifier(for: indexPath) else {
             return
@@ -577,6 +651,8 @@ extension LongiflorumPaywallViewController {
             break
         }
     }
+    
+    // MARK: ScrollView
     
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let originalOffset = view.safeAreaInsets.top + scrollView.contentOffset.y
