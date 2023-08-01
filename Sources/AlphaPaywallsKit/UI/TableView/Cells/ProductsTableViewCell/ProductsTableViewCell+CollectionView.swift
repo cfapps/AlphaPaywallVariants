@@ -167,17 +167,6 @@ extension ProductsTableViewCell {
             selectedContainerBackgroundView.layer.borderColor = containerUnselectedColor.cgColor
         }
         
-        override func layoutSubviews() {
-            super.layoutSubviews()
-            
-            let h = calculateDescriptionHeight("\n", width: contentView.frame.width + 28)
-            if descriptionLabelContainerView.frame.height != h {
-                descriptionLabelContainerView.snp.updateConstraints { make in
-                    make.height.equalTo(h)
-                }
-            }
-        }
-        
         private func setupUI() {
             contentView.addSubview(containerBackgroundView)
             contentView.addSubview(selectedContainerBackgroundView)
@@ -235,10 +224,10 @@ extension ProductsTableViewCell {
             
             descriptionLabelContainerView.snp.makeConstraints { make in
                 make.top.equalTo(titleLabel.snp.bottom).offset(2)
-                make.bottom.equalToSuperview().inset(16).priority(.medium)
+                make.bottom.equalToSuperview().inset(16)//.priority(.medium)
                 make.left.equalToSuperview().inset(14)
                 make.right.equalToSuperview().inset(14)
-                make.height.equalTo(0)
+                make.height.equalTo(calculateDescriptionHeight("\n", width: 50))
             }
             
             descriptionLabel.snp.makeConstraints { make in

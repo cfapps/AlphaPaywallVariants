@@ -269,8 +269,8 @@ extension ObjectComparisonTableViewCell: QuickTableViewCellProtocol {
             )
         ])
         
-        collectionView.reloadData()
-        
         insets = model.insets
+        collectionView.reloadData()
+        collectionView.performBatchUpdates { }
     }
 }

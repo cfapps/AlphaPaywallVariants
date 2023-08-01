@@ -595,13 +595,13 @@ extension LongiflorumPaywallViewController {
     
     // MARK: Cells
     
-    open func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let cellId: CellId = collection.identifier(for: indexPath) else {
-            return UITableView.automaticDimension
-        }
-        
-        return cellHeightCache[cellId] ?? UITableView.automaticDimension
-    }
+//    open func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        guard let cellId: CellId = collection.identifier(for: indexPath) else {
+//            return 44
+//        }
+//
+//        return cellHeightCache[cellId] ?? 44
+//    }
     
     open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cellId: CellId = collection.identifier(for: indexPath) else {

@@ -70,7 +70,7 @@ extension ExampleLongiflorumPaywallViewController: LongiflorumPaywallDataSource 
                     badge: nil
                 )
             ],
-            selectedItemId: "2"
+            selectedItemId: "1"
         )
     }
     

@@ -143,6 +143,6 @@ extension BenefitsTableViewCell: QuickTableViewCellProtocol {
         itemMaxWidth = model.items.map({ CollectionViewCell.calculateWidth(text: $0.title) }).max() ?? 0
         
         collectionView.reloadData()
-        collectionView.layoutIfNeeded()
+        collectionView.performBatchUpdates { }
     }
 }

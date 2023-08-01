@@ -77,6 +77,17 @@ class ProductsTableViewCell: UITableViewCell {
     
     private lazy var containerView = UIView()
     
+    var insets: UIEdgeInsets = .zero {
+        didSet {
+            containerView.snp.updateConstraints { make in
+                make.top.equalToSuperview().inset(insets.top)
+                make.bottom.equalToSuperview().inset(insets.bottom)
+                make.left.equalToSuperview().inset(insets.left)
+                make.right.equalToSuperview().inset(insets.right)
+            }
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         
@@ -209,6 +220,8 @@ extension ProductsTableViewCell: QuickTableViewCellProtocol {
         textColor = model.textColor
         checkmarkColor = model.checkmarkColor
         
+        insets = model.inset
+        
         collection.removeAll()
         
         collection.update(sections: [
@@ -228,21 +241,13 @@ extension ProductsTableViewCell: QuickTableViewCellProtocol {
         set(isEnabled: model.isEnabled)
         
         collectionView.reloadData()
+        collectionView.layoutIfNeeded()
         
         if let selectedItemId = model.selectedItemId, let index = model.items.firstIndex(where: { $0.id == selectedItemId }) {
             collectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: [])
             titleLabel.text = model.items[index].detailsText
         } else {
             titleLabel.text = nil
-        }
-        
-        collectionView.layoutIfNeeded()
-        
-        containerView.snp.updateConstraints { make in
-            make.top.equalToSuperview().inset(model.inset.top)
-            make.bottom.equalToSuperview().inset(model.inset.bottom)
-            make.left.equalToSuperview().inset(model.inset.left)
-            make.right.equalToSuperview().inset(model.inset.right)
         }
     }
 }

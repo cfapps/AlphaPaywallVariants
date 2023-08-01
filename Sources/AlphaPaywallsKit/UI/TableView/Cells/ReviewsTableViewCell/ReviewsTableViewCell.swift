@@ -85,9 +85,10 @@ final class ReviewsTableViewCell: UITableViewCell {
         contentView.addSubview(collectionView)
         
         collectionView.snp.makeConstraints { make in
-            make.height.equalTo(1).priority(.medium)
-            make.horizontalEdges.top.equalToSuperview()
+            make.top.equalToSuperview()
             make.bottom.equalToSuperview()
+//            make.height.equalTo(1)//.priority(.medium)
+            make.horizontalEdges.equalToSuperview()
         }
     }
 }
@@ -136,7 +137,6 @@ extension ReviewsTableViewCell: QuickTableViewCellProtocol {
         nameLabelColor = model.nameLabelColor
         subjectLabelColor = model.subjectLabelColor
         bodyLabelColor = model.bodyLabelColor
-        insets = model.insets
         
         collection.update(sections: [
             QuickCollectionViewSection(
@@ -146,6 +146,9 @@ extension ReviewsTableViewCell: QuickTableViewCellProtocol {
             )
         ])
         
+        insets = model.insets
+        
         collectionView.reloadData()
+        collectionView.performBatchUpdates { }
     }
 }

@@ -143,5 +143,6 @@ extension StepsTableViewCell: QuickTableViewCellProtocol {
         ])
         
         collectionView.reloadData()
+        collectionView.performBatchUpdates { }
     }
 }
