@@ -62,13 +62,13 @@ extension ExampleLongiflorumPaywallViewController: LongiflorumPaywallDataSource 
                         textColor: UIColor.white
                     )
                 ),
-                .init(
-                    id: "3",
-                    title: "Yearly",
-                    description: "First 7 days free.\n$59.99/year",
-                    details: "Get Premium with a Free 7-day Trial\nthen 59.99/year. No commitment. Cancel anytime.",
-                    badge: nil
-                )
+//                .init(
+//                    id: "3",
+//                    title: "Yearly",
+//                    description: "First 7 days free.\n$59.99/year",
+//                    details: "Get Premium with a Free 7-day Trial\nthen 59.99/year. No commitment. Cancel anytime.",
+//                    badge: nil
+//                )
             ],
             selectedItemId: "1"
         )
@@ -108,11 +108,12 @@ extension ExampleLongiflorumPaywallViewController: LongiflorumPaywallDataSource 
     }
     
     func getAwardSection() -> LongiflorumPaywallViewController.AwardItemViewModel? {
-        return .init(
-            title: "Trusted by 10,000 Businesses Worldwide. Boost Your Business Growth with Get Invoice",
-            subTitle: "Featured in 12 countries",
-            details: "Apps for\nSmall Business"
-        )
+//        return .init(
+//            title: "Trusted by 10,000 Businesses Worldwide. Boost Your Business Growth with Get Invoice",
+//            subTitle: "Featured in 12 countries",
+//            details: "Apps for\nSmall Business"
+//        )
+        return nil
     }
     
     func getFeatureSection() -> LongiflorumPaywallViewController.FeaturesItemViewModel? {

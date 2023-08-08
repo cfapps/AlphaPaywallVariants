@@ -353,6 +353,7 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         }
         
         tableView.performBatchUpdates { }
+        tableView.reloadData()
     }
     
     @objc private func didTapContinueButton() {
@@ -378,6 +379,7 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         cellModels.awardItemCellModel.contentColor = apperance.accentColor.withAlphaComponent(0.08)
         cellModels.awardItemCellModel.textColor = apperance.accentColor
         
+        cellModels.todoHeaderModel.textColor = apperance.primaryLabelColor
         cellModels.todoItemCellModel.titleLabelColor = apperance.primaryLabelColor
         cellModels.todoItemCellModel.subTitleLabelColor = apperance.secondaryLabelColor
         
