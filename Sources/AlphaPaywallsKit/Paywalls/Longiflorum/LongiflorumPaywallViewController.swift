@@ -428,6 +428,9 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
             } else if let index = collection.index(sectionWithType: SectionId.award) {
                 collection.add(section: cellModels.todoSectionModel, at: index + 1)
                 tableView.insertSections([index + 1], with: .fade)
+            } else if let index = collection.index(sectionWithType: SectionId.products) {
+                collection.add(section: cellModels.todoSectionModel, at: index + 1)
+                tableView.insertSections([index + 1], with: .fade)
             }
         } else {
             if let index = collection.index(sectionWithType: SectionId.todo) {
