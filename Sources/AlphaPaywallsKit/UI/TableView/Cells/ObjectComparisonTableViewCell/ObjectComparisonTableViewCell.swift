@@ -213,7 +213,7 @@ extension ObjectComparisonTableViewCell: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collection.numberOfItems(in: section)
+        return collection.numberOfItems(in: section) ?? 0
     }
 }
 
