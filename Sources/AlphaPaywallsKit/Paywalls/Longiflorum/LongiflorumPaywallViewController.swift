@@ -110,12 +110,8 @@ open class LongiflorumPaywallViewController: QuickExtendTableViewController {
         }
     }
     
-    public init() {
-        super.init(style: .grouped)
-    }
-    
-    required public init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    convenience init() {
+        self.init(style: .grouped)
     }
     
     open override func viewDidLoad() {
