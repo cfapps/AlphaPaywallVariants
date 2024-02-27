@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "quicktablekit",
+      "identity" : "quicktoolkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/QuickTableKit/QuickTableKit",
+      "location" : "https://github.com/QuickToolKit/QuickToolKit.git",
       "state" : {
-        "revision" : "2dc272e03e0bdd6472d2491549e323c71f962220",
-        "version" : "0.1.2"
+        "branch" : "feature/init",
+        "revision" : "27063b6da9d20a2234f8f6808edd334819cdf81d"
       }
     },
     {
@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SnapKit/SnapKit.git",
       "state" : {
-        "revision" : "f222cbdf325885926566172f6f5f06af95473158",
-        "version" : "5.6.0"
+        "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
+        "version" : "5.7.1"
       }
     }
   ],

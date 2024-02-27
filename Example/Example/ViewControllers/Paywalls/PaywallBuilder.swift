@@ -8,10 +8,11 @@ import UIKit
 final class PaywallBuilder {
     
     public func makeSimplyPaywall() -> UIViewController {
-        return ExampleSimplyPaywallViewController()
+//        return ExampleSimplyPaywallViewController()
+        return UIViewController()
     }
     
-    public func makeLongiflorumPaywall() -> UIViewController {
-        return ExampleLongiflorumPaywallViewController()
+    public func makeSheetPaywall() -> UIViewController {
+        return ExampleSheetPaywallViewController()
     }
 }

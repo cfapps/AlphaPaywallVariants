@@ -1,12 +1,12 @@
 {
   "pins" : [
     {
-      "identity" : "quicktablekit",
+      "identity" : "quicktoolkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/QuickTableKit/QuickTableKit.git",
+      "location" : "https://github.com/QuickToolKit/QuickToolKit.git",
       "state" : {
         "branch" : "feature/init",
-        "revision" : "4a9711f1451568ef8360ac85972c54a8c841021b"
+        "revision" : "27063b6da9d20a2234f8f6808edd334819cdf81d"
       }
     },
     {

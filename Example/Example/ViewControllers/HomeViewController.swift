@@ -8,7 +8,7 @@ import AlphaPaywallsKit
 enum Variant: String {
     
     case simply
-    case longiflorum
+    case sheet
 }
 
 extension Variant {
@@ -17,8 +17,8 @@ extension Variant {
         switch self {
         case .simply:
             return "Simply"
-        case .longiflorum:
-            return "Longiflorum"
+        case .sheet:
+            return "Sheet"
         }
     }
     
@@ -27,8 +27,8 @@ extension Variant {
         switch self {
         case .simply:
             return builder.makeSimplyPaywall()
-        case .longiflorum:
-            return builder.makeLongiflorumPaywall()
+        case .sheet:
+            return builder.makeSheetPaywall()
         }
     }
 }
@@ -36,7 +36,7 @@ extension Variant {
 class HomeViewController: UITableViewController {
     
     private lazy var variants: [Variant] = {
-        [.simply, .longiflorum]
+        [.simply, .sheet]
     }()
     
     override func viewDidLoad() {

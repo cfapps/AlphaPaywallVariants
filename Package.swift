@@ -10,21 +10,22 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "AlphaPaywallsKit",
-            targets: ["AlphaPaywallsKit"]
+            name: "AlphaPaywallSheet",
+            targets: ["AlphaPaywallSheet"]
         ),
     ],
     dependencies: [
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.6.0")),
-        .package(url: "https://github.com/QuickTableKit/QuickTableKit.git", branch: "feature/init"),
+        .package(url: "https://github.com/QuickToolKit/QuickToolKit.git", branch: "feature/init"),
     ],
     targets: [
         .target(
-            name: "AlphaPaywallsKit",
+            name: "AlphaPaywallSheet",
             dependencies: [
                 "SnapKit",
-                "QuickTableKit"
-            ]
+                "QuickToolKit"
+            ],
+            path: "Sources/Sheet"
         )
     ]
 )
