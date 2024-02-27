@@ -494,28 +494,28 @@ open class SheetPaywallViewController: UIViewController {
 
 extension SheetPaywallViewController: PaywallViewControllerProtocol {
     
-    func showIndication() {
+    public func showIndication() {
         topProductSectionView.isUserInteractionEnabled = false
         bottomProductSectionView.isUserInteractionEnabled = false
         
         connectButton.isEnabled = false
     }
     
-    func hideIndication() {
+    public func hideIndication() {
         topProductSectionView.isUserInteractionEnabled = true
         bottomProductSectionView.isUserInteractionEnabled = true
         
         connectButton.isEnabled = true
     }
     
-    func showConnectIndication() {
+    public func showConnectIndication() {
         topProductSectionView.isUserInteractionEnabled = false
         bottomProductSectionView.isUserInteractionEnabled = false
         
         connectButton.showIndication()
     }
     
-    func hideConnectIndication() {
+    public func hideConnectIndication() {
         topProductSectionView.isUserInteractionEnabled = true
         bottomProductSectionView.isUserInteractionEnabled = true
         
