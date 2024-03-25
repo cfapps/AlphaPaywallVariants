@@ -8,9 +8,15 @@ import QuickToolKit
 
 final class FeatureCollectionViewCell: UICollectionViewCell {
     
-    var primaryLabelColor: UIColor = UIColor.label {
+    var iconColor: UIColor = UIColor.secondarySystemFill {
         didSet {
-            titleLabel.textColor = primaryLabelColor
+            iconImageView.image = iconImage?.withTintColor(iconColor, renderingMode: .alwaysOriginal)
+        }
+    }
+    
+    var titleTextColor: UIColor = UIColor.label {
+        didSet {
+            titleLabel.textColor = titleTextColor
         }
     }
     
@@ -24,7 +30,7 @@ final class FeatureCollectionViewCell: UICollectionViewCell {
     
     var iconImage: UIImage? {
         didSet {
-            iconImageView.image = iconImage
+            iconImageView.image = iconImage?.withTintColor(iconColor, renderingMode: .alwaysOriginal)
         }
     }
     
@@ -45,7 +51,7 @@ final class FeatureCollectionViewCell: UICollectionViewCell {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .body, weight: .regular)
-        label.textColor = primaryLabelColor
+        label.textColor = titleTextColor
         return label
     }()
     

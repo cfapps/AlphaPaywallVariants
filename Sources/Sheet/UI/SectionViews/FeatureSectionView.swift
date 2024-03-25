@@ -52,7 +52,7 @@ final class FeatureSectionView: UIView {
         let collectionView = ContentSizedCollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
         collectionView.register(cellType: FeatureCollectionViewCell.self)
         collectionView.allowsSelection = false
-        collectionView.dataSource = dataSource
+        collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.isScrollEnabled = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -61,7 +61,7 @@ final class FeatureSectionView: UIView {
         return collectionView
     }()
     
-    var iconColor: UIColor = UIColor.blue
+    var iconColor: UIColor = UIColor.systemFill
     
     var textColor: UIColor = UIColor.label
     
@@ -97,6 +97,28 @@ final class FeatureSectionView: UIView {
         collectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension FeatureSectionView: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return dataSource.numberOfSections(in: collectionView)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataSource.collectionView(collectionView, numberOfItemsInSection: section)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = dataSource.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        if let cell = cell as? FeatureCollectionViewCell {
+            cell.iconColor = iconColor
+            cell.titleTextColor = textColor
+        }
+        
+        return cell
     }
 }
 

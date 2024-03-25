@@ -29,7 +29,7 @@ final class ReviewSectionView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .title2, weight: .bold)
-        label.textColor = UIColor.label
+        label.textColor = titleTextColor
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
@@ -59,7 +59,7 @@ final class ReviewSectionView: UIView {
     private lazy var collectionView: UICollectionView = {
         let collectionView = ContentSizedCollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
         collectionView.backgroundColor = UIColor.clear
-        collectionView.dataSource = dataSource
+        collectionView.dataSource = self
         collectionView.allowsSelection = false
         collectionView.isScrollEnabled = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -92,6 +92,20 @@ final class ReviewSectionView: UIView {
         }
     }
     
+    var titleTextColor: UIColor = UIColor.label {
+        didSet {
+            titleLabel.textColor = titleTextColor
+        }
+    }
+    
+    var itemBackgroundColor: UIColor = UIColor.tertiarySystemBackground
+    
+    var itemTitleTextColor: UIColor = UIColor.label
+    
+    var itemSubTitleTextColor: UIColor = UIColor.secondaryLabel
+    
+    var itemDetailsTextColor: UIColor = UIColor.tertiaryLabel
+    
     init() {
         super.init(frame: CGRect.zero)
         
@@ -116,5 +130,29 @@ final class ReviewSectionView: UIView {
             make.bottom.equalToSuperview()
             make.directionalHorizontalEdges.equalToSuperview()
         }
+    }
+}
+
+extension ReviewSectionView: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return dataSource.numberOfSections(in: collectionView)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataSource.collectionView(collectionView, numberOfItemsInSection: section)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = dataSource.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        if let cell = cell as? ReviewCollectionViewCell {
+            cell.subjectTextColor = itemTitleTextColor
+            cell.bodyTextColor = itemSubTitleTextColor
+            cell.nameTextColor = itemDetailsTextColor
+            cell.contentBackgroundColor = itemBackgroundColor
+        }
+        
+        return cell
     }
 }

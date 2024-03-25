@@ -29,7 +29,7 @@ final class StepsSectionView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .title2, weight: .bold)
-        label.textColor = UIColor.label
+        label.textColor = titleTextColor
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
@@ -59,7 +59,7 @@ final class StepsSectionView: UIView {
     private lazy var collectionView: UICollectionView = {
         let collectionView = ContentSizedCollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
         collectionView.backgroundColor = UIColor.clear
-        collectionView.dataSource = dataSource
+        collectionView.dataSource = self
         collectionView.allowsSelection = false
         collectionView.isScrollEnabled = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -92,6 +92,42 @@ final class StepsSectionView: UIView {
         }
     }
     
+    var titleTextColor: UIColor = UIColor.label {
+        didSet {
+            titleLabel.textColor = titleTextColor
+        }
+    }
+    
+    var itemIconColor: UIColor = UIColor.label {
+        didSet {
+            guard collectionView.numberOfSections > 0 else {
+                return
+            }
+            
+            collectionView.reloadSections(IndexSet(Array(0...collectionView.numberOfSections - 1)))
+        }
+    }
+    
+    var itemTitleTextColor: UIColor = UIColor.label {
+        didSet {
+            guard collectionView.numberOfSections > 0 else {
+                return
+            }
+            
+            collectionView.reloadSections(IndexSet(Array(0...collectionView.numberOfSections - 1)))
+        }
+    }
+    
+    var itemSubTitleTextColor: UIColor = UIColor.secondaryLabel {
+        didSet {
+            guard collectionView.numberOfSections > 0 else {
+                return
+            }
+            
+            collectionView.reloadSections(IndexSet(Array(0...collectionView.numberOfSections - 1)))
+        }
+    }
+    
     init() {
         super.init(frame: CGRect.zero)
         
@@ -116,5 +152,28 @@ final class StepsSectionView: UIView {
             make.bottom.equalToSuperview()
             make.directionalHorizontalEdges.equalToSuperview()
         }
+    }
+}
+
+extension StepsSectionView: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return dataSource.numberOfSections(in: collectionView)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataSource.collectionView(collectionView, numberOfItemsInSection: section)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = dataSource.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        if let cell = cell as? StepCollectionViewCell {
+            cell.iconColor = itemIconColor
+            cell.titleTextColor = itemTitleTextColor
+            cell.subTitleTextColor = itemSubTitleTextColor
+        }
+        
+        return cell
     }
 }

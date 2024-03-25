@@ -10,6 +10,8 @@ open class SheetPaywallViewController: UIViewController {
     
     weak open var delegate: SheetPaywallViewControllerDelegate?
     
+    private let appearance: SheetPaywallViewControllerAppearance
+    
     private let viewModel: PaywallDefaultViewModel
     
     private lazy var scrollView: UIScrollView = {
@@ -38,6 +40,7 @@ open class SheetPaywallViewController: UIViewController {
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
         label.font = UIFont.preferredFont(forTextStyle: .title1, weight: .bold)
+        label.textColor = appearance.labelColor
         return label
     }()
     
@@ -55,7 +58,7 @@ open class SheetPaywallViewController: UIViewController {
     
     private lazy var connectButton: SimpleTextButton = {
         let button = SimpleTextButton()
-        button.backgroundContentColor = accentColor
+        button.backgroundContentColor = appearance.accentColor
         button.textColor = UIColor.white
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
@@ -74,9 +77,9 @@ open class SheetPaywallViewController: UIViewController {
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.lineBreakMode = .byCharWrapping
-        button.setTitleColor(UIColor.secondaryLabel, for: .normal)
-        button.setTitleColor(UIColor.secondaryLabel.withAlphaComponent(0.5), for: .disabled)
-        button.setTitleColor(UIColor.secondaryLabel.withAlphaComponent(0.7), for: .highlighted)
+        button.setTitleColor(appearance.secondaryLabelColor, for: .normal)
+        button.setTitleColor(appearance.secondaryLabelColor.withAlphaComponent(0.5), for: .disabled)
+        button.setTitleColor(appearance.secondaryLabelColor.withAlphaComponent(0.7), for: .highlighted)
         button.contentEdgeInsets = UIEdgeInsets(top: 9, left: 8, bottom: 9, right: 8)
         button.setTitle(viewModel.privacyPolicyText, for: .normal)
         button.addAction { [unowned self] in
@@ -99,9 +102,9 @@ open class SheetPaywallViewController: UIViewController {
         button.titleLabel?.textAlignment = .center
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.lineBreakMode = .byCharWrapping
-        button.setTitleColor(UIColor.secondaryLabel, for: .normal)
-        button.setTitleColor(UIColor.secondaryLabel.withAlphaComponent(0.5), for: .disabled)
-        button.setTitleColor(UIColor.secondaryLabel.withAlphaComponent(0.7), for: .highlighted)
+        button.setTitleColor(appearance.secondaryLabelColor, for: .normal)
+        button.setTitleColor(appearance.secondaryLabelColor.withAlphaComponent(0.5), for: .disabled)
+        button.setTitleColor(appearance.secondaryLabelColor.withAlphaComponent(0.7), for: .highlighted)
         button.contentEdgeInsets = UIEdgeInsets(top: 9, left: 8, bottom: 9, right: 8)
         button.setTitle(viewModel.termsOfServiceText, for: .normal)
         button.addAction { [unowned self] in
@@ -150,40 +153,59 @@ open class SheetPaywallViewController: UIViewController {
     
     private lazy var featureSectionView: FeatureSectionView = {
         let view = FeatureSectionView()
+        view.iconColor = appearance.accentColor
+        view.textColor = appearance.labelColor
         return view
     }()
     
     private lazy var stepSectionView: StepsSectionView = {
         let view = StepsSectionView()
+        view.titleTextColor = appearance.labelColor
+        view.itemIconColor = appearance.accentColor
+        view.itemTitleTextColor = appearance.labelColor
+        view.itemSubTitleTextColor = appearance.secondaryLabelColor
         return view
     }()
     
     private lazy var compareSectionView: CompareSectionView = {
         let view = CompareSectionView()
+        view.titleTextColor = appearance.labelColor
+        view.subTitleTextColor = appearance.accentColor
+        view.detailsTextColor = appearance.labelColor
+        view.checkedColor = appearance.compareCheckedColor
+        view.uncheckedColor = appearance.compareUncheckedColor
+        view.contentBackgroundColor = appearance.compareBackgroundColor
         return view
     }()
     
     private lazy var reviewSectionView: ReviewSectionView = {
         let view = ReviewSectionView()
+        view.titleTextColor = appearance.labelColor
+        view.itemTitleTextColor = appearance.reviewTitleLabelColor
+        view.itemSubTitleTextColor = appearance.reviewSubTitleLabelColor
+        view.itemDetailsTextColor = appearance.reviewDetailsLabelColor
+        view.itemBackgroundColor = appearance.reviewBackgroundColor
         return view
     }()
     
     private lazy var questionSectionView: QuestionSectionView = {
         let view = QuestionSectionView()
+        view.titleTextColor = appearance.labelColor
+        view.questionTextColor = appearance.labelColor
+        view.answerTextColor = appearance.secondaryLabelColor
         return view
     }()
     
     private lazy var tipSectionView: TipSectionView = {
-        return TipSectionView()
+        let view = TipSectionView()
+        view.titleTextColor = appearance.labelColor
+        return view
     }()
     
     // MARK: Apperance
     
-    open var accentColor: UIColor {
-        UIColor.blue
-    }
-    
-    public init(viewModel: PaywallDefaultViewModel) {
+    public init(appearance: SheetPaywallViewControllerAppearance, viewModel: PaywallDefaultViewModel) {
+        self.appearance = appearance
         self.viewModel = viewModel
         
         super.init(nibName: nil, bundle: nil)
@@ -480,7 +502,7 @@ open class SheetPaywallViewController: UIViewController {
             if let index = startIndex {
                 mutableString.addAttribute(
                     .foregroundColor,
-                    value: accentColor,
+                    value: appearance.accentColor,
                     range: NSRange(location: index, length: mutableString.length - index)
                 )
                 startIndex = nil

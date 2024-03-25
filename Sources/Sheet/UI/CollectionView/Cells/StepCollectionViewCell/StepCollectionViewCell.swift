@@ -21,7 +21,7 @@ final class StepCollectionViewCell: UICollectionViewCell {
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
         label.font = UIFont.preferredFont(forTextStyle: .headline)
-        label.textColor = titleLabelColor
+        label.textColor = titleTextColor
         return label
     }()
     
@@ -31,19 +31,25 @@ final class StepCollectionViewCell: UICollectionViewCell {
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
         label.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        label.textColor = subTitleLabelColor
+        label.textColor = subTitleTextColor
         return label
     }()
     
-    var titleLabelColor: UIColor = UIColor.label {
+    var iconColor: UIColor = UIColor.secondarySystemFill {
         didSet {
-            titleLabel.textColor = titleLabelColor
+            iconImageView.image = iconImageView.image?.withTintColor(iconColor, renderingMode: .alwaysOriginal)
         }
     }
     
-    var subTitleLabelColor: UIColor = UIColor.secondaryLabel {
+    var titleTextColor: UIColor = UIColor.label {
         didSet {
-            subTitleLabel.textColor = subTitleLabelColor
+            titleLabel.textColor = titleTextColor
+        }
+    }
+    
+    var subTitleTextColor: UIColor = UIColor.label {
+        didSet {
+            subTitleLabel.textColor = subTitleTextColor
         }
     }
     
@@ -55,11 +61,6 @@ final class StepCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
     }
     
     private func setupUI() {
@@ -115,7 +116,7 @@ extension StepCollectionViewCell: QuickCollectionViewCellProtocol {
         let configuration = UIImage.SymbolConfiguration(font: .systemFont(ofSize: 26, weight: .semibold))
         var image = UIImage(systemName: name)
         image = image?.applyingSymbolConfiguration(configuration)
-        image = image?.withTintColor(UIColor.blue, renderingMode: .alwaysOriginal)
+        image = image?.withTintColor(iconColor, renderingMode: .alwaysOriginal)
         return image
     }
 }

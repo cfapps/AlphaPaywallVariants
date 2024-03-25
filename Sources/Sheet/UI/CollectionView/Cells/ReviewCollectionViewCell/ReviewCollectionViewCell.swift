@@ -9,7 +9,7 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
     
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.secondarySystemBackground
+        view.backgroundColor = contentBackgroundColor
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         return view
@@ -20,7 +20,7 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
         label.numberOfLines = 1
         label.textAlignment = .right
         label.font = UIFont.preferredFont(forTextStyle: .callout, weight: .regular)
-        label.textColor = UIColor.secondaryLabel.withAlphaComponent(0.3)
+        label.textColor = nameTextColor
         label.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
         return label
     }()
@@ -31,7 +31,7 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .left
         label.lineBreakMode = .byTruncatingMiddle
         label.font = UIFont.preferredFont(forTextStyle: .body, weight: .semibold)
-        label.textColor = UIColor.label
+        label.textColor = subjectTextColor
         return label
     }()
     
@@ -41,7 +41,7 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
         label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .regular)
-        label.textColor = UIColor.secondaryLabel.withAlphaComponent(0.6)
+        label.textColor = bodyTextColor
         return label
     }()
     
@@ -76,9 +76,28 @@ final class ReviewCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
+    var nameTextColor: UIColor = UIColor.label {
+        didSet {
+            nameLabel.textColor = nameTextColor
+        }
+    }
+    
+    var bodyTextColor: UIColor = UIColor.secondaryLabel {
+        didSet {
+            bodyLabel.textColor = bodyTextColor
+        }
+    }
+    
+    var subjectTextColor: UIColor = UIColor.tertiaryLabel {
+        didSet {
+            subjectLabel.textColor = subjectTextColor
+        }
+    }
+    
+    var contentBackgroundColor: UIColor = UIColor.secondarySystemBackground {
+        didSet {
+            containerView.backgroundColor = contentBackgroundColor
+        }
     }
     
     private func setupUI() {

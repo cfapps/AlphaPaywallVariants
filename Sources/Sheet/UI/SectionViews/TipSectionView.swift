@@ -17,8 +17,8 @@ final class TipSectionView: UIView {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.label
         label.font = UIFont.preferredFont(forTextStyle: .footnote, weight: .semibold)
+        label.textColor = titleTextColor
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
@@ -40,6 +40,12 @@ final class TipSectionView: UIView {
             } else {
                 titleLabel.attributedText = NSAttributedString(string: " ")
             }
+        }
+    }
+    
+    var titleTextColor: UIColor = UIColor.label {
+        didSet {
+            titleLabel.textColor = titleTextColor
         }
     }
     

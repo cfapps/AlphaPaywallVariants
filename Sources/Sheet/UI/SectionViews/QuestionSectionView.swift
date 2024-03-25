@@ -20,7 +20,7 @@ final class QuestionSectionView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .title2, weight: .bold)
-        label.textColor = UIColor.label
+        label.textColor = titleTextColor
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
@@ -30,11 +30,37 @@ final class QuestionSectionView: UIView {
     private lazy var tableView: UITableView = {
         let tableView = ContentSizedTableView()
         tableView.backgroundColor = UIColor.clear
-        tableView.dataSource = dataSource
+        tableView.dataSource = self
         tableView.delegate = self
         tableView.register(cellType: QuestionTableViewCell.self)
         return tableView
     }()
+    
+    var titleTextColor: UIColor = UIColor.label {
+        didSet {
+            titleLabel.textColor = titleTextColor
+        }
+    }
+    
+    var questionTextColor: UIColor = UIColor.label {
+        didSet {
+            guard tableView.numberOfSections > 0 else {
+                return
+            }
+            
+            tableView.reloadSections(IndexSet(Array(0...tableView.numberOfSections - 1)), with: .none)
+        }
+    }
+    
+    var answerTextColor: UIColor = UIColor.secondaryLabel {
+        didSet {
+            guard tableView.numberOfSections > 0 else {
+                return
+            }
+            
+            tableView.reloadSections(IndexSet(Array(0...tableView.numberOfSections - 1)), with: .none)
+        }
+    }
     
     var titleText: String? {
         didSet {
@@ -82,6 +108,36 @@ final class QuestionSectionView: UIView {
             make.bottom.equalToSuperview()
             make.directionalHorizontalEdges.equalToSuperview()
         }
+    }
+}
+
+extension QuestionSectionView: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return dataSource.numberOfSections(in: tableView)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return dataSource.tableView(tableView, numberOfRowsInSection: section)
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = dataSource.tableView(tableView, cellForRowAt: indexPath)
+        
+        if let cell = cell as? QuestionTableViewCell {
+            cell.titleTextColor = questionTextColor
+            cell.descriptionTextColor = answerTextColor
+        }
+        
+        return cell
+    }
+    
+    func dequeue(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UITableViewHeaderFooterView {
+        return dataSource.dequeue(tableView, viewForHeaderInSection: section)
+    }
+    
+    func dequeue(_ tableView: UITableView, viewForFooterInSection section: Int) -> UITableViewHeaderFooterView {
+        return dataSource.dequeue(tableView, viewForFooterInSection: section)
     }
 }
 

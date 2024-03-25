@@ -28,7 +28,7 @@ final class QuestionTableViewCell: UITableViewCell {
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
         label.font = UIFont.preferredFont(forTextStyle: .body, weight: .semibold)
-        label.textColor = UIColor.label
+        label.textColor = titleTextColor
         return label
     }()
     
@@ -38,7 +38,7 @@ final class QuestionTableViewCell: UITableViewCell {
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .left
         label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .regular)
-        label.textColor = UIColor.secondaryLabel.withAlphaComponent(0.6)
+        label.textColor = descriptionTextColor
         return label
     }()
     
@@ -61,6 +61,18 @@ final class QuestionTableViewCell: UITableViewCell {
     private lazy var contentContainerView = UIView()
     
     private lazy var chevronContainerView = UIView()
+    
+    var titleTextColor: UIColor = UIColor.label {
+        didSet {
+            titleLabel.textColor = titleTextColor
+        }
+    }
+    
+    var descriptionTextColor: UIColor = UIColor.secondaryLabel {
+        didSet {
+            descriptionLabel.textColor = descriptionTextColor
+        }
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)

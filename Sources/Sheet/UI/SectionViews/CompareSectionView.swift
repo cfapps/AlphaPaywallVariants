@@ -15,7 +15,7 @@ final class CompareSectionView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .title2, weight: .bold)
-        label.textColor = UIColor.label
+        label.textColor = titleTextColor
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
@@ -26,7 +26,7 @@ final class CompareSectionView: UIView {
         let label = UILabel()
         label.textAlignment = .left
         label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold)
-        label.textColor = UIColor.blue
+        label.textColor = subTitleTextColor
         return label
     }()
     
@@ -34,7 +34,7 @@ final class CompareSectionView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold)
-        label.textColor = UIColor.blue
+        label.textColor = subTitleTextColor
         return label
     }()
     
@@ -42,7 +42,7 @@ final class CompareSectionView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.preferredFont(forTextStyle: .subheadline, weight: .semibold)
-        label.textColor = UIColor.blue
+        label.textColor = subTitleTextColor
         return label
     }()
     
@@ -50,7 +50,7 @@ final class CompareSectionView: UIView {
     
     private lazy var contentContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.blue.withAlphaComponent(0.08)
+        view.backgroundColor = contentBackgroundColor
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         return view
@@ -79,7 +79,7 @@ final class CompareSectionView: UIView {
     private lazy var collectionView: UICollectionView = {
         let collectionView = ContentSizedCollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.backgroundColor = UIColor.clear
-        collectionView.dataSource = dataSource
+        collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.allowsSelection = false
         collectionView.isScrollEnabled = false
@@ -129,6 +129,32 @@ final class CompareSectionView: UIView {
                     })
                 )
             ])
+        }
+    }
+    
+    var titleTextColor: UIColor = UIColor.label {
+        didSet {
+            titleLabel.textColor = titleTextColor
+        }
+    }
+    
+    var subTitleTextColor: UIColor = UIColor.label {
+        didSet {
+            headerNameLabel.textColor = subTitleTextColor
+            headerOptionOneLabel.textColor = subTitleTextColor
+            headerOptionTwoLabel.textColor = subTitleTextColor
+        }
+    }
+    
+    var detailsTextColor: UIColor = UIColor.label
+    
+    var checkedColor: UIColor = UIColor.blue
+    
+    var uncheckedColor: UIColor = UIColor.red
+    
+    var contentBackgroundColor: UIColor = UIColor.secondarySystemBackground {
+        didSet {
+            contentContainerView.backgroundColor = contentBackgroundColor
         }
     }
     
@@ -220,6 +246,29 @@ final class CompareSectionView: UIView {
         calculatedWidth = min(calculatedWidth + 24, maxWidth)
         optionColumnWidth = calculatedWidth > 0 ? calculatedWidth : nil
         return calculatedWidth
+    }
+}
+
+extension CompareSectionView: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return dataSource.numberOfSections(in: collectionView)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataSource.collectionView(collectionView, numberOfItemsInSection: section)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = dataSource.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        if let cell = cell as? CollectionViewCell {
+            cell.labelColor = detailsTextColor
+            cell.checkedColor = checkedColor
+            cell.uncheckedColor = uncheckedColor
+        }
+        
+        return cell
     }
 }
 
