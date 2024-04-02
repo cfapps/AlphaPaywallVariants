@@ -119,7 +119,7 @@ open class SheetPaywallViewController: UIViewController {
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
         label.font = UIFont.preferredFont(forTextStyle: .footnote, weight: .semibold)
-        label.textColor = UIColor.blue
+        label.textColor = appearance.accentColor
         return label
     }()
     
@@ -143,7 +143,7 @@ open class SheetPaywallViewController: UIViewController {
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
         label.font = UIFont.preferredFont(forTextStyle: .footnote, weight: .semibold)
-        label.textColor = UIColor.blue
+        label.textColor = appearance.accentColor
         return label
     }()
     
