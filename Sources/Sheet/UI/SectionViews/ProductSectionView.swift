@@ -35,7 +35,7 @@ final class ProductSectionView: UIView {
     private lazy var collectionView: UICollectionView = {
         let collectionView = ContentSizedCollectionView(frame: CGRect.zero, collectionViewLayout: collectionViewLayout)
         collectionView.backgroundColor = UIColor.clear
-        collectionView.dataSource = dataSource
+        collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.allowsSelection = true
         collectionView.layoutMargins = .zero
@@ -71,6 +71,12 @@ final class ProductSectionView: UIView {
     }
     
     var didSelectItem: ((Int) -> Void)?
+    
+    var textLabelColor: UIColor = UIColor.label
+    
+    var selectedColor: UIColor = UIColor.systemGroupedBackground
+    
+    var unselectedColor: UIColor = UIColor.systemGroupedBackground
     
     init() {
         super.init(frame: CGRect.zero)
@@ -110,6 +116,33 @@ extension ProductSectionView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         currentSelectedItemIndex = indexPath.item
         didSelectItem?(indexPath.item)
+    }
+}
+
+extension ProductSectionView: UICollectionViewDataSource {
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return dataSource.numberOfSections(in: collectionView)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataSource.collectionView(collectionView, numberOfItemsInSection: section)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = dataSource.collectionView(collectionView, cellForItemAt: indexPath)
+        
+        if let cell = cell as? CollectionViewCell {
+            cell.containerBackgroundColor = UIColor.clear
+            cell.containerUnselectedColor = unselectedColor
+            cell.containerSelectedColor = selectedColor
+            cell.textColor = textLabelColor
+            cell.checkmarkColor = textLabelColor
+//            cell.badgeColor = badgeBackgroundColor
+//            cell.badgeTextColor = badgeLabelColor
+        }
+        
+        return cell
     }
 }
 

@@ -12,6 +12,10 @@ public protocol SheetPaywallViewControllerAppearance {
     
     var secondaryLabelColor: UIColor { get }
     
+    var primaryActionBackgroundColor: UIColor { get }
+    
+    var primaryActionLabelColor: UIColor { get }
+    
     var compareCheckedColor: UIColor { get }
     
     var compareUncheckedColor: UIColor { get }

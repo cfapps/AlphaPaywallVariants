@@ -58,8 +58,8 @@ open class SheetPaywallViewController: UIViewController {
     
     private lazy var connectButton: SimpleTextButton = {
         let button = SimpleTextButton()
-        button.backgroundContentColor = appearance.accentColor
-        button.textColor = UIColor.white
+        button.backgroundContentColor = appearance.primaryActionBackgroundColor
+        button.textColor = appearance.primaryActionLabelColor
         button.layer.cornerRadius = 12
         button.layer.masksToBounds = true
         button.addAction { [weak self] in
@@ -125,6 +125,11 @@ open class SheetPaywallViewController: UIViewController {
     
     private lazy var topProductSectionView: ProductSectionView = {
         let view = ProductSectionView()
+        
+        view.textLabelColor = appearance.accentColor
+        view.unselectedColor = appearance.accentColor
+        view.selectedColor = appearance.accentColor
+        
         view.didSelectItem = { [weak self] (index) in
             self?.bottomProductSectionView.selectedItemIndex = index
             self?.didSelectProduct(index, false)
@@ -144,6 +149,11 @@ open class SheetPaywallViewController: UIViewController {
     
     private lazy var bottomProductSectionView: ProductSectionView = {
         let view = ProductSectionView()
+        
+        view.textLabelColor = appearance.accentColor
+        view.unselectedColor = appearance.accentColor
+        view.selectedColor = appearance.accentColor
+        
         view.didSelectItem = { [weak self] (index) in
             self?.topProductSectionView.selectedItemIndex = index
             self?.didSelectProduct(index, true)

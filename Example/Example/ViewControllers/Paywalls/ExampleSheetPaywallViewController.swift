@@ -144,6 +144,14 @@ extension ExampleSheetPaywallViewController {
             return .green
         }
         
+        var primaryActionLabelColor: UIColor {
+            return .systemPink
+        }
+        
+        var primaryActionBackgroundColor: UIColor {
+            return .brown
+        }
+        
         var compareCheckedColor: UIColor {
             return .red
         }
