@@ -12,14 +12,14 @@ final class FeatureCollectionViewCellModel: QuickCollectionViewCellModelProtocol
     
     var id: Int?
     
-    var entity: StringIdentifiable?
+    var entity: (any QuickIdentifiable)?
     
     var iconImageName: String
     
     var text: String
     
     init(id: Int? = nil,
-         entity: StringIdentifiable? = nil,
+         entity: (any QuickIdentifiable)? = nil,
          iconImageName: String,
          text: String) {
         self.id = id

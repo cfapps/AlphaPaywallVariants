@@ -12,7 +12,7 @@ final class QuestionTableViewCellModel: QuickTableViewCellModelProtocol {
     
     var id: Int?
     
-    var entity: StringIdentifiable?
+    var entity: (any QuickIdentifiable)?
     
     var titleText: String?
     
@@ -21,7 +21,7 @@ final class QuestionTableViewCellModel: QuickTableViewCellModelProtocol {
     var expand: Bool
     
     init(id: Int? = nil,
-         entity: StringIdentifiable? = nil,
+         entity: (any QuickIdentifiable)? = nil,
          titleText: String?,
          descriptionText: String?,
          expand: Bool = false) {

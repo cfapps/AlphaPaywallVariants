@@ -11,7 +11,7 @@ final class StepCollectionViewCellModel: QuickCollectionViewCellModelProtocol {
     
     var id: Int?
     
-    var entity: StringIdentifiable?
+    var entity: (any QuickIdentifiable)?
     
     var iconImageName: String
     
@@ -20,7 +20,7 @@ final class StepCollectionViewCellModel: QuickCollectionViewCellModelProtocol {
     var subTitleText: String
     
     init(id: Int? = nil,
-         entity: StringIdentifiable? = nil,
+         entity: (any QuickIdentifiable)? = nil,
          iconImageName: String,
          titleText: String,
          subTitleText: String) {

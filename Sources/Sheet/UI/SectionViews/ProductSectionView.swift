@@ -402,7 +402,7 @@ extension ProductSectionView {
         
         var id: Int?
         
-        var entity: StringIdentifiable?
+        var entity: (any QuickIdentifiable)?
         
         var titleText: String?
         
@@ -411,7 +411,7 @@ extension ProductSectionView {
         var badge: Badge?
         
         init(id: Int? = nil,
-             entity: StringIdentifiable? = nil,
+             entity: (any QuickIdentifiable)? = nil,
              titleText: String? = nil,
              descriptionText: String? = nil,
              badge: Badge? = nil) {

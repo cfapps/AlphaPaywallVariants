@@ -11,7 +11,7 @@ final class ReviewCollectionViewCellModel: QuickCollectionViewCellModelProtocol 
     
     var id: Int?
     
-    var entity: StringIdentifiable?
+    var entity: (any QuickIdentifiable)?
     
     var name: String
     
@@ -20,7 +20,7 @@ final class ReviewCollectionViewCellModel: QuickCollectionViewCellModelProtocol 
     var body: String
     
     init(id: Int? = nil,
-         entity: StringIdentifiable? = nil,
+         entity: (any QuickIdentifiable)? = nil,
          name: String,
          subject: String,
          body: String) {

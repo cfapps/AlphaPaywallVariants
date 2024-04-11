@@ -412,7 +412,7 @@ extension CompareSectionView {
         
         var id: Int?
         
-        var entity: StringIdentifiable?
+        var entity: (any QuickIdentifiable)?
         
         var titleText: String
         
@@ -421,7 +421,7 @@ extension CompareSectionView {
         var hasOptionTwo: Bool
         
         init(id: Int? = nil,
-             entity: StringIdentifiable? = nil,
+             entity: (any QuickIdentifiable)? = nil,
              titleText: String,
              hasOptionOne: Bool,
              hasOptionTwo: Bool) {
