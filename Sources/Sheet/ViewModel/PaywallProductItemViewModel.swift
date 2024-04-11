@@ -39,8 +39,8 @@ public extension PaywallProductItemViewModel {
     
     enum Badge {
         
-        case text(String)
-        case benefit(String)
+        case text(String, color: UIColor, textColor: UIColor)
+        case benefit(String, color: UIColor, textColor: UIColor)
     }
     
     struct Step {
@@ -60,28 +60,28 @@ extension PaywallProductItemViewModel.Badge {
     
     var text: String {
         switch self {
-        case .text(let text):
+        case .text(let text, _, _):
             return text
-        case .benefit(let text):
+        case .benefit(let text, _, _):
             return text
         }
     }
     
     var color: UIColor {
         switch self {
-        case .text:
-            return UIColor.red
-        case .benefit:
-            return UIColor.red
+        case .text(_, let color, _):
+            return color
+        case .benefit(_, let color, _):
+            return color
         }
     }
     
     var textColor: UIColor {
         switch self {
-        case .text:
-            return UIColor.white
-        case .benefit:
-            return UIColor.white
+        case .text(_, _, let color):
+            return color
+        case .benefit(_, _, let color):
+            return color
         }
     }
 }
