@@ -46,7 +46,7 @@ final class ExampleSheetPaywallViewController: SheetPaywallViewController {
                             description: "Description",
                             details: "Details",
                             actionText: "Action",
-                            badge: PaywallDefaultViewModel.ProductViewModel.Item.Badge.benefit("BE"),
+                            badge: PaywallDefaultViewModel.ProductViewModel.Item.Badge.benefit("BE", color: UIColor.red, textColor: UIColor.white),
                             stepsText: nil,
                             steps: [],
                             disclamer: "disclamer"
@@ -57,7 +57,7 @@ final class ExampleSheetPaywallViewController: SheetPaywallViewController {
                             description: "Description",
                             details: "Details",
                             actionText: "Action",
-                            badge: PaywallDefaultViewModel.ProductViewModel.Item.Badge.text("BE"),
+                            badge: PaywallDefaultViewModel.ProductViewModel.Item.Badge.text("BE", color: UIColor.red, textColor: UIColor.white),
                             stepsText: "STEPS 2",
                             steps: [
                                 PaywallDefaultViewModel.ProductViewModel.Item.Step(title: "Title", subTitle: "SubTitle"),
