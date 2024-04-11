@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/QuickToolKit/QuickToolKit.git",
       "state" : {
-        "branch" : "feature/init",
-        "revision" : "27063b6da9d20a2234f8f6808edd334819cdf81d"
+        "revision" : "c7ae410391f796c97d246ef3d35dc4fc82adb03e",
+        "version" : "0.2.0"
       }
     },
     {

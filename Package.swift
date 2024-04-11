@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.6.0")),
-        .package(url: "https://github.com/QuickToolKit/QuickToolKit.git", branch: "feature/init"),
+        .package(url: "https://github.com/QuickToolKit/QuickToolKit.git", .upToNextMajor(from: "0.2.0")),
     ],
     targets: [
         .target(
