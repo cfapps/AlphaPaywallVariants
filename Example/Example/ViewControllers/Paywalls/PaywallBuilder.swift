@@ -3,16 +3,5 @@
 //
 
 import Foundation
-import UIKit
 
-final class PaywallBuilder {
-    
-    public func makeSimplyPaywall() -> UIViewController {
-//        return ExampleSimplyPaywallViewController()
-        return UIViewController()
-    }
-    
-    public func makeSheetPaywall() -> UIViewController {
-        return ExampleSheetPaywallViewController()
-    }
-}
+final class PaywallBuilder { }

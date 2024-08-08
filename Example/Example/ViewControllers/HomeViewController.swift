@@ -3,32 +3,30 @@
 //
 
 import UIKit
-import AlphaPaywallsKit
+import PaywallsKit
 
 enum Variant: String {
     
-    case simply
-    case sheet
+    case snowball
+    case clover
+    case moses
 }
 
 extension Variant {
     
     var name: String {
-        switch self {
-        case .simply:
-            return "Simply"
-        case .sheet:
-            return "Sheet"
-        }
+        return rawValue
     }
     
-    var viewController: UIViewController {
+    var viewController: UIViewController & PaywallViewControllerProtocol {
         let builder = PaywallBuilder()
         switch self {
-        case .simply:
-            return builder.makeSimplyPaywall()
-        case .sheet:
-            return builder.makeSheetPaywall()
+        case .snowball:
+            return builder.makeShowballPaywall()
+        case .clover:
+            return builder.makeCloverPaywall()
+        case .moses:
+            return builder.makeMosesPaywall()
         }
     }
 }
@@ -36,7 +34,7 @@ extension Variant {
 class HomeViewController: UITableViewController {
     
     private lazy var variants: [Variant] = {
-        [.simply, .sheet]
+        [.snowball, .clover, .moses]
     }()
     
     override func viewDidLoad() {
@@ -53,6 +51,10 @@ class HomeViewController: UITableViewController {
     private func setupUI() {
         navigationItem.title = "Paywall Variants"
         navigationItem.backButtonTitle = "Back"
+        
+        DispatchQueue.main.async {
+            self.openPaywall(Variant.moses)
+        }
     }
 }
 
@@ -87,8 +89,8 @@ extension HomeViewController {
             return
         }
         
-        let vc = variant.viewController
-        let nvc = UINavigationController(rootViewController: vc)
+//        let nvc = UINavigationController(rootViewController: PresentPaywallViewController(with: variant))
+        let nvc = PresentPaywallViewController(with: variant)
         nvc.modalPresentationStyle = .fullScreen
         
         navigationController.present(nvc, animated: true)

@@ -10,22 +10,85 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "AlphaPaywallSheet",
-            targets: ["AlphaPaywallSheet"]
+            name: "PaywallsKit",
+            targets: [
+                "PaywallsKit"
+            ]
+        ),
+        .library(
+            name: "PaywallSnowballKit",
+            targets: [
+                "PaywallSnowballKit"
+            ]
+        ),
+        .library(
+            name: "PaywallCloverKit",
+            targets: [
+                "PaywallCloverKit"
+            ]
+        ),
+        .library(
+            name: "PaywallMosesKit",
+            targets: [
+                "PaywallMosesKit"
+            ]
         ),
     ],
     dependencies: [
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.6.0")),
-        .package(url: "https://github.com/QuickToolKit/QuickToolKit.git", .upToNextMajor(from: "0.2.0")),
+        .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.5.0")
     ],
     targets: [
         .target(
-            name: "AlphaPaywallSheet",
+            name: "PaywallsKit",
+            path: "Sources/_Common"
+        ),
+        .target(
+            name: "SharedKit",
             dependencies: [
-                "SnapKit",
-                "QuickToolKit"
+                .product(name: "SnapKit", package: "SnapKit"),
+                .product(name: "Lottie", package: "lottie-spm"),
             ],
-            path: "Sources/Sheet"
+            path: "Sources/_Shared"
+        ),
+        .target(
+            name: "PaywallSnowballKit",
+            dependencies: [
+                .product(name: "SnapKit", package: "SnapKit"),
+                .product(name: "Lottie", package: "lottie-spm"),
+                "SharedKit",
+                "PaywallsKit"
+            ],
+            path: "Sources/Snowball",
+            resources: [
+                .process("Resources"),
+            ]
+        ),
+        .target(
+            name: "PaywallCloverKit",
+            dependencies: [
+                .product(name: "SnapKit", package: "SnapKit"),
+                .product(name: "Lottie", package: "lottie-spm"),
+                "SharedKit",
+                "PaywallsKit"
+            ],
+            path: "Sources/Clover",
+            resources: [
+                .process("Resources"),
+            ]
+        ),
+        .target(
+            name: "PaywallMosesKit",
+            dependencies: [
+                .product(name: "SnapKit", package: "SnapKit"),
+                .product(name: "Lottie", package: "lottie-spm"),
+                "SharedKit",
+                "PaywallsKit"
+            ],
+            path: "Sources/Moses",
+            resources: [
+                .process("Resources"),
+            ]
         )
     ]
 )
