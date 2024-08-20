@@ -8,7 +8,7 @@ import Lottie
 import PaywallsKit
 import SharedKit
 
-public class PaywallViewController: UIViewController {
+open class PaywallViewController: UIViewController {
     
     private let viewModel: PaywallViewModel
     
@@ -111,7 +111,7 @@ public class PaywallViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
