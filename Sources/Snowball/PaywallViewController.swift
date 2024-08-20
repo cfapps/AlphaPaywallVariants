@@ -8,7 +8,7 @@ import Lottie
 import SharedKit
 import PaywallsKit
 
-public final class PaywallViewController: UIViewController {
+public class PaywallViewController: UIViewController {
     
     private let viewModel: PaywallViewModel
     
