@@ -179,8 +179,6 @@ final class ProductsSectionView: UIView {
             make.top.equalTo(collectionView.snp.bottom).offset(24)
             make.bottom.equalToSuperview().offset(0)
         }
-        
-        detailsLabel.text = "No commitment. Cancel anytime."
     }
 }
 
@@ -226,6 +224,7 @@ extension ProductsSectionView {
         collectionView.reloadData()
         if let index = items.firstIndex(where: { $0.id == selectedItemId }) {
             collectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: [.left])
+            detailsLabel.text = items[index].descriptionText
         }
     }
 }
