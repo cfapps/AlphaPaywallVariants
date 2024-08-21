@@ -380,7 +380,7 @@ open class PaywallViewController: UIViewController {
         view.itemBodyTextColor = colorAppearance.label
         
         for item in model.items {
-            view.append(name: item.name, body: item.text, image: item.image)
+            view.append(name: item.name, body: item.body, image: item.image)
         }
         
         contentView.addSubview(view)
