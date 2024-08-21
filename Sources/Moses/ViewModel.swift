@@ -112,12 +112,15 @@ extension PaywallViewModel.ReviewItemViewModel {
         
         public let name: String
         
-        public let text: String
+        public let title: String
         
-        public init(image: UIImage?, name: String, text: String) {
+        public let body: String
+        
+        public init(image: UIImage?, name: String, title: String, body: String) {
             self.image = image
             self.name = name
-            self.text = text
+            self.title = title
+            self.body = body
         }
     }
 }

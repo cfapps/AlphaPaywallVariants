@@ -33,27 +33,32 @@ extension PaywallBuilder {
                     PaywallViewModel.ReviewItemViewModel.Item(
                         image: UIImage(named: "review.1"),
                         name: "Sarah0408C",
-                        text: "I've used many invoicing apps, but this one has been my favorite so far."
+                        title: "Amazing invoicing app",
+                        body: "I've used many invoicing apps, but this one has been my favorite so far."
                     ),
                     PaywallViewModel.ReviewItemViewModel.Item(
                         image: UIImage(named: "review.2"),
                         name: "Oliver1989",
-                        text: "As a freelancer managing multiple clients, the ability to create unlimited clients and documents is a game changer. "
+                        title: "A game changer",
+                        body: "As a freelancer managing multiple clients, the ability to create unlimited clients and documents is a game changer. "
                     ),
                     PaywallViewModel.ReviewItemViewModel.Item(
                         image: UIImage(named: "review.3"),
                         name: "AnaMorales0843",
-                        text: "The follow-up email system is particularly impressive—it's automated yet appears very personal to my clients."
+                        title: "Saves so much time",
+                        body: "The follow-up email system is particularly impressive—it's automated yet appears very personal to my clients."
                     ),
                     PaywallViewModel.ReviewItemViewModel.Item(
                         image: UIImage(named: "review.4"),
                         name: "AlexaJ_1990S",
-                        text: "The custom report builder is robust, providing all the data I need at my fingertips."
+                        title: "Best reports",
+                        body: "The custom report builder is robust, providing all the data I need at my fingertips."
                     ),
                     PaywallViewModel.ReviewItemViewModel.Item(
                         image: UIImage(named: "review.5"),
                         name: "TechGeek91",
-                        text: "As a small business owner, I appreciate how straightforward it was to set up and generate invoices. Thank you for simplifying the process for us."
+                        title: "Just perfect!!",
+                        body: "As a small business owner, I appreciate how straightforward it was to set up and generate invoices. Thank you for simplifying the process for us."
                     ),
                 ]
             ),
