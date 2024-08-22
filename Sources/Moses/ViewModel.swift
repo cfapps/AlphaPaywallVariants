@@ -10,7 +10,7 @@ public final class PaywallViewModel {
     
     public let subTitle: String
     
-    public let headerAnimation: Data?
+    public let headerImage: UIImage?
     
     public let termsOfServiceAction: String
     
@@ -40,7 +40,7 @@ public final class PaywallViewModel {
     
     public init(title: String,
                 subTitle: String,
-                headerAnimation: Data?,
+                headerImage: UIImage?,
                 termsOfServiceAction: String,
                 privacyPolicyAction: String,
                 restoreAction: String,
@@ -56,7 +56,7 @@ public final class PaywallViewModel {
                 product: ProductItemViewModel) {
         self.title = title
         self.subTitle = subTitle
-        self.headerAnimation = headerAnimation
+        self.headerImage = headerImage
         self.termsOfServiceAction = termsOfServiceAction
         self.privacyPolicyAction = privacyPolicyAction
         self.restoreAction = restoreAction
@@ -158,7 +158,7 @@ extension PaywallViewModel.ProductItemViewModel {
         
         public let description: String
         
-        public let badgeText: String?
+        public let option: Option?
         
         public let descriptionHeader: String?
         
@@ -172,7 +172,7 @@ extension PaywallViewModel.ProductItemViewModel {
                     priceDetails: String,
                     priceDescription: String,
                     description: String,
-                    badgeText: String?,
+                    option: Option?,
                     descriptionHeader: String?,
                     descriptionItems: [Description]?,
                     action: String) {
@@ -182,7 +182,7 @@ extension PaywallViewModel.ProductItemViewModel {
             self.priceDetails = priceDetails
             self.priceDescription = priceDescription
             self.description = description
-            self.badgeText = badgeText
+            self.option = option
             self.descriptionHeader = descriptionHeader
             self.descriptionItems = descriptionItems
             self.action = action
@@ -203,6 +203,21 @@ extension PaywallViewModel.ProductItemViewModel {
             self.icon = icon
             self.title = title
             self.subTitle = subTitle
+        }
+    }
+    
+    public struct Option {
+        
+        public let color: UIColor
+        
+        public let textColor: UIColor
+        
+        public let text: String
+        
+        public init(color: UIColor, textColor: UIColor, text: String) {
+            self.color = color
+            self.textColor = textColor
+            self.text = text
         }
     }
 }

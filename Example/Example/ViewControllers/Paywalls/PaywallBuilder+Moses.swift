@@ -19,7 +19,7 @@ extension PaywallBuilder {
         return PaywallViewModel(
             title: "Get Invoice *Pro*",
             subTitle: "Unlock the ultimate convenience in invoicing solutions",
-            headerAnimation: try? Data(contentsOf: Bundle.main.url(forResource: "animation", withExtension: "json")!),
+            headerImage: UIImage(named: "logo.documents"),
             termsOfServiceAction: "Terms of Service",
             privacyPolicyAction: "Privacy Policy",
             restoreAction: "Restore",
@@ -156,7 +156,11 @@ extension PaywallBuilder {
                         priceDetails: "$9.99",
                         priceDescription: "Billed Monthly",
                         description: "No commitment. Cancel anytime.",
-                        badgeText: "Popular",
+                        option: PaywallViewModel.ProductItemViewModel.Option(
+                            color: UIColor.red,
+                            textColor: UIColor.white,
+                            text: "Popular"
+                        ),
                         descriptionHeader: "How Your Free Trial Works",
                         descriptionItems: [
                             PaywallViewModel.ProductItemViewModel.Description(
@@ -184,7 +188,11 @@ extension PaywallBuilder {
                         priceDetails: "Only $0.96 / week",
                         priceDescription: "􀑊 Free 1 Week Trial",
                         description: "No commitment. Cancel anytime.",
-                        badgeText: "Save 58%",
+                        option: PaywallViewModel.ProductItemViewModel.Option(
+                            color: UIColor.green,
+                            textColor: UIColor.white,
+                            text: "Save 58%"
+                        ),
                         descriptionHeader: nil,
                         descriptionItems: nil,
                         action: "Continue"
@@ -196,7 +204,7 @@ extension PaywallBuilder {
                         priceDetails: "$9.99",
                         priceDescription: "Billed Monthly",
                         description: "No commitment.",
-                        badgeText: nil,
+                        option: nil,
                         descriptionHeader: "How Your Free Trial Works",
                         descriptionItems: [
                             PaywallViewModel.ProductItemViewModel.Description(

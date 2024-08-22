@@ -236,22 +236,34 @@ open class PaywallViewController: UIViewController {
         var topConstraint = self.contentTopConstraint
         var topOffset = 0
         
-        if let animation = viewModel.headerAnimation.flatMap({ try? LottieAnimation.from(data: $0) }) {
-            let animationView = LottieAnimationView()
-            animationView.contentMode = .scaleAspectFit
-            animationView.animation = animation
+        if let image = viewModel.headerImage {
+            let imageView: UIImageView = {
+                let imageView = UIImageView()
+                imageView.image = image
+                imageView.contentMode = .center
+                return imageView
+            }()
             
-            contentView.addSubview(animationView)
+            let imageContainerView = UIView()
             
-            animationView.snp.makeConstraints { make in
-                make.top.equalTo(topConstraint).offset(28)
-                make.setupSectionHorizontalLayout(traitCollection)
-                make.height.equalTo(animationView.snp.width).multipliedBy(animation.size.height / animation.size.width)
+            imageContainerView.addSubview(imageView)
+            
+            contentView.addSubview(imageContainerView)
+            
+            imageView.snp.makeConstraints { make in
+                make.top.greaterThanOrEqualToSuperview()
+                make.bottom.lessThanOrEqualToSuperview()
+                make.left.greaterThanOrEqualToSuperview()
+                make.right.lessThanOrEqualToSuperview()
             }
             
-            animationView.play(fromProgress: 0, toProgress: 1, loopMode: .loop)
+            imageContainerView.snp.makeConstraints { make in
+                make.top.equalTo(topConstraint).offset(28)
+                make.setupSectionHorizontalLayout(traitCollection)
+                make.height.equalTo(imageContainerView.snp.width).multipliedBy(image.size.height / image.size.width)
+            }
             
-            topConstraint = animationView.snp.bottom
+            topConstraint = imageContainerView.snp.bottom
             topOffset = -20
         }
         
@@ -300,9 +312,9 @@ open class PaywallViewController: UIViewController {
                     subTitleText: product.price,
                     detailsText: product.priceDetails,
                     subDetailsText: product.priceDescription,
-                    badgeColor: UIColor.yellow,
-                    badgeTextColor: UIColor.white,
-                    badgeText: product.badgeText,
+                    badgeColor: product.option?.color,
+                    badgeTextColor: product.option?.textColor,
+                    badgeText: product.option?.text,
                     descriptionText: product.description
                 )
             }),
