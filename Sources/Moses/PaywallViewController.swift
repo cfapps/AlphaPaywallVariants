@@ -329,6 +329,8 @@ open class PaywallViewController: UIViewController {
             make.horizontalEdges.equalToSuperview()
             make.top.equalTo(topConstraint).offset(24)
         }
+        
+        self.selectedProductId = viewModel.product.selectedItemId
     }
     
     private func configureAwardView() {
