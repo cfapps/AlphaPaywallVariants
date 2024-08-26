@@ -151,6 +151,13 @@ private final class CollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    private lazy var blurBackgroundView: UIVisualEffectView = {
+        let view = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffect.Style.light))
+        view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.backgroundColor = contentBackgroundColor
+        return view
+    }()
+    
     var textColor: UIColor = UIColor.label {
         didSet {
             titleLabel.textColor = textColor
@@ -159,7 +166,7 @@ private final class CollectionViewCell: UICollectionViewCell {
     
     var contentBackgroundColor: UIColor = UIColor.systemGroupedBackground {
         didSet {
-            contentView.backgroundColor = contentBackgroundColor
+            blurBackgroundView.backgroundColor = contentBackgroundColor
         }
     }
     
@@ -173,9 +180,10 @@ private final class CollectionViewCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        contentView.backgroundColor = contentBackgroundColor
-        contentView.layer.cornerRadius = 12
-        contentView.layer.masksToBounds = true
+        layer.cornerRadius = 12
+        layer.masksToBounds = true
+        
+        backgroundView = blurBackgroundView
         
         let containerIconImageView: UIView = {
             let view = UIView()

@@ -69,12 +69,11 @@ open class PaywallViewController: UIViewController {
     private lazy var productsSectionView: ProductsSectionView = {
         let view = ProductsSectionView()
         
-//        view.itemBackgroundColor = colorAppearance.tertiarySystemBackground
-//        view.itemBorderColor = colorAppearance.separator
-//        view.itemPrimaryTextColor = colorAppearance.label
-//        view.itemSecondaryTextColor = colorAppearance.secondaryLabel
-//        view.accentColor = colorAppearance.accent
-//        view.invertAccentColor = colorAppearance.accentLabel
+        view.accentColor = colorAppearance.accent
+        view.primaryLabelColor = colorAppearance.label
+        view.secondaryLabelColor = colorAppearance.secondaryLabel
+        view.itemBackgroundColor = colorAppearance.systemBackground
+        view.itemSeparatorColor = colorAppearance.separator
         
         view.selectItemAction = { [weak self] (id) in
             self?.didChangeProduct(id)
@@ -90,9 +89,9 @@ open class PaywallViewController: UIViewController {
     
     private lazy var connectButton: PrimaryButton = {
         let button = PrimaryButton()
+        button.backgroundContentColor = colorAppearance.accent
         button.textFont = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        button.textColor = colorAppearance.primaryButtonLabel
-        button.backgroundContentColor = colorAppearance.primaryButtonFill
+        button.textColor = colorAppearance.accentInvertLabel
         button.addTarget(self, action: #selector(didTapConnectButton), for: .touchUpInside)
         return button
     }()
@@ -266,7 +265,7 @@ open class PaywallViewController: UIViewController {
             }
             
             topConstraint = imageContainerView.snp.bottom
-            topOffset = -20
+            topOffset = -36
         }
         
         guard let model = viewModel.benefit, model.items.count > 0 else {
@@ -276,7 +275,7 @@ open class PaywallViewController: UIViewController {
         let view = BenefitSectionView()
         
         view.primaryLabelColor = colorAppearance.label
-        view.itemBackgroundColor = colorAppearance.secondarySystemBackground
+        view.itemBackgroundColor = colorAppearance.quaternarySystemBackground
         
         view.update(items: model.items.map({
             BenefitSectionView.ViewModel(
@@ -299,12 +298,6 @@ open class PaywallViewController: UIViewController {
         }
         
         let topConstraint = self.contentTopConstraint
-        
-        productsSectionView.accentColor = colorAppearance.accent
-        productsSectionView.primaryLabelColor = colorAppearance.label
-        productsSectionView.secondaryLabelColor = colorAppearance.secondaryLabel
-        productsSectionView.itemBackgroundColor = colorAppearance.systemBackground
-        productsSectionView.itemSeparatorColor = colorAppearance.separator
         
         productsSectionView.update(
             items: viewModel.product.items.map({ product in
@@ -342,7 +335,7 @@ open class PaywallViewController: UIViewController {
         
         let view = AwardSectionView()
         
-        view.contentBackgroundColor = colorAppearance.accent
+        view.contentBackgroundColor = colorAppearance.accent.withAlphaComponent(0.08)
         view.detailsTextColor = colorAppearance.accentLabel
         
         view.detailsText = model.title
@@ -391,12 +384,13 @@ open class PaywallViewController: UIViewController {
         
         let view = ReviewSectionView()
         
-        view.itemBackgroundColor = colorAppearance.secondarySystemBackground
+        view.itemBackgroundColor = colorAppearance.quaternarySystemBackground
         view.itemNameTextColor = colorAppearance.secondaryLabel
+        view.itemTitleTextColor = colorAppearance.label
         view.itemBodyTextColor = colorAppearance.label
         
         for item in model.items {
-            view.append(name: item.name, body: item.body, image: item.image)
+            view.append(name: item.name, title: item.title, body: item.body, image: item.image)
         }
         
         contentView.addSubview(view)
@@ -420,21 +414,21 @@ open class PaywallViewController: UIViewController {
         
         let view = FeatureSectionView()
         
-        view.contentBackgroundColor = colorAppearance.secondarySystemBackground
-        view.headerTitleTextColor = colorAppearance.featureHeaderLabel
-        view.headerBasicTextColor = colorAppearance.featureBasicHeaderLabel
-        view.headerBasicBackgroundColor = colorAppearance.featureBasicHeaderFill
-        view.headerPremiumTextColor = colorAppearance.featurePremiumHeaderLabel
-        view.headerPremiumBackgroundColor = colorAppearance.featurePremiumHeaderFill
+        view.contentBackgroundColor = colorAppearance.accent.withAlphaComponent(0.08)
+        view.headerTitleTextColor = colorAppearance.label
+        view.headerBasicTextColor = colorAppearance.label
+        view.headerBasicBackgroundColor = UIColor.clear
+        view.headerPremiumTextColor = colorAppearance.accentInvertLabel
+        view.headerPremiumBackgroundColor = colorAppearance.accent
         view.itemTextColor = colorAppearance.label
         view.availableOptionImage = UIImage(
             systemName: "checkmark.circle.fill",
             withConfiguration: UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 17, weight: .regular))
-        )?.withTintColor(UIColor(red: 0.2, green: 0.78, blue: 0.35, alpha: 1), renderingMode: .alwaysOriginal)
+        )?.withTintColor(colorAppearance.accent, renderingMode: .alwaysOriginal)
         view.unavailableOptionImage = UIImage(
             systemName: "lock.fill",
             withConfiguration: UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 17, weight: .regular))
-        )?.withTintColor(UIColor(red: 1, green: 0.23, blue: 0.19, alpha: 1), renderingMode: .alwaysOriginal)
+        )?.withTintColor(colorAppearance.tertiaryLabel, renderingMode: .alwaysOriginal)
         
         view.headerTitleText = model.title
         view.headerBasicOptionText = model.basic
@@ -469,7 +463,7 @@ open class PaywallViewController: UIViewController {
         
         let view = HelpSectionView()
         
-        view.itemBackgroundColor = colorAppearance.secondarySystemBackground
+        view.itemBackgroundColor = colorAppearance.quaternarySystemBackground
         view.itemTitleTextColor = colorAppearance.label
         view.itemDescriptionTextColor = colorAppearance.secondaryLabel
         view.chevronCollapsedColor = colorAppearance.secondaryLabel
@@ -505,12 +499,12 @@ open class PaywallViewController: UIViewController {
         
         let leftSeparatorContainerView = UIView()
         let leftSeparatorView = UIView()
-        leftSeparatorView.backgroundColor = colorAppearance.secondaryLabel
+        leftSeparatorView.backgroundColor = colorAppearance.separator
         leftSeparatorContainerView.addSubview(leftSeparatorView)
         
         let rightSeparatorContainerView = UIView()
         let rightSeparatorView = UIView()
-        rightSeparatorView.backgroundColor = colorAppearance.secondaryLabel
+        rightSeparatorView.backgroundColor = colorAppearance.separator
         rightSeparatorContainerView.addSubview(rightSeparatorView)
         
         stackView.addSubview(leftSeparatorContainerView)
@@ -549,7 +543,7 @@ open class PaywallViewController: UIViewController {
         }
         
         view.snp.makeConstraints { make in
-            make.top.equalTo(topConstraint).offset(48)
+            make.top.equalTo(topConstraint).offset(24)
             make.setupSectionHorizontalLayout(traitCollection)
         }
     }
@@ -664,7 +658,7 @@ open class PaywallViewController: UIViewController {
         let view = ProgressSectionView()
         
         view.accentColor = colorAppearance.accent
-        view.invertAccentColor = colorAppearance.accentLabel
+        view.invertAccentColor = colorAppearance.accentInvertLabel
         view.titleTextColor = colorAppearance.label
         view.subTitleTextColor = colorAppearance.secondaryLabel
         

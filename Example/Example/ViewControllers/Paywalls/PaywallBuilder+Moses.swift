@@ -234,6 +234,8 @@ extension PaywallBuilder {
 
 private struct PaywallColorAppearance: ColorAppearance {
     
+    // MARK: Backgrounds
+    
     var systemBackground: UIColor {
         return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
     }
@@ -242,9 +244,11 @@ private struct PaywallColorAppearance: ColorAppearance {
         return UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 0.9)
     }
     
-    var tertiarySystemBackground: UIColor {
-        return UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 0.9)
+    var quaternarySystemBackground: UIColor {
+        return UIColor(red: 0.45, green: 0.45, blue: 0.5, alpha: 0.08)
     }
+    
+    // MARK: Labels
     
     var label: UIColor {
         return UIColor(red: 0, green: 0, blue: 0, alpha: 1)
@@ -263,12 +267,14 @@ private struct PaywallColorAppearance: ColorAppearance {
     }
     
     var accentLabel: UIColor {
+        return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
+    }
+    
+    var accentInvertLabel: UIColor {
         return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
     }
     
-    var separator: UIColor {
-        return UIColor(red: 0.47, green: 0.47, blue: 0.5, alpha: 0.2)
-    }
+    // MARK: Other
     
     var accent: UIColor {
         return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
@@ -278,35 +284,7 @@ private struct PaywallColorAppearance: ColorAppearance {
         return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
     }
     
-    var titleLabel: UIColor {
-        return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-    }
-    
-    var primaryButtonFill: UIColor {
-        return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-    }
-    
-    var primaryButtonLabel: UIColor {
-        return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
-    }
-    
-    var featureHeaderLabel: UIColor {
-        return UIColor.white
-    }
-    
-    var featureBasicHeaderFill: UIColor {
-        return UIColor.clear
-    }
-    
-    var featureBasicHeaderLabel: UIColor {
-        return UIColor.white
-    }
-    
-    var featurePremiumHeaderFill: UIColor {
-        return UIColor.clear
-    }
-    
-    var featurePremiumHeaderLabel: UIColor {
-        return UIColor.white
+    var separator: UIColor {
+        return UIColor(red: 0.47, green: 0.47, blue: 0.5, alpha: 0.2)
     }
 }

@@ -17,6 +17,8 @@ public final class ReviewSectionView: UIView {
     
     public var itemNameTextColor: UIColor = UIColor.label
     
+    public var itemTitleTextColor: UIColor = UIColor.label
+    
     public var itemBodyTextColor: UIColor = UIColor.label
     
     public init() {
@@ -40,15 +42,17 @@ public final class ReviewSectionView: UIView {
 
 extension ReviewSectionView {
     
-    public func append(name: String, body: String, image: UIImage?) {
+    public func append(name: String, title: String, body: String, image: UIImage?) {
         stackView.addArrangedSubview({
             let view = ItemView()
             
             view.contentBackgroundColor = itemBackgroundColor
             view.nameTextColor = itemNameTextColor
+            view.titleTextColor = itemTitleTextColor
             view.bodyTextColor = itemBodyTextColor
             
             view.nameText = name
+            view.titleText = title
             view.bodyText = body
             view.iconImage = image
             
@@ -132,6 +136,16 @@ private final class ItemView: UIView {
         return label
     }()
     
+    private lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
+        label.textColor = titleTextColor
+        label.textAlignment = .left
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        return label
+    }()
+    
     private lazy var bodyLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
@@ -154,6 +168,12 @@ private final class ItemView: UIView {
         }
     }
     
+    var titleTextColor: UIColor = UIColor.label {
+        didSet {
+            titleLabel.textColor = bodyTextColor
+        }
+    }
+    
     var bodyTextColor: UIColor = UIColor.label {
         didSet {
             bodyLabel.textColor = bodyTextColor
@@ -169,6 +189,12 @@ private final class ItemView: UIView {
     var nameText: String? {
         didSet{
             nameLabel.text = nameText
+        }
+    }
+    
+    var titleText: String? {
+        didSet{
+            titleLabel.text = titleText
         }
     }
     
@@ -222,20 +248,26 @@ private final class ItemView: UIView {
             make.right.lessThanOrEqualToSuperview().offset(-12)
         }
         
+        contentContainerView.addSubview(nameLabel)
+        nameLabel.snp.makeConstraints { make in
+            make.right.equalToSuperview().inset(14)
+            make.centerY.equalTo(rateStackView)
+        }
+        
         let textContainerView = UIView()
         
-        textContainerView.addSubview(nameLabel)
+        textContainerView.addSubview(titleLabel)
         textContainerView.addSubview(bodyLabel)
         
         contentContainerView.addSubview(textContainerView)
         
-        nameLabel.snp.makeConstraints { make in
+        titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.directionalHorizontalEdges.equalToSuperview()
         }
         
         bodyLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(4)
+            make.top.equalTo(titleLabel.snp.bottom).offset(4)
             make.bottom.equalToSuperview()
             make.directionalHorizontalEdges.equalToSuperview()
         }
