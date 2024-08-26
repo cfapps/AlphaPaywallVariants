@@ -366,7 +366,7 @@ open class PaywallViewController: UIViewController {
             return
         }
         
-        if let view = makePregressSection(item) {
+        if let view = makeProgressSection(item) {
             progressSectionContainerView.addSubview(view)
             view.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
@@ -417,11 +417,11 @@ open class PaywallViewController: UIViewController {
         let view = FeatureSectionView()
         
         view.contentBackgroundColor = colorAppearance.secondarySystemBackground
-        view.headerTitleTextColor = colorAppearance.secondaryLabel
-        view.headerBasicTextColor = colorAppearance.featureBasicBadgeLabel
-        view.headerBasicBackgroundColor = colorAppearance.featureBasicBadgeFill
-        view.headerPremiumTextColor = colorAppearance.featurePremiumBadgeLabel
-        view.headerPremiumBackgroundColor = colorAppearance.featurePremiumBadgeFill
+        view.headerTitleTextColor = colorAppearance.featureHeaderLabel
+        view.headerBasicTextColor = colorAppearance.featureBasicHeaderLabel
+        view.headerBasicBackgroundColor = colorAppearance.featureBasicHeaderFill
+        view.headerPremiumTextColor = colorAppearance.featurePremiumHeaderLabel
+        view.headerPremiumBackgroundColor = colorAppearance.featurePremiumHeaderFill
         view.itemTextColor = colorAppearance.label
         view.availableOptionImage = UIImage(
             systemName: "checkmark.circle.fill",
@@ -640,7 +640,7 @@ open class PaywallViewController: UIViewController {
         }
     }
     
-    private func makePregressSection(_ viewModel: PaywallViewModel.ProductItemViewModel.Item) -> UIView? {
+    private func makeProgressSection(_ viewModel: PaywallViewModel.ProductItemViewModel.Item) -> UIView? {
         guard let items = viewModel.descriptionItems, items.count > 0 else {
             return nil
         }
@@ -733,7 +733,7 @@ extension PaywallViewController {
             $0.removeFromSuperview()
         })
         
-        if let view = makePregressSection(item) {
+        if let view = makeProgressSection(item) {
             progressSectionContainerView.addSubview(view)
             view.snp.makeConstraints { make in
                 make.edges.equalToSuperview()

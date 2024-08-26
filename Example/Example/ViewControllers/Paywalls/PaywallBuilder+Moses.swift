@@ -290,19 +290,23 @@ private struct PaywallColorAppearance: ColorAppearance {
         return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
     }
     
-    var featureBasicBadgeFill: UIColor {
-        return UIColor.clear
-    }
-    
-    var featureBasicBadgeLabel: UIColor {
+    var featureHeaderLabel: UIColor {
         return UIColor.white
     }
     
-    var featurePremiumBadgeFill: UIColor {
+    var featureBasicHeaderFill: UIColor {
         return UIColor.clear
     }
     
-    var featurePremiumBadgeLabel: UIColor {
+    var featureBasicHeaderLabel: UIColor {
+        return UIColor.white
+    }
+    
+    var featurePremiumHeaderFill: UIColor {
+        return UIColor.clear
+    }
+    
+    var featurePremiumHeaderLabel: UIColor {
         return UIColor.white
     }
 }

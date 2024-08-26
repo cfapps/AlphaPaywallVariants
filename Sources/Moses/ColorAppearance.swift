@@ -36,11 +36,13 @@ public protocol ColorAppearance {
     
     var primaryButtonLabel: UIColor { get }
     
-    var featureBasicBadgeFill: UIColor { get }
+    var featureHeaderLabel: UIColor { get }
     
-    var featureBasicBadgeLabel: UIColor { get }
+    var featureBasicHeaderFill: UIColor { get }
     
-    var featurePremiumBadgeFill: UIColor { get }
+    var featureBasicHeaderLabel: UIColor { get }
     
-    var featurePremiumBadgeLabel: UIColor { get }
+    var featurePremiumHeaderFill: UIColor { get }
+    
+    var featurePremiumHeaderLabel: UIColor { get }
 }
