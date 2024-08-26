@@ -14,6 +14,8 @@ open class PaywallViewController: UIViewController {
     
     private let colorAppearance: ColorAppearance
     
+    private var selectedProductId: String?
+    
     private lazy var closeBarButton: UIButton = {
         let image = UIImage(systemName: "xmark.circle.fill")?
             .withConfiguration(UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 28, weight: .semibold)))
@@ -719,13 +721,17 @@ extension PaywallViewController {
     }
     
     @objc private func didTapConnectButton() {
-        delegate?.didTapConnect(productWithId: "")
+        guard let id = selectedProductId else { return }
+        
+        delegate?.didTapConnect(productWithId: id)
     }
     
     private func didChangeProduct(_ id: String) {
         guard let item = viewModel.product.items.first(where: { $0.id == id }) else {
             return
         }
+        
+        self.selectedProductId = item.id
         
         connectButton.text = item.action
         
@@ -739,10 +745,6 @@ extension PaywallViewController {
                 make.edges.equalToSuperview()
             }
         }
-    }
-    
-    private func didTapConnectProduct(_ id: String) {
-        delegate?.didTapConnect(productWithId: id)
     }
 }
 
