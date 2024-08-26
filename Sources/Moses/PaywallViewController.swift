@@ -89,8 +89,8 @@ open class PaywallViewController: UIViewController {
     private lazy var connectButton: PrimaryButton = {
         let button = PrimaryButton()
         button.textFont = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        button.textColor = colorAppearance.accentLabel
-        button.backgroundContentColor = colorAppearance.accent
+        button.textColor = colorAppearance.primaryButtonLabel
+        button.backgroundContentColor = colorAppearance.primaryButtonFill
         button.addTarget(self, action: #selector(didTapConnectButton), for: .touchUpInside)
         return button
     }()
@@ -418,9 +418,9 @@ open class PaywallViewController: UIViewController {
         
         view.contentBackgroundColor = colorAppearance.secondarySystemBackground
         view.headerTitleTextColor = colorAppearance.secondaryLabel
-        view.headerBasicTextColor = colorAppearance.secondaryLabel
+        view.headerBasicTextColor = colorAppearance.featureBasicBadgeLabel
         view.headerBasicBackgroundColor = colorAppearance.featureBasicBadgeFill
-        view.headerPremiumTextColor = colorAppearance.secondaryLabel
+        view.headerPremiumTextColor = colorAppearance.featurePremiumBadgeLabel
         view.headerPremiumBackgroundColor = colorAppearance.featurePremiumBadgeFill
         view.itemTextColor = colorAppearance.label
         view.availableOptionImage = UIImage(

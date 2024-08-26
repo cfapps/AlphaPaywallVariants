@@ -38,5 +38,9 @@ public protocol ColorAppearance {
     
     var featureBasicBadgeFill: UIColor { get }
     
+    var featureBasicBadgeLabel: UIColor { get }
+    
     var featurePremiumBadgeFill: UIColor { get }
+    
+    var featurePremiumBadgeLabel: UIColor { get }
 }

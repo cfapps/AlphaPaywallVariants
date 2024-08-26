@@ -294,7 +294,15 @@ private struct PaywallColorAppearance: ColorAppearance {
         return UIColor.clear
     }
     
+    var featureBasicBadgeLabel: UIColor {
+        return UIColor.white
+    }
+    
     var featurePremiumBadgeFill: UIColor {
         return UIColor.clear
+    }
+    
+    var featurePremiumBadgeLabel: UIColor {
+        return UIColor.white
     }
 }
