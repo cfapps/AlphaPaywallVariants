@@ -58,7 +58,7 @@ open class PaywallViewController: UIViewController {
         let button = TextButton()
         button.contentInsets = UIEdgeInsets(top: 11, left: 8, bottom: 11, right: 8)
         button.textFont = UIFont.systemFont(ofSize: 17, weight: .semibold)
-        button.textColor = colorAppearance.secondaryLabel
+        button.textColor = colorAppearance.label
         button.addTarget(self, action: #selector(didTapRestoreButton), for: .touchUpInside)
         return button
     }()
@@ -221,14 +221,14 @@ open class PaywallViewController: UIViewController {
         
         rateStackView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.left.equalToSuperview().inset(24)
-            make.right.lessThanOrEqualToSuperview().inset(24)
+            make.left.equalToSuperview()
+            make.right.lessThanOrEqualToSuperview()
         }
         
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(rateStackView.snp.bottom).offset(16)
             make.bottom.equalToSuperview()
-            make.directionalHorizontalEdges.equalToSuperview().inset(24)
+            make.directionalHorizontalEdges.equalToSuperview()
         }
         
         titleLabel.text = viewModel.title
@@ -349,7 +349,7 @@ open class PaywallViewController: UIViewController {
         view.contentBackgroundColor = colorAppearance.secondarySystemBackground
         view.headerTitleTextColor = colorAppearance.label
         view.headerBasicTextColor = colorAppearance.secondaryLabel
-        view.headerBasicBackgroundColor = colorAppearance.featureBasicBadgeFill
+        view.headerBasicBackgroundColor = UIColor.clear
         view.headerPremiumTextColor = colorAppearance.label
         view.headerPremiumBackgroundColor = colorAppearance.featurePremiumBadgeFill
         view.itemTextColor = colorAppearance.label
@@ -473,8 +473,8 @@ open class PaywallViewController: UIViewController {
     
     private func configureBottomActionsSection() {
         bottomActionsView.primaryButtonTextColor = colorAppearance.primaryButtonLabel
-        bottomActionsView.primaryButtonBackgroundColor = colorAppearance.primaryButtonFill
-        bottomActionsView.secondaryButtonTextColor = colorAppearance.secondaryButtonLabel
+        bottomActionsView.primaryButtonBackgroundColor = colorAppearance.primaryButtonBackground
+        bottomActionsView.secondaryButtonTextColor = colorAppearance.secondaryLabel
         
         bottomActionsView.primaryButtonText = viewModel.product.connectActionText
         bottomActionsView.secondaryButtonText = viewModel.productsAction

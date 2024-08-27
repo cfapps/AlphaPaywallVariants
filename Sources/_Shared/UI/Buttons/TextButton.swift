@@ -22,7 +22,7 @@ public final class TextButton: UIControl {
         return indicationView
     }()
     
-    public var contentInsets: UIEdgeInsets = UIEdgeInsets.zero {
+    public var contentInsets: UIEdgeInsets = UIEdgeInsets(top: 15, left: 16, bottom: 15, right: 16) {
         didSet {
             textLabel.snp.updateConstraints { make in
                 make.top.equalToSuperview().inset(contentInsets.top)

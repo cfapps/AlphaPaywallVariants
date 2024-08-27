@@ -53,7 +53,7 @@ class HomeViewController: UITableViewController {
         navigationItem.backButtonTitle = "Back"
         
         DispatchQueue.main.async {
-            self.openPaywall(Variant.moses)
+            self.openPaywall(Variant.clover)
         }
     }
 }

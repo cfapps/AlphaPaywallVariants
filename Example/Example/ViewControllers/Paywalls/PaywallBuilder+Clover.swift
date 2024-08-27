@@ -138,6 +138,8 @@ extension PaywallBuilder {
 
 private struct PaywallColorAppearance: ColorAppearance {
     
+    // MARK: Backgrounds
+    
     var systemBackground: UIColor {
         return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
     }
@@ -145,6 +147,11 @@ private struct PaywallColorAppearance: ColorAppearance {
     var secondarySystemBackground: UIColor {
         return UIColor(red: 1, green: 1, blue: 1, alpha: 0.15)
     }
+    var primaryButtonBackground: UIColor {
+        return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
+    }
+    
+    // MARK: Labels
     
     var label: UIColor {
         return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
@@ -157,10 +164,11 @@ private struct PaywallColorAppearance: ColorAppearance {
     var tertiaryLabel: UIColor {
         return UIColor(red: 0.92, green: 0.92, blue: 0.96, alpha: 0.3)
     }
-    
-    var quaternaryLabel: UIColor {
-        return UIColor.orange
+    var primaryButtonLabel: UIColor {
+        return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
     }
+    
+    // MARK: Other
     
     var separator: UIColor {
         return UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 1)
@@ -168,26 +176,6 @@ private struct PaywallColorAppearance: ColorAppearance {
     
     var navigationBarTint: UIColor {
         return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
-    }
-    
-    var primaryButtonFill: UIColor {
-        return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-    }
-    
-    var primaryButtonLabel: UIColor {
-        return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
-    }
-    
-    var secondaryButtonFill: UIColor {
-        return UIColor.clear
-    }
-    
-    var secondaryButtonLabel: UIColor {
-        return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-    }
-    
-    var featureBasicBadgeFill: UIColor {
-        return UIColor.clear
     }
     
     var featurePremiumBadgeFill: UIColor {
