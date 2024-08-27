@@ -474,7 +474,7 @@ open class PaywallViewController: UIViewController {
     private func configureBottomActionsSection() {
         bottomActionsView.primaryButtonTextColor = colorAppearance.primaryButtonLabel
         bottomActionsView.primaryButtonBackgroundColor = colorAppearance.primaryButtonBackground
-        bottomActionsView.secondaryButtonTextColor = colorAppearance.secondaryLabel
+        bottomActionsView.secondaryButtonTextColor = colorAppearance.label
         
         bottomActionsView.primaryButtonText = viewModel.product.connectActionText
         bottomActionsView.secondaryButtonText = viewModel.productsAction
