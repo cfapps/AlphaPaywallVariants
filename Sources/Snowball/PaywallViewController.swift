@@ -14,6 +14,8 @@ open class PaywallViewController: UIViewController {
     
     private let colorAppearance: ColorAppearance
     
+    private var selectedProductId: String?
+    
     private lazy var nameBadgeView: BadgeView = {
         let view = BadgeView(colorAppearance: colorAppearance)
         
@@ -80,8 +82,8 @@ open class PaywallViewController: UIViewController {
         view.accentColor = colorAppearance.accent
         view.invertAccentColor = colorAppearance.accentLabel
         
-        view.changeFocusedItemAction = { [weak self] (index) in
-            self?.didChangeFocusedProduct(index)
+        view.changeFocusedItemAction = { [weak self] (id) in
+            self?.didChangeFocusedProduct(id)
         }
         view.selectItemAction = { [weak self] (id) in
             self?.didTapConnectProduct(id)
@@ -203,23 +205,26 @@ open class PaywallViewController: UIViewController {
     private func configureProductsView() {
         let topConstraint = self.contentTopConstraint
         
-        for product in viewModel.products {
-            productsSectionView.append(item: ProductsSectionView.ViewModel(
-                id: product.id,
-                titleText: product.title,
-                descriptionText: product.subTitle,
-                badgeText: product.detailsTitle,
-                freeText: product.detailsSubTitle,
-                priceText: product.price,
-                priceDescriptionText: product.priceSubTitle,
-                priceBadgeText: product.priceDescription,
-                durationText: product.priceDuration,
-                actionText: product.connectActionText,
-                options: product.options.map({
-                    ($0.image, $0.text)
-                })
-            ))
-        }
+        productsSectionView.update(
+            items: viewModel.product.items.map({ product in
+                ProductsSectionView.ViewModel(
+                    id: product.id,
+                    titleText: product.title,
+                    descriptionText: product.subTitle,
+                    badgeText: product.detailsTitle,
+                    freeText: product.detailsSubTitle,
+                    priceText: product.price,
+                    priceDescriptionText: product.priceSubTitle,
+                    priceBadgeText: product.priceDescription,
+                    durationText: product.priceDuration,
+                    actionText: product.action,
+                    options: product.options.map({
+                        ($0.image, $0.text)
+                    })
+                )
+            }),
+            selectedItemId: viewModel.product.selectedItemId
+        )
         
         contentView.addSubview(productsSectionView)
         
@@ -258,11 +263,15 @@ open class PaywallViewController: UIViewController {
             make.setupSectionHorizontalLayout(traitCollection)
         }
         
-        let view = makePregressSection()
+        guard let item = viewModel.product.selectedItemId.flatMap({ id in viewModel.product.items.first(where: { $0.id == id }) }) else {
+            return
+        }
         
-        progressSectionContainerView.addSubview(view)
-        view.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        if let view = makeProgressSection(item) {
+            progressSectionContainerView.addSubview(view)
+            view.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
         }
     }
     
@@ -459,54 +468,60 @@ open class PaywallViewController: UIViewController {
         }
     }
     
-    private func makePregressSection() -> UIView {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 28, weight: .bold)
-        label.textColor = colorAppearance.label
-        label.textAlignment = .center
-        label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 0
-        label.text = "How Your Free Trial Works"
+    private func makeProgressSection(_ viewModel: PaywallViewModel.ProductItemViewModel.Item) -> UIView? {
+        guard let items = viewModel.descriptionItems, items.count > 0 else {
+            return nil
+        }
+        
+        var label: UILabel?
+        
+        if let text = viewModel.descriptionHeader {
+            label = UILabel()
+            label?.font = UIFont.systemFont(ofSize: 28, weight: .bold)
+            label?.textColor = colorAppearance.label
+            label?.textAlignment = .center
+            label?.lineBreakMode = .byWordWrapping
+            label?.numberOfLines = 0
+            label?.text = text
+        }
         
         let view = ProgressSectionView()
         
         view.accentColor = colorAppearance.accent
-        view.invertAccentColor = colorAppearance.accentLabel
+        view.invertAccentColor = .white //colorAppearance.accentInvertLabel
         view.titleTextColor = colorAppearance.label
         view.subTitleTextColor = colorAppearance.secondaryLabel
         
-        view.append(
-            title: "Today: Get Instant Access",
-            subTitle: "Get Invoice Pro free for 7 days with the annual subscription.",
-            image: UIImage(named: "infinity", in: Bundle.module, with: nil),
-            progress: 0.3
-        )
-        view.append(
-            title: "Day 5: Trial Reminder",
-            subTitle: "We'll send you a notification reminder that your trial is ending.",
-            image: UIImage(named: "infinity", in: Bundle.module, with: nil),
-            progress: 0
-        )
-        view.append(
-            title: "Day 7: Trial Ends",
-            subTitle: "Trial ends. You will be billed for one year unless you cancel before this date.",
-            image: UIImage(named: "infinity", in: Bundle.module, with: nil),
-            progress: nil
-        )
+        for (index, item) in items.enumerated() {
+            view.append(
+                title: item.title,
+                subTitle: item.subTitle,
+                image: item.icon,
+                progress: index == 0 ? 0.3 : (index == items.count - 1 ? nil : 0)
+            )
+        }
         
         let containerView = UIView()
         
-        containerView.addSubview(label)
+        if let label = label {
+            containerView.addSubview(label)
+            label.snp.makeConstraints { make in
+                make.top.equalToSuperview().offset(48)
+                make.directionalHorizontalEdges.equalToSuperview()
+            }
+        }
         containerView.addSubview(view)
         
-        label.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(48)
-            make.directionalHorizontalEdges.equalToSuperview()
-        }
-        
-        view.snp.makeConstraints { make in
-            make.top.equalTo(label.snp.bottom).offset(24)
-            make.horizontalEdges.bottom.equalToSuperview()
+        if let label = label {
+            view.snp.makeConstraints { make in
+                make.top.equalTo(label.snp.bottom).offset(24)
+                make.horizontalEdges.bottom.equalToSuperview()
+            }
+        } else {
+            view.snp.makeConstraints { make in
+                make.top.equalToSuperview()
+                make.horizontalEdges.bottom.equalToSuperview()
+            }
         }
         
         return containerView
@@ -539,17 +554,23 @@ extension PaywallViewController {
     }
     
     private func didTapConnectButton() {
-        delegate?.didTapConnect(productWithId: "")
+        guard let id = selectedProductId else { return }
+        
+        delegate?.didTapConnect(productWithId: id)
     }
     
-    private func didChangeFocusedProduct(_ index: Int) {
-        if let view = progressSectionContainerView.subviews.first {
-            view.removeFromSuperview()
-            view.snp.removeConstraints()
+    private func didChangeFocusedProduct(_ id: String) {
+        guard let item = viewModel.product.items.first(where: { $0.id == id }) else {
+            return
         }
         
-        if index == 0 {
-            let view = makePregressSection()
+        self.selectedProductId = item.id
+        
+        progressSectionContainerView.subviews.forEach({
+            $0.removeFromSuperview()
+        })
+        
+        if let view = makeProgressSection(item) {
             progressSectionContainerView.addSubview(view)
             view.snp.makeConstraints { make in
                 make.edges.equalToSuperview()

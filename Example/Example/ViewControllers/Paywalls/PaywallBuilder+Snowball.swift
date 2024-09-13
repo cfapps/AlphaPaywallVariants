@@ -116,56 +116,81 @@ extension PaywallBuilder {
                     )
                 ]
             ),
-            products: [
-                PaywallViewModel.ProductItemViewModel(
-                    id: "1",
-                    title: "Unlimited Annual",
-                    subTitle: "Unlimited access to all features for an entire year—perfect for high-volume users.",
-                    detailsTitle: "BEST VALUE",
-                    detailsSubTitle: "7-DAYS FREE TRIAL",
-                    price: "$3.99",
-                    priceDuration: "month",
-                    priceSubTitle: "$47.99 billed annually",
-                    priceDescription: "SAVE 75%",
-                    options: [
-                        PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "crown.17.medium"), text: "Our most popular plan"),
-                        PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "infinity.17.medium"), text: "Unlimited features"),
-                        PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "calendar.badge.clock.17.medium"), text: "Cancel anytime")
-                    ],
-                    connectActionText: "Continue"
-                ),
-                PaywallViewModel.ProductItemViewModel(
-                    id: "2",
-                    title: "Pay-As-You-Go",
-                    subTitle: "Flexibility to pay only for what you use, ideal for occasional invoicing.",
-                    detailsTitle: "MOST FLEXIBLE",
-                    detailsSubTitle: "3-DAYS FREE TRIAL",
-                    price: "$3.99",
-                    priceDuration: "week",
-                    priceSubTitle: "Billed weekly",
-                    priceDescription: "",
-                    options: [
-                        PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "calendar.badge.clock.17.medium"), text: "Cancel anytime")
-                    ],
-                    connectActionText: "Get Weekly"
-                ),
-                PaywallViewModel.ProductItemViewModel(
-                    id: "3",
-                    title: "Lifetime",
-                    subTitle: "One-time purchase for lifetime access, the ultimate convenience in invoicing solutions.",
-                    detailsTitle: "PAY ONCE",
-                    detailsSubTitle: "",
-                    price: "$139.99",
-                    priceDuration: "",
-                    priceSubTitle: "One-time purchase",
-                    priceDescription: "",
-                    options: [
-                        PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "star.17.medium"), text: "No subscription"),
-                        PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "infinity.17.medium"), text: "Unlimited features")
-                    ],
-                    connectActionText: "Get Lifetime"
-                )
-            ]
+            product: PaywallViewModel.ProductItemViewModel(
+                items: [
+                    PaywallViewModel.ProductItemViewModel.Item(
+                        id: "1",
+                        title: "Unlimited Annual",
+                        subTitle: "Unlimited access to all features for an entire year—perfect for high-volume users.",
+                        detailsTitle: "BEST VALUE",
+                        detailsSubTitle: "7-DAYS FREE TRIAL",
+                        price: "$3.99",
+                        priceDuration: "month",
+                        priceSubTitle: "$47.99 billed annually",
+                        priceDescription: "SAVE 75%",
+                        options: [
+                            PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "crown.17.medium"), text: "Our most popular plan"),
+                            PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "infinity.17.medium"), text: "Unlimited features"),
+                            PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "calendar.badge.clock.17.medium"), text: "Cancel anytime")
+                        ],
+                        descriptionHeader: "How Your Free Trial Works",
+                        descriptionItems: [
+                            PaywallViewModel.ProductItemViewModel.Description(
+                                icon: UIImage(named: "infinity.20.regular"),
+                                title: "Today: Get Instant Access",
+                                subTitle: "Get Invoice Pro free for 7 days with the annual subscription."
+                            ),
+                            PaywallViewModel.ProductItemViewModel.Description(
+                                icon: UIImage(named: "bell.fill.20.regular"),
+                                title: "Day 5: Trial Reminder",
+                                subTitle: "We'll send you a notification reminder that your trial is ending."
+                            ),
+                            PaywallViewModel.ProductItemViewModel.Description(
+                                icon: UIImage(named: "calendar.badge.checkmark.20.regular"),
+                                title: "Day 7: Trial Ends",
+                                subTitle: "Trial ends. You will be billed for one year unless you cancel before this date."
+                            ),
+                        ],
+                        action: "Continue"
+                    ),
+                    PaywallViewModel.ProductItemViewModel.Item(
+                        id: "2",
+                        title: "Pay-As-You-Go",
+                        subTitle: "Flexibility to pay only for what you use, ideal for occasional invoicing.",
+                        detailsTitle: "MOST FLEXIBLE",
+                        detailsSubTitle: "3-DAYS FREE TRIAL",
+                        price: "$3.99",
+                        priceDuration: "week",
+                        priceSubTitle: "Billed weekly",
+                        priceDescription: "",
+                        options: [
+                            PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "calendar.badge.clock.17.medium"), text: "Cancel anytime")
+                        ],
+                        descriptionHeader: "",
+                        descriptionItems: [],
+                        action: "Get Weekly"
+                    ),
+                    PaywallViewModel.ProductItemViewModel.Item(
+                        id: "3",
+                        title: "Lifetime",
+                        subTitle: "One-time purchase for lifetime access, the ultimate convenience in invoicing solutions.",
+                        detailsTitle: "PAY ONCE",
+                        detailsSubTitle: "",
+                        price: "$139.99",
+                        priceDuration: "",
+                        priceSubTitle: "One-time purchase",
+                        priceDescription: "",
+                        options: [
+                            PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "star.17.medium"), text: "No subscription"),
+                            PaywallViewModel.ProductItemViewModel.Option(image: UIImage(named: "infinity.17.medium"), text: "Unlimited features")
+                        ],
+                        descriptionHeader: "",
+                        descriptionItems: [],
+                        action: "Get Lifetime"
+                    )
+                ],
+                selectedItemId: "2"
+            )
         )
     }
 }

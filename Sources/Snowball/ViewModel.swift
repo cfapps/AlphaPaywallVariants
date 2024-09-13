@@ -22,7 +22,7 @@ public final class PaywallViewModel {
     
     public let help: HelpItemViewModel
     
-    public let products: [ProductItemViewModel]
+    public let product: ProductItemViewModel
     
     public init(termsOfServiceAction: String,
                 privacyPolicyAction: String,
@@ -32,7 +32,7 @@ public final class PaywallViewModel {
                 reviews: [ReviewItemViewModel],
                 feature: FeatureItemViewModel,
                 help: HelpItemViewModel,
-                products: [ProductItemViewModel]) {
+                product: ProductItemViewModel) {
         self.termsOfServiceAction = termsOfServiceAction
         self.privacyPolicyAction = privacyPolicyAction
         self.restoreAction = restoreAction
@@ -41,7 +41,7 @@ public final class PaywallViewModel {
         self.reviews = reviews
         self.feature = feature
         self.help = help
-        self.products = products
+        self.product = product
     }
 }
 
@@ -68,6 +68,21 @@ extension PaywallViewModel {
     
     public struct ProductItemViewModel {
         
+        public let items: [Item]
+        
+        public let selectedItemId: String?
+        
+        public init(items: [Item], selectedItemId: String?) {
+            self.items = items
+            self.selectedItemId = selectedItemId
+        }
+    }
+}
+
+extension PaywallViewModel.ProductItemViewModel {
+    
+    public struct Item {
+        
         public let id: String
         
         public let title: String
@@ -88,7 +103,11 @@ extension PaywallViewModel {
         
         public let options: [Option]
         
-        public let connectActionText: String
+        public let descriptionHeader: String?
+        
+        public let descriptionItems: [Description]?
+        
+        public let action: String
         
         public init(id: String,
                     title: String,
@@ -100,7 +119,9 @@ extension PaywallViewModel {
                     priceSubTitle: String,
                     priceDescription: String,
                     options: [Option],
-                    connectActionText: String) {
+                    descriptionHeader: String?,
+                    descriptionItems: [Description]?,
+                    action: String) {
             self.id = id
             self.title = title
             self.subTitle = subTitle
@@ -111,7 +132,9 @@ extension PaywallViewModel {
             self.priceSubTitle = priceSubTitle
             self.priceDescription = priceDescription
             self.options = options
-            self.connectActionText = connectActionText
+            self.descriptionHeader = descriptionHeader
+            self.descriptionItems = descriptionItems
+            self.action = action
         }
     }
 }
@@ -127,6 +150,23 @@ extension PaywallViewModel.ProductItemViewModel {
         public init(image: UIImage?, text: String) {
             self.image = image
             self.text = text
+        }
+    }
+    
+    public struct Description {
+        
+        public let icon: UIImage?
+        
+        public let title: String
+        
+        public let subTitle: String
+        
+        public init(icon: UIImage?,
+                    title: String,
+                    subTitle: String) {
+            self.icon = icon
+            self.title = title
+            self.subTitle = subTitle
         }
     }
 }

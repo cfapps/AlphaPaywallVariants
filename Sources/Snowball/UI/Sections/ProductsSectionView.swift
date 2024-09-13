@@ -36,6 +36,8 @@ final class ProductsSectionView: UIView {
     
     private var indicatedItemIndexPath: IndexPath?
     
+    private var focusingItemIndexPath: IndexPath?
+    
     private lazy var collectionView: UICollectionView = {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
         configuration.scrollDirection = .horizontal
@@ -89,7 +91,9 @@ final class ProductsSectionView: UIView {
                 guard let self = self else { return }
                 
                 let index = Int((point.x / self.collectionView.frame.width).rounded(.toNearestOrAwayFromZero))
-                self.changeFocusedItemAction?(index)
+                if self.items.count > index {
+                    self.changeFocusedItemAction?(self.items[index].id)
+                }
             }
             
             return section
@@ -118,7 +122,7 @@ final class ProductsSectionView: UIView {
     
     var invertAccentColor: UIColor = UIColor.tertiaryLabel
     
-    var changeFocusedItemAction: ((Int) -> Void)?
+    var changeFocusedItemAction: ((String) -> Void)?
     
     var selectItemAction: ((String) -> Void)?
     
@@ -138,6 +142,15 @@ final class ProductsSectionView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        if let indexPath = focusingItemIndexPath {
+            focusingItemIndexPath = nil
+            collectionView.scrollToItem(at: indexPath, at: [], animated: false)
+        }
     }
     
     private func setupUI() {
@@ -196,12 +209,12 @@ extension ProductsSectionView: UICollectionViewDataSource {
 
 extension ProductsSectionView {
     
-    func append(item: ProductsSectionView.ViewModel) {
-        items.append(item)
-    }
-    
-    func reloadItems() {
+    func update(items: [ProductsSectionView.ViewModel], selectedItemId: String?) {
+        self.items = items
         collectionView.reloadData()
+        if let index = items.firstIndex(where: { $0.id == selectedItemId }) {
+            focusingItemIndexPath = IndexPath(item: index, section: 0)
+        }
     }
     
     func showIndication() {
@@ -614,7 +627,12 @@ extension CollectionViewCell {
     func configure(with viewModel: ProductsSectionView.ViewModel) {
         entityId = viewModel.id
         
-        headerBadgeLabel.text = viewModel.badgeText
+        if viewModel.badgeText?.isEmpty == false {
+            headerBadgeLabel.text = viewModel.badgeText
+            headerBadgeLabel.isHidden = false
+        } else {
+            headerBadgeLabel.isHidden = true
+        }
         headerTitleLabel.text = viewModel.freeText
         
         descriptionTitleLabel.text = viewModel.titleText
