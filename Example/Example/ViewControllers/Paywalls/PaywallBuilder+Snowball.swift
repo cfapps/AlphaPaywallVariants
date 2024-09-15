@@ -17,9 +17,18 @@ extension PaywallBuilder {
     
     private func makeViewModel() -> PaywallViewModel {
         return PaywallViewModel(
+            name: "Invoices PROOOOO",
             termsOfServiceAction: "Terms of Service",
             privacyPolicyAction: "Privacy Policy",
             restoreAction: "Restore",
+            benefit: PaywallViewModel.Benefit(
+                items: [
+                    PaywallViewModel.Benefit.Item(title: "Create Unlimited Documents", image: UIImage(named: "snowball.slide.documents", in: Bundle.main, with: nil)),
+                    PaywallViewModel.Benefit.Item(title: "Create Unlimited Clients", image: UIImage(named: "snowball.slide.clients", in: Bundle.main, with: nil)),
+                    PaywallViewModel.Benefit.Item(title: "Set-Up Follow-Up Emails", image: UIImage(named: "snowball.slide.form", in: Bundle.main, with: nil)),
+                    PaywallViewModel.Benefit.Item(title: "Build Custom Reports", image: UIImage(named: "snowball.slide.reports", in: Bundle.main, with: nil))
+                ]
+            ),
             award: PaywallViewModel.AwardItemViewModel(
                 title: "It is the go-to mobile invoicing solution for small businesses and freelancers on the move.",
                 icon: UIImage(named: "forbes", in: Bundle.main, with: nil)?.withTintColor(UIColor.white, renderingMode: .alwaysOriginal)
@@ -197,6 +206,8 @@ extension PaywallBuilder {
 
 private struct PaywallColorAppearance: ColorAppearance {
     
+    // MARK: Backgrounds
+    
     var systemBackground: UIColor {
         return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
     }
@@ -208,6 +219,8 @@ private struct PaywallColorAppearance: ColorAppearance {
     var tertiarySystemBackground: UIColor {
         return UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 0.9)
     }
+    
+    // MARK: Backgrounds
     
     var label: UIColor {
         return UIColor(red: 0, green: 0, blue: 0, alpha: 1)
@@ -229,9 +242,11 @@ private struct PaywallColorAppearance: ColorAppearance {
         return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
     }
     
-    var separator: UIColor {
-        return UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 1)
+    var invertPrimaryLabel: UIColor {
+        return UIColor.white
     }
+    
+    // MARK: Additional
     
     var accent: UIColor {
         return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
@@ -241,23 +256,7 @@ private struct PaywallColorAppearance: ColorAppearance {
         return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
     }
     
-    var titleLabel: UIColor {
-        return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-    }
-    
-    var primaryButtonFill: UIColor {
-        return UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-    }
-    
-    var primaryButtonLabel: UIColor {
-        return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
-    }
-    
-    var featureBasicBadgeFill: UIColor {
-        return UIColor.clear
-    }
-    
-    var featurePremiumBadgeFill: UIColor {
-        return UIColor.clear
+    var separator: UIColor {
+        return UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 1)
     }
 }

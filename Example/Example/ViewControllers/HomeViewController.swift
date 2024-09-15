@@ -51,10 +51,6 @@ class HomeViewController: UITableViewController {
     private func setupUI() {
         navigationItem.title = "Paywall Variants"
         navigationItem.backButtonTitle = "Back"
-        
-        DispatchQueue.main.async {
-            self.openPaywall(Variant.clover)
-        }
     }
 }
 

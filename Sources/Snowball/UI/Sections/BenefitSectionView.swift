@@ -4,10 +4,11 @@
 
 import UIKit
 import Lottie
+import SharedKit
 
 final class BenefitSectionView: UIView {
     
-    private typealias Item = (String, Lottie.LottieAnimation)
+    private typealias Item = (String, UIImage?)
     
     private var items: [Item] = []
     
@@ -17,9 +18,11 @@ final class BenefitSectionView: UIView {
         label.textColor = titleTextColor
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
-        label.numberOfLines = 0
+        label.numberOfLines = 2
         return label
     }()
+    
+    private lazy var titleLabelContainerView = UIView()
     
     private lazy var collectionView: UICollectionView = {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
@@ -54,7 +57,6 @@ final class BenefitSectionView: UIView {
         
         collectionView.register(FeatureCollectionViewCell.self, forCellWithReuseIdentifier: "FeatureCollectionViewCell")
         
-        collectionView.delegate = self
         collectionView.dataSource = self
         
         return collectionView
@@ -97,22 +99,33 @@ final class BenefitSectionView: UIView {
     }
     
     private func setupUI() {
+        titleLabelContainerView.addSubview(titleLabel)
+        
+        addSubview(titleLabelContainerView)
         addSubview(collectionView)
         addSubview(pageControl)
-        addSubview(titleLabel)
+        
+        titleLabel.snp.makeConstraints { make in
+            make.directionalHorizontalEdges.equalToSuperview()
+            make.top.greaterThanOrEqualToSuperview()
+            make.bottom.equalToSuperview()
+        }
+        
+        titleLabelContainerView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+            make.top.equalTo(snp.top).offset(13)
+            make.height.equalTo(UILabel.calculateLabelHeight("_\n_", titleLabel.font))
+        }
         
         collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(titleLabelContainerView.snp.bottom).offset(24)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalToSuperview().offset(24)
         }
         
         pageControl.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalToSuperview().offset(-8)
-        }
-        
-        titleLabel.snp.makeConstraints { make in
-            make.directionalHorizontalEdges.equalToSuperview()
-            make.top.equalTo(snp.top).offset(13)
         }
     }
     
@@ -128,8 +141,8 @@ final class BenefitSectionView: UIView {
 
 extension BenefitSectionView {
     
-    func append(title: String, animation: Lottie.LottieAnimation) {
-        items.append((title, animation))
+    func append(title: String, image: UIImage?) {
+        items.append((title, image))
         pageControl.numberOfPages = items.count
     }
     
@@ -160,24 +173,56 @@ extension BenefitSectionView: UICollectionViewDataSource {
         }
         
         if items.count > indexPath.item {
-            cell.animation = items[indexPath.item].1
+            cell.image = items[indexPath.item].1
         }
         
         return cell
     }
 }
 
-extension BenefitSectionView: UICollectionViewDelegate {
+private final class FeatureCollectionViewCell: UICollectionViewCell {
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let cell = cell as? FeatureCollectionViewCell {
-            cell.startAnimation()
+    private lazy var contentImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
+    
+    private lazy var containerContentImageView = UIView()
+    
+    var image: UIImage? {
+        didSet {
+            contentImageView.image = image
         }
     }
     
-    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let cell = cell as? FeatureCollectionViewCell {
-            cell.stopAnimation()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        containerContentImageView.addSubview(contentImageView)
+        
+        contentView.addSubview(containerContentImageView)
+        
+        contentImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.greaterThanOrEqualToSuperview()
+            make.right.lessThanOrEqualToSuperview()
+            make.centerX.equalToSuperview()
+            make.height.equalToSuperview()
+        }
+        
+        containerContentImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalToSuperview()
         }
     }
 }

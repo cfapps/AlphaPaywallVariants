@@ -6,11 +6,15 @@ import UIKit
 
 public final class PaywallViewModel {
     
+    public let name: String
+    
     public let termsOfServiceAction: String
     
     public let privacyPolicyAction: String
     
     public let restoreAction: String
+    
+    public let benefit: Benefit
     
     public let award: AwardItemViewModel
     
@@ -24,24 +28,57 @@ public final class PaywallViewModel {
     
     public let product: ProductItemViewModel
     
-    public init(termsOfServiceAction: String,
+    public init(name: String,
+                termsOfServiceAction: String,
                 privacyPolicyAction: String,
                 restoreAction: String,
+                benefit: Benefit,
                 award: AwardItemViewModel,
                 reviewsHeader: String,
                 reviews: [ReviewItemViewModel],
                 feature: FeatureItemViewModel,
                 help: HelpItemViewModel,
                 product: ProductItemViewModel) {
+        self.name = name
         self.termsOfServiceAction = termsOfServiceAction
         self.privacyPolicyAction = privacyPolicyAction
         self.restoreAction = restoreAction
+        self.benefit = benefit
         self.award = award
         self.reviewsHeader = reviewsHeader
         self.reviews = reviews
         self.feature = feature
         self.help = help
         self.product = product
+    }
+}
+
+// MARK: Slide
+
+extension PaywallViewModel {
+    
+    public struct Benefit {
+        
+        public let items: [Item]
+        
+        public init(items: [Item]) {
+            self.items = items
+        }
+    }
+}
+
+extension PaywallViewModel.Benefit {
+    
+    public struct Item {
+        
+        public let title: String
+        
+        public let image: UIImage?
+        
+        public init(title: String, image: UIImage?) {
+            self.title = title
+            self.image = image
+        }
     }
 }
 

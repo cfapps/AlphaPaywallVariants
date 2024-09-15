@@ -6,11 +6,15 @@ import UIKit
 
 public protocol ColorAppearance {
     
+    // MARK: Backgrounds
+    
     var systemBackground: UIColor { get }
     
     var secondarySystemBackground: UIColor { get }
     
     var tertiarySystemBackground: UIColor { get }
+    
+    // MARK: Backgrounds
     
     var label: UIColor { get }
     
@@ -22,7 +26,7 @@ public protocol ColorAppearance {
     
     var accentLabel: UIColor { get }
     
-    var separator: UIColor { get }
+    var invertPrimaryLabel: UIColor { get }
     
     // MARK: Additional
     
@@ -30,13 +34,5 @@ public protocol ColorAppearance {
     
     var navigationBarTint: UIColor { get }
     
-    var titleLabel: UIColor { get }
-    
-    var primaryButtonFill: UIColor { get }
-    
-    var primaryButtonLabel: UIColor { get }
-    
-    var featureBasicBadgeFill: UIColor { get }
-    
-    var featurePremiumBadgeFill: UIColor { get }
+    var separator: UIColor { get }
 }

@@ -160,12 +160,10 @@ open class PaywallViewController: UIViewController {
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(540)
         }
-        
-        nameBadgeView.nameText = "Invoice"
-        nameBadgeView.badgeText = "PRO"
     }
     
     private func setupContentView() {
+        configureCommonView()
         configureBenefitView()
         configureProductsView()
         configureAwardView()
@@ -177,6 +175,22 @@ open class PaywallViewController: UIViewController {
         configureStubSection()
     }
     
+    private func configureCommonView() {
+        func splitText(_ input: String) -> (String, String) {
+            let components = input.split(separator: " ", maxSplits: 1, omittingEmptySubsequences: true)
+            
+            let text1 = components.first.map(String.init) ?? ""
+            let text2 = components.count > 1 ? String(components[1]) : ""
+            
+            return (text1, text2)
+        }
+        
+        let (nameText, badgeText) = splitText(viewModel.name)
+        
+        nameBadgeView.nameText = nameText
+        nameBadgeView.badgeText = badgeText
+    }
+    
     private func configureBenefitView() {
         let topConstraint = self.contentTopConstraint
         
@@ -185,11 +199,11 @@ open class PaywallViewController: UIViewController {
         view.pageIndicatorTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.12)
         view.currentPageIndicatorTintColor = colorAppearance.accent
         
-        view.titleTextColor = colorAppearance.titleLabel
+        view.titleTextColor = colorAppearance.invertPrimaryLabel
         
-        view.append(title: "11", animation: LottieAnimation.named("animation", bundle: Bundle.module)!)
-        view.append(title: "22", animation: LottieAnimation.named("animation", bundle: Bundle.module)!)
-        view.append(title: "33", animation: LottieAnimation.named("animation", bundle: Bundle.module)!)
+        for item in viewModel.benefit.items {
+            view.append(title: item.title, image: item.image)
+        }
         
         contentView.addSubview(view)
         
@@ -308,9 +322,9 @@ open class PaywallViewController: UIViewController {
         view.contentBackgroundColor = colorAppearance.secondarySystemBackground
         view.headerTitleTextColor = colorAppearance.secondaryLabel
         view.headerBasicTextColor = colorAppearance.secondaryLabel
-        view.headerBasicBackgroundColor = colorAppearance.featureBasicBadgeFill
+        view.headerBasicBackgroundColor = UIColor.clear
         view.headerPremiumTextColor = colorAppearance.secondaryLabel
-        view.headerPremiumBackgroundColor = colorAppearance.featurePremiumBadgeFill
+        view.headerPremiumBackgroundColor = UIColor.clear
         view.itemTextColor = colorAppearance.label
         view.availableOptionImage = UIImage(
             systemName: "checkmark.circle.fill",
