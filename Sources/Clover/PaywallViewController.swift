@@ -564,7 +564,7 @@ extension PaywallViewController {
     }
     
     private func didTapConnectButton() {
-        delegate?.didTapConnect(productWithId: "")
+        delegate?.didTapConnect(productWithId: viewModel.product.id)
     }
     
     private func didTapAllProductsButton() {
