@@ -72,7 +72,7 @@ final class AwardSectionView: UIView {
         
         imageContainerView.snp.makeConstraints { make in
             make.top.equalTo(detailsLabel.snp.bottom).offset(16)
-            make.bottom.equalToSuperview().inset(32)
+            make.bottom.equalToSuperview()
             make.directionalHorizontalEdges.equalToSuperview()
         }
     }

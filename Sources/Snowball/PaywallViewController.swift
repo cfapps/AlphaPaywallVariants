@@ -290,7 +290,7 @@ open class PaywallViewController: UIViewController {
     }
     
     private func configureReviewView() {
-        appendHeader(viewModel.reviewsHeader)
+        appendHeader(viewModel.review.header)
         
         let topConstraint = self.contentTopConstraint
         
@@ -300,7 +300,7 @@ open class PaywallViewController: UIViewController {
         view.itemNameTextColor = colorAppearance.secondaryLabel
         view.itemBodyTextColor = colorAppearance.label
         
-        for review in viewModel.reviews {
+        for review in viewModel.review.items {
             view.append(name: review.name, body: review.text, image: review.image)
         }
         

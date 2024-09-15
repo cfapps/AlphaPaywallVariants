@@ -300,8 +300,6 @@ open class PaywallViewController: UIViewController {
     }
     
     private func configureAwardView() {
-        appendHeader(viewModel.award.header)
-        
         let topConstraint = self.contentTopConstraint
         
         let view = AwardSectionView()
@@ -320,6 +318,8 @@ open class PaywallViewController: UIViewController {
     }
     
     private func configureReviewView() {
+        appendHeader(viewModel.review.header)
+        
         let topConstraint = self.contentTopConstraint
         
         let view = ReviewSectionView()
@@ -327,15 +327,15 @@ open class PaywallViewController: UIViewController {
         view.itemBackgroundColor = colorAppearance.secondarySystemBackground
         view.itemTextColor = colorAppearance.label
         
-        for text in viewModel.reviews {
-            view.append(body: text)
+        for item in viewModel.review.items {
+            view.append(body: item.text)
         }
         
         contentView.addSubview(view)
         
         view.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
-            make.top.equalTo(topConstraint).offset(48)
+            make.top.equalTo(topConstraint).offset(24)
         }
     }
     

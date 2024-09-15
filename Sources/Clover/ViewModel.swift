@@ -26,7 +26,7 @@ public final class PaywallViewModel {
     
     public let award: AwardItemViewModel
     
-    public let reviews: [String]
+    public let review: ReviewItemViewModel
     
     public let feature: FeatureItemViewModel
     
@@ -46,7 +46,7 @@ public final class PaywallViewModel {
                 detailsText: String,
                 subDetailsText: String,
                 award: AwardItemViewModel,
-                reviews: [String],
+                review: ReviewItemViewModel,
                 feature: FeatureItemViewModel,
                 help: HelpItemViewModel,
                 product: ProductItemViewModel,
@@ -61,7 +61,7 @@ public final class PaywallViewModel {
         self.detailsText = detailsText
         self.subDetailsText = subDetailsText
         self.award = award
-        self.reviews = reviews
+        self.review = review
         self.feature = feature
         self.help = help
         self.product = product
@@ -75,16 +75,42 @@ extension PaywallViewModel {
     
     public struct AwardItemViewModel {
         
-        public let header: String
-        
         public let title: String
         
         public let icon: UIImage?
         
-        public init(header: String, title: String, icon: UIImage?) {
-            self.header = header
+        public init(title: String, icon: UIImage?) {
             self.title = title
             self.icon = icon
+        }
+    }
+}
+
+// MARK: Review
+
+extension PaywallViewModel {
+    
+    public struct ReviewItemViewModel {
+        
+        public let header: String
+        
+        public let items: [Item]
+        
+        public init(header: String, items: [Item]) {
+            self.header = header
+            self.items = items
+        }
+    }
+}
+
+extension PaywallViewModel.ReviewItemViewModel {
+    
+    public struct Item {
+        
+        public let text: String
+        
+        public init(text: String) {
+            self.text = text
         }
     }
 }

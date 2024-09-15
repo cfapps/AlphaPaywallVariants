@@ -18,9 +18,7 @@ public final class PaywallViewModel {
     
     public let award: AwardItemViewModel
     
-    public let reviewsHeader: String
-    
-    public let reviews: [ReviewItemViewModel]
+    public let review: ReviewItemViewModel
     
     public let feature: FeatureItemViewModel
     
@@ -34,8 +32,7 @@ public final class PaywallViewModel {
                 restoreAction: String,
                 benefit: Benefit,
                 award: AwardItemViewModel,
-                reviewsHeader: String,
-                reviews: [ReviewItemViewModel],
+                review: ReviewItemViewModel,
                 feature: FeatureItemViewModel,
                 help: HelpItemViewModel,
                 product: ProductItemViewModel) {
@@ -45,8 +42,7 @@ public final class PaywallViewModel {
         self.restoreAction = restoreAction
         self.benefit = benefit
         self.award = award
-        self.reviewsHeader = reviewsHeader
-        self.reviews = reviews
+        self.review = review
         self.feature = feature
         self.help = help
         self.product = product
@@ -213,6 +209,21 @@ extension PaywallViewModel.ProductItemViewModel {
 extension PaywallViewModel {
     
     public struct ReviewItemViewModel {
+        
+        public let header: String
+        
+        public let items: [Item]
+        
+        public init(header: String, items: [Item]) {
+            self.header = header
+            self.items = items
+        }
+    }
+}
+
+extension PaywallViewModel.ReviewItemViewModel {
+    
+    public struct Item {
         
         public let image: UIImage?
         

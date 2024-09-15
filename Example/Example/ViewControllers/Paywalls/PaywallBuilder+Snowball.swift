@@ -33,34 +33,36 @@ extension PaywallBuilder {
                 title: "It is the go-to mobile invoicing solution for small businesses and freelancers on the move.",
                 icon: UIImage(named: "forbes", in: Bundle.main, with: nil)?.withTintColor(UIColor.white, renderingMode: .alwaysOriginal)
             ),
-            reviewsHeader: "Trusted by Thousands",
-            reviews: [
-                PaywallViewModel.ReviewItemViewModel(
-                    image: UIImage(named: "review.1"),
-                    name: "Sarah0408C",
-                    text: "I've used many invoicing apps, but this one has been my favorite so far."
-                ),
-                PaywallViewModel.ReviewItemViewModel(
-                    image: UIImage(named: "review.2"),
-                    name: "Oliver1989",
-                    text: "As a freelancer managing multiple clients, the ability to create unlimited clients and documents is a game changer. "
-                ),
-                PaywallViewModel.ReviewItemViewModel(
-                    image: UIImage(named: "review.3"),
-                    name: "AnaMorales0843",
-                    text: "The follow-up email system is particularly impressive—it's automated yet appears very personal to my clients."
-                ),
-                PaywallViewModel.ReviewItemViewModel(
-                    image: UIImage(named: "review.4"),
-                    name: "AlexaJ_1990S",
-                    text: "The custom report builder is robust, providing all the data I need at my fingertips."
-                ),
-                PaywallViewModel.ReviewItemViewModel(
-                    image: UIImage(named: "review.5"),
-                    name: "TechGeek91",
-                    text: "As a small business owner, I appreciate how straightforward it was to set up and generate invoices. Thank you for simplifying the process for us."
-                ),
-            ],
+            review: PaywallViewModel.ReviewItemViewModel(
+                header: "Trusted by Thousands",
+                items: [
+                    PaywallViewModel.ReviewItemViewModel.Item(
+                        image: UIImage(named: "review.1"),
+                        name: "Sarah0408C",
+                        text: "I've used many invoicing apps, but this one has been my favorite so far."
+                    ),
+                    PaywallViewModel.ReviewItemViewModel.Item(
+                        image: UIImage(named: "review.2"),
+                        name: "Oliver1989",
+                        text: "As a freelancer managing multiple clients, the ability to create unlimited clients and documents is a game changer. "
+                    ),
+                    PaywallViewModel.ReviewItemViewModel.Item(
+                        image: UIImage(named: "review.3"),
+                        name: "AnaMorales0843",
+                        text: "The follow-up email system is particularly impressive—it's automated yet appears very personal to my clients."
+                    ),
+                    PaywallViewModel.ReviewItemViewModel.Item(
+                        image: UIImage(named: "review.4"),
+                        name: "AlexaJ_1990S",
+                        text: "The custom report builder is robust, providing all the data I need at my fingertips."
+                    ),
+                    PaywallViewModel.ReviewItemViewModel.Item(
+                        image: UIImage(named: "review.5"),
+                        name: "TechGeek91",
+                        text: "As a small business owner, I appreciate how straightforward it was to set up and generate invoices. Thank you for simplifying the process for us."
+                    )
+                ]
+            ),
             feature: PaywallViewModel.FeatureItemViewModel(
                 header: "GREAT FEATURES YOU WILL LOVE",
                 title: "Feature",

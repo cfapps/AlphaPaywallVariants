@@ -36,16 +36,26 @@ extension PaywallBuilder {
             detailsText: "7 days free, then $49.99 / year",
             subDetailsText: "That’s only $0.96 / week, billed annually",
             award: PaywallViewModel.AwardItemViewModel(
-                header: "JOIN THOUSANDS OF OTHERS",
                 title: "It is the go-to mobile invoicing solution for small businesses and freelancers on the move.",
                 icon: UIImage(named: "forbes", in: Bundle.main, with: nil)?.withTintColor(UIColor.white, renderingMode: .alwaysOriginal)
             ),
-            reviews: [
-                "The follow-up email system is particularly impressive—it's automated yet appears very personal to my clients.",
-                "As a freelancer managing multiple clients, the ability to create unlimited clients and documents is a game changer.",
-                "The follow-up email system is particularly impressive—it's automated yet appears very personal to my clients.",
-                "As a small business owner, I appreciate how straightforward it was to set up and generate invoices. Thank you!!!"
-            ],
+            review: PaywallViewModel.ReviewItemViewModel(
+                header: "JOIN THOUSANDS OF OTHERS",
+                items: [
+                    PaywallViewModel.ReviewItemViewModel.Item(
+                        text: "The follow-up email system is particularly impressive—it's automated yet appears very personal to my clients."
+                    ),
+                    PaywallViewModel.ReviewItemViewModel.Item(
+                        text: "As a freelancer managing multiple clients, the ability to create unlimited clients and documents is a game changer."
+                    ),
+                    PaywallViewModel.ReviewItemViewModel.Item(
+                        text: "The follow-up email system is particularly impressive—it's automated yet appears very personal to my clients."
+                    ),
+                    PaywallViewModel.ReviewItemViewModel.Item(
+                        text: "As a small business owner, I appreciate how straightforward it was to set up and generate invoices. Thank you!!!"
+                    )
+                ]
+            ),
             feature: PaywallViewModel.FeatureItemViewModel(
                 header: "GREAT FEATURES YOU WILL LOVE",
                 title: "Feature",

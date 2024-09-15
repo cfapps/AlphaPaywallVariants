@@ -15,7 +15,7 @@ final class BenefitSectionView: UIView {
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 2
+        stackView.spacing = 16
         return stackView
     }()
     
