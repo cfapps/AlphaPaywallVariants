@@ -121,23 +121,46 @@ extension PaywallBuilder {
                 ]
             ),
             product: PaywallViewModel.ProductItemViewModel(
-                id: "0",
-                connectActionText: "CONTINUE!!"
-            ),
-            products: [
-                PaywallViewModel.ProductItemViewModel(
-                    id: "1",
-                    connectActionText: "Try FREE"
-                ),
-                PaywallViewModel.ProductItemViewModel(
-                    id: "2",
-                    connectActionText: "Try FREE"
-                ),
-                PaywallViewModel.ProductItemViewModel(
-                    id: "3",
-                    connectActionText: "Try FREE"
-                )
-            ]
+                items: [
+                    PaywallViewModel.ProductItemViewModel.Item(
+                        id: "1",
+                        titleText: "1",
+                        subTitleText: "MONTH",
+                        detailsText: "$9.99",
+                        subDetailsText: "Try 7 days for free, then $49.99 / year.\nYou can cancel anytime.",
+                        descriptionText: "$2.31 / week",
+                        subDescriptionText: "",
+                        badgeText: "",
+                        actionText: "Try Free & Subscribe",
+                        extendActionText: "Try Free & Subscribe"
+                    ),
+                    PaywallViewModel.ProductItemViewModel.Item(
+                        id: "2",
+                        titleText: "12",
+                        subTitleText: "MONTHS",
+                        detailsText: "$49.99",
+                        subDetailsText: "Try 7 days for free, then $49.99 / year.\nYou can cancel anytime.",
+                        descriptionText: "$0.96 / week",
+                        subDescriptionText: "7 days free",
+                        badgeText: "Save 50%",
+                        actionText: "Try Free & Subscribe",
+                        extendActionText: "Try Free & Subscribe"
+                    ),
+                    PaywallViewModel.ProductItemViewModel.Item(
+                        id: "3",
+                        titleText: "􀯠",
+                        subTitleText: "UNLIMITED",
+                        detailsText: "$99.99",
+                        subDetailsText: "",
+                        descriptionText: "One-off",
+                        subDescriptionText: "",
+                        badgeText: "",
+                        actionText: "Get Lifetime",
+                        extendActionText: "Get Lifetime"
+                    )
+                ],
+                defaultItemId: "2"
+            )
         )
     }
     

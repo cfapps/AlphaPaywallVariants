@@ -34,8 +34,6 @@ public final class PaywallViewModel {
     
     public let product: ProductItemViewModel
     
-    public let products: [ProductItemViewModel]
-    
     public init(title: String,
                 termsOfServiceAction: String,
                 privacyPolicyAction: String,
@@ -49,8 +47,7 @@ public final class PaywallViewModel {
                 review: ReviewItemViewModel,
                 feature: FeatureItemViewModel,
                 help: HelpItemViewModel,
-                product: ProductItemViewModel,
-                products: [ProductItemViewModel]) {
+                product: ProductItemViewModel) {
         self.title = title
         self.termsOfServiceAction = termsOfServiceAction
         self.privacyPolicyAction = privacyPolicyAction
@@ -65,7 +62,6 @@ public final class PaywallViewModel {
         self.feature = feature
         self.help = help
         self.product = product
-        self.products = products
     }
 }
 
@@ -121,13 +117,52 @@ extension PaywallViewModel {
     
     public struct ProductItemViewModel {
         
+        public let items: [Item]
+        
+        public let defaultItemId: String?
+        
+        public init(items: [Item], defaultItemId: String?) {
+            self.items = items
+            self.defaultItemId = defaultItemId
+        }
+    }
+}
+
+extension PaywallViewModel.ProductItemViewModel {
+    
+    public struct Item {
+        
         public let id: String
         
-        public let connectActionText: String
+        public let titleText: String
         
-        public init(id: String, connectActionText: String) {
+        public let subTitleText: String
+        
+        public let detailsText: String
+        
+        public let subDetailsText: String
+        
+        public let descriptionText: String
+        
+        public let subDescriptionText: String
+        
+        public let badgeText: String
+        
+        public let actionText: String
+        
+        public let extendActionText: String
+        
+        public init(id: String, titleText: String, subTitleText: String, detailsText: String, subDetailsText: String, descriptionText: String, subDescriptionText: String, badgeText: String, actionText: String, extendActionText: String) {
             self.id = id
-            self.connectActionText = connectActionText
+            self.titleText = titleText
+            self.subTitleText = subTitleText
+            self.detailsText = detailsText
+            self.subDetailsText = subDetailsText
+            self.descriptionText = descriptionText
+            self.subDescriptionText = subDescriptionText
+            self.badgeText = badgeText
+            self.actionText = actionText
+            self.extendActionText = extendActionText
         }
     }
 }

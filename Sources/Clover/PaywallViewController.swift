@@ -76,6 +76,8 @@ open class PaywallViewController: UIViewController {
         return view
     }()
     
+    private var subscriptionsView: SubscriptionsFlowView?
+    
     private var contentTopConstraint: ConstraintItem {
         guard let view = contentView.subviews.last else {
             return contentView.snp.top
@@ -476,7 +478,9 @@ open class PaywallViewController: UIViewController {
         bottomActionsView.primaryButtonBackgroundColor = colorAppearance.primaryButtonBackground
         bottomActionsView.secondaryButtonTextColor = colorAppearance.label
         
-        bottomActionsView.primaryButtonText = viewModel.product.connectActionText
+        if let item = viewModel.product.defaultItemId.flatMap({ id in viewModel.product.items.first(where: { $0.id == id }) }) {
+            bottomActionsView.primaryButtonText = item.actionText
+        }
         bottomActionsView.secondaryButtonText = viewModel.productsAction
         
         bottomActionsView.primaryAction = { [weak self] in
@@ -552,11 +556,11 @@ extension PaywallViewController {
     }
     
     @objc private func didTapPrivacyPolicyButton() {
-        
+        delegate?.didTapPrivacyPolicy()
     }
     
     @objc private func didTapTermsOfServiceButton() {
-        
+        delegate?.didTapTermsOfService()
     }
     
     @objc private func didTapRestoreButton() {
@@ -564,11 +568,67 @@ extension PaywallViewController {
     }
     
     private func didTapConnectButton() {
-        delegate?.didTapConnect(productWithId: viewModel.product.id)
+        guard let itemId = viewModel.product.defaultItemId else {
+            return
+        }
+        
+        delegate?.didTapConnect(productWithId: itemId)
     }
     
     private func didTapAllProductsButton() {
+        func createView() -> SubscriptionsFlowView {
+            let view = SubscriptionsFlowView()
+            
+            view.contentBackgroundColor = UIColor(red: 0.12, green: 0.12, blue: 0.12, alpha: 1)
+            view.tongueColor = UIColor(red: 0.92, green: 0.92, blue: 0.96, alpha: 0.3)
+            
+            view.itemBackgroundColor = UIColor(red: 0.16, green: 0.16, blue: 0.16, alpha: 1)
+            view.itemSelectedBackgroundColor = UIColor(red: 0.12, green: 0.12, blue: 0.12, alpha: 1)
+            view.textColor = UIColor.white
+            
+            view.detailsBackgroundColor = UIColor(red: 0.08, green: 0.08, blue: 0.08, alpha: 1)
+            
+            view.accentColor = colorAppearance.systemBackground
+            
+            view.didTapItem = { [weak self] id in
+                guard let self = self else  { return }
+                
+                self.delegate?.didTapConnect(productWithId: id)
+            }
+            
+            return view
+        }
         
+        let subscriptionsView = createView()
+        self.subscriptionsView?.removeFromSuperview()
+        self.subscriptionsView = subscriptionsView
+        
+        subscriptionsView.update(
+            items: viewModel.product.items.map({
+                return SubscriptionsFlowView.ViewModel(
+                    id: $0.id,
+                    titleText: $0.titleText,
+                    subTitleText: $0.subTitleText,
+                    detailsText: $0.detailsText,
+                    subDetailsText: $0.subDetailsText,
+                    descriptionText: $0.descriptionText,
+                    subDescriptionText: $0.subDescriptionText,
+                    badgeText: $0.badgeText,
+                    actionText: $0.extendActionText
+                )
+            }),
+            selectedItemId: viewModel.product.defaultItemId
+        )
+        
+        view.addSubview(subscriptionsView)
+        
+        subscriptionsView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+            make.top.equalTo(view.snp.top).offset(0)
+            make.bottom.equalToSuperview()
+        }
+        
+        view.layoutIfNeeded()
     }
 }
 
@@ -583,7 +643,12 @@ extension PaywallViewController: PaywallViewControllerProtocol {
         restoreButton.isEnabled = false
         bottomActionsView.isEnableSecondaryButton = false
         
-        bottomActionsView.showIndicationPrimaryButton()
+        if subscriptionsView?.superview == nil {
+            subscriptionsView?.isEnabled = false
+            bottomActionsView.showIndicationPrimaryButton()
+        } else {
+            subscriptionsView?.showIndicationPrimaryButton()
+        }
     }
     
     public func hideConnectIndication() {
@@ -591,7 +656,12 @@ extension PaywallViewController: PaywallViewControllerProtocol {
         restoreButton.isEnabled = true
         bottomActionsView.isEnableSecondaryButton = true
         
-        bottomActionsView.hideIndicationPrimaryButton()
+        if subscriptionsView?.superview == nil {
+            subscriptionsView?.isEnabled = true
+            bottomActionsView.hideIndicationPrimaryButton()
+        } else {
+            subscriptionsView?.hideIndicationPrimaryButton()
+        }
     }
     
     public func showRestoreIndication() {
