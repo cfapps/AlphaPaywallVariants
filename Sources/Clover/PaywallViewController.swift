@@ -244,6 +244,10 @@ open class PaywallViewController: UIViewController {
     }
     
     private func configureBadgeSection() {
+        guard viewModel.options.count > 0 else {
+            return
+        }
+        
         let topConstraint = self.contentTopConstraint
         
         let view = BadgeSectionView()
