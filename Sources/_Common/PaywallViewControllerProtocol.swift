@@ -16,22 +16,3 @@ public protocol PaywallViewControllerProtocol: AnyObject {
     
     func hideRestoreIndication()
 }
-
-extension PaywallViewControllerProtocol {
-    
-    public func showConnectIndication() {
-        
-    }
-    
-    public func hideConnectIndication() {
-        
-    }
-    
-    public func showRestoreIndication() {
-        
-    }
-    
-    public func hideRestoreIndication() {
-        
-    }
-}

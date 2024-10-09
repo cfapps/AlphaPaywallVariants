@@ -281,7 +281,7 @@ private struct PaywallColorAppearance: ColorAppearance {
     }
     
     var navigationBarTint: UIColor {
-        return UIColor(red: 0, green: 0.48, blue: 1, alpha: 1)
+        return UIColor(red: 0.96, green: 0.96, blue: 0.96, alpha: 0.9)
     }
     
     var separator: UIColor {
