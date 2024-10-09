@@ -295,7 +295,7 @@ final class SubscriptionsFlowView: UIView {
         if let index = items.firstIndex(where: { $0.id == selectedItemId }) {
             collectionView.selectItem(at: IndexPath(item: index, section: 0), animated: false, scrollPosition: [])
             let item = items[index]
-            detailsLabel.text = item.subDetailsText
+            detailsLabel.attributedText = makeDetailsText(item.subDetailsText)
             primaryButton.text = item.actionText
         }
     }
@@ -364,6 +364,29 @@ final class SubscriptionsFlowView: UIView {
             }
         )
     }
+    
+    private func makeDetailsText(_ text: String) -> NSAttributedString {
+        let mutableString = NSMutableAttributedString()
+        var startIndex: Int?
+        for c in text {
+            guard c == "*" else {
+                mutableString.append(NSAttributedString(string: "\(c)"))
+                continue
+            }
+            
+            if let index = startIndex {
+                mutableString.addAttribute(
+                    .font,
+                    value: detailsLabel.font.bold(),
+                    range: NSRange(location: index, length: mutableString.length - index)
+                )
+                startIndex = nil
+            } else {
+                startIndex = mutableString.length
+            }
+        }
+        return mutableString
+    }
 }
 
 extension SubscriptionsFlowView {
@@ -424,7 +447,7 @@ extension SubscriptionsFlowView: UICollectionViewDataSource, UICollectionViewDel
         
         let item = items[index]
         
-        detailsLabel.text = item.subDetailsText
+        detailsLabel.attributedText = makeDetailsText(item.subDetailsText)
         primaryButton.text = item.actionText
     }
 }
@@ -584,7 +607,6 @@ private final class CollectionViewCell: UICollectionViewCell {
         didSet {
             if titleText == "􀯠" {
                 if let image = infinityImage {
-                    let font = UIFont.systemFont(ofSize: 34, weight: .regular)
                     let imageAttachment = NSTextAttachment()
                     imageAttachment.image = image
                     imageAttachment.bounds = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height)
@@ -700,5 +722,21 @@ extension CollectionViewCell {
             + UILabel.calculateLabelHeight("_", Self.descriptionLabelFont)
             + UILabel.calculateLabelHeight("_", Self.subDescriptionLabelFont)
             + 52
+    }
+}
+
+
+extension UIFont {
+    
+    func withTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+        guard let fd = fontDescriptor.withSymbolicTraits(traits) else {
+            return self
+        }
+        
+        return UIFont(descriptor: fd, size: pointSize)
+    }
+    
+    func bold() -> UIFont {
+        return withTraits(.traitBold)
     }
 }

@@ -139,7 +139,7 @@ extension PaywallBuilder {
                         titleText: "12",
                         subTitleText: "MONTHS",
                         detailsText: "$49.99",
-                        subDetailsText: "Try 7 days for free, then $49.99 / year.\nYou can cancel anytime.",
+                        subDetailsText: "Try 7 days for free, then *$49.99 / year*.\nYou can cancel anytime.",
                         descriptionText: "$0.96 / week",
                         subDescriptionText: "7 days free",
                         badgeText: "Save 50%",
