@@ -16,6 +16,10 @@
 		073C297C2A0E84F5002EDCEE /* PaywallBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 073C297B2A0E84F5002EDCEE /* PaywallBuilder.swift */; };
 		073C297E2A0E8AAB002EDCEE /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 073C297D2A0E8AAB002EDCEE /* Color.xcassets */; };
 		07986A502C63985700DA53CC /* PresentPaywallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07986A4F2C63983E00DA53CC /* PresentPaywallViewController.swift */; };
+		07A608822CB9B57500A3D13A /* snowbal_reports.json in Resources */ = {isa = PBXBuildFile; fileRef = 07A608812CB9B57500A3D13A /* snowbal_reports.json */; };
+		07B1C15E2CB95370002BD4AD /* snowbal_documents.json in Resources */ = {isa = PBXBuildFile; fileRef = 07B1C15D2CB95370002BD4AD /* snowbal_documents.json */; };
+		07B1C1602CB9537A002BD4AD /* snowbal_clients.json in Resources */ = {isa = PBXBuildFile; fileRef = 07B1C15F2CB9537A002BD4AD /* snowbal_clients.json */; };
+		07B1C1622CB95383002BD4AD /* snowbal_emails.json in Resources */ = {isa = PBXBuildFile; fileRef = 07B1C1612CB95383002BD4AD /* snowbal_emails.json */; };
 		07B7F2902C6CE75500F96FBF /* PaywallCloverKit in Frameworks */ = {isa = PBXBuildFile; productRef = 07B7F28F2C6CE75500F96FBF /* PaywallCloverKit */; };
 		07B7F2922C6CE75500F96FBF /* PaywallMosesKit in Frameworks */ = {isa = PBXBuildFile; productRef = 07B7F2912C6CE75500F96FBF /* PaywallMosesKit */; };
 		07B7F2942C6CE75500F96FBF /* PaywallsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 07B7F2932C6CE75500F96FBF /* PaywallsKit */; };
@@ -39,6 +43,10 @@
 		073C297B2A0E84F5002EDCEE /* PaywallBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallBuilder.swift; sourceTree = "<group>"; };
 		073C297D2A0E8AAB002EDCEE /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		07986A4F2C63983E00DA53CC /* PresentPaywallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentPaywallViewController.swift; sourceTree = "<group>"; };
+		07A608812CB9B57500A3D13A /* snowbal_reports.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = snowbal_reports.json; sourceTree = "<group>"; };
+		07B1C15D2CB95370002BD4AD /* snowbal_documents.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = snowbal_documents.json; sourceTree = "<group>"; };
+		07B1C15F2CB9537A002BD4AD /* snowbal_clients.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = snowbal_clients.json; sourceTree = "<group>"; };
+		07B1C1612CB95383002BD4AD /* snowbal_emails.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = snowbal_emails.json; sourceTree = "<group>"; };
 		07B7F2972C6CE80100F96FBF /* PaywallBuilder+Snowball.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaywallBuilder+Snowball.swift"; sourceTree = "<group>"; };
 		07B7F2992C6CE81700F96FBF /* PaywallBuilder+Moses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaywallBuilder+Moses.swift"; sourceTree = "<group>"; };
 		07EAF8BF2C6C05CC006B1EE3 /* PaywallBuilder+Clover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaywallBuilder+Clover.swift"; sourceTree = "<group>"; };
@@ -111,6 +119,10 @@
 		0703053F29F712EC000DB9C8 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				07B1C15D2CB95370002BD4AD /* snowbal_documents.json */,
+				07B1C1612CB95383002BD4AD /* snowbal_emails.json */,
+				07A608812CB9B57500A3D13A /* snowbal_reports.json */,
+				07B1C15F2CB9537A002BD4AD /* snowbal_clients.json */,
 				0703053229F71212000DB9C8 /* Assets.xcassets */,
 				070E5AB22C73CD4A00029F84 /* animation.json */,
 				073C297D2A0E8AAB002EDCEE /* Color.xcassets */,
@@ -213,8 +225,12 @@
 			files = (
 				073C297E2A0E8AAB002EDCEE /* Color.xcassets in Resources */,
 				070E5AB32C73CD4A00029F84 /* animation.json in Resources */,
+				07B1C1602CB9537A002BD4AD /* snowbal_clients.json in Resources */,
+				07B1C1622CB95383002BD4AD /* snowbal_emails.json in Resources */,
 				07EAF8C32C6C2798006B1EE3 /* Images.xcassets in Resources */,
+				07B1C15E2CB95370002BD4AD /* snowbal_documents.json in Resources */,
 				0703053629F71212000DB9C8 /* LaunchScreen.storyboard in Resources */,
+				07A608822CB9B57500A3D13A /* snowbal_reports.json in Resources */,
 				0703053329F71212000DB9C8 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -3,6 +3,7 @@
 //
 
 import UIKit
+import Lottie
 
 public final class PaywallViewModel {
     
@@ -69,11 +70,11 @@ extension PaywallViewModel.Benefit {
         
         public let title: String
         
-        public let image: UIImage?
+        public let animation: Lottie.LottieAnimation?
         
-        public init(title: String, image: UIImage?) {
+        public init(title: String, animation: Lottie.LottieAnimation?) {
             self.title = title
-            self.image = image
+            self.animation = animation
         }
     }
 }

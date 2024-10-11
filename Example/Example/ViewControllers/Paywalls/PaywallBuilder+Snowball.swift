@@ -3,6 +3,7 @@
 //
 
 import UIKit
+import Lottie
 import PaywallsKit
 import PaywallSnowballKit
 
@@ -23,10 +24,22 @@ extension PaywallBuilder {
             restoreAction: "Restore",
             benefit: PaywallViewModel.Benefit(
                 items: [
-                    PaywallViewModel.Benefit.Item(title: "Create Unlimited Documents", image: UIImage(named: "snowball.slide.documents", in: Bundle.main, with: nil)),
-                    PaywallViewModel.Benefit.Item(title: "Create Unlimited Clients", image: UIImage(named: "snowball.slide.clients", in: Bundle.main, with: nil)),
-                    PaywallViewModel.Benefit.Item(title: "Set-Up Follow-Up Emails", image: UIImage(named: "snowball.slide.form", in: Bundle.main, with: nil)),
-                    PaywallViewModel.Benefit.Item(title: "Build Custom Reports", image: UIImage(named: "snowball.slide.reports", in: Bundle.main, with: nil))
+                    PaywallViewModel.Benefit.Item(
+                        title: "Create Unlimited Documents",
+                        animation: LottieAnimation.named("snowbal_documents", bundle: Bundle.main)
+                    ),
+                    PaywallViewModel.Benefit.Item(
+                        title: "Create Unlimited Clients",
+                        animation: LottieAnimation.named("snowbal_clients", bundle: Bundle.main)
+                    ),
+                    PaywallViewModel.Benefit.Item(
+                        title: "Set-Up Follow-Up Emails",
+                        animation: LottieAnimation.named("snowbal_emails", bundle: Bundle.main)
+                    ),
+                    PaywallViewModel.Benefit.Item(
+                        title: "Build Custom Reports",
+                        animation: LottieAnimation.named("snowbal_reports", bundle: Bundle.main)
+                    )
                 ]
             ),
             award: PaywallViewModel.AwardItemViewModel(

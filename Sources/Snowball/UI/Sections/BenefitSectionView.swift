@@ -8,7 +8,7 @@ import SharedKit
 
 final class BenefitSectionView: UIView {
     
-    private typealias Item = (String, UIImage?)
+    private typealias Item = (String, Lottie.LottieAnimation?)
     
     private var items: [Item] = []
     
@@ -58,6 +58,7 @@ final class BenefitSectionView: UIView {
         collectionView.register(FeatureCollectionViewCell.self, forCellWithReuseIdentifier: "FeatureCollectionViewCell")
         
         collectionView.dataSource = self
+        collectionView.delegate = self
         
         return collectionView
     }()
@@ -120,7 +121,7 @@ final class BenefitSectionView: UIView {
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(titleLabelContainerView.snp.bottom).offset(24)
             make.horizontalEdges.equalToSuperview()
-            make.bottom.equalToSuperview().offset(24)
+            make.bottom.equalToSuperview()//.offset(24)
         }
         
         pageControl.snp.makeConstraints { make in
@@ -141,8 +142,8 @@ final class BenefitSectionView: UIView {
 
 extension BenefitSectionView {
     
-    func append(title: String, image: UIImage?) {
-        items.append((title, image))
+    func append(title: String, animation: Lottie.LottieAnimation?) {
+        items.append((title, animation))
         pageControl.numberOfPages = items.count
     }
     
@@ -161,38 +162,54 @@ extension BenefitSectionView {
     }
 }
 
-extension BenefitSectionView: UICollectionViewDataSource {
+extension BenefitSectionView: UICollectionViewDataSource, UICollectionViewDelegate {
     
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return items.count
     }
     
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeatureCollectionViewCell", for: indexPath) as? FeatureCollectionViewCell else {
             fatalError("Cannot dequeue cell")
         }
         
         if items.count > indexPath.item {
-            cell.image = items[indexPath.item].1
+            cell.animation = items[indexPath.item].1
         }
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? FeatureCollectionViewCell else {
+            return
+        }
+        
+        cell.startAnimation()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? FeatureCollectionViewCell else {
+            return
+        }
+        
+        cell.stopAnimation()
     }
 }
 
 private final class FeatureCollectionViewCell: UICollectionViewCell {
     
-    private lazy var contentImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        return imageView
+    private lazy var animationView: LottieAnimationView = {
+        let animationView = LottieAnimationView()
+        animationView.contentMode = .scaleAspectFit
+        animationView.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        animationView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        return animationView
     }()
     
-    private lazy var containerContentImageView = UIView()
-    
-    var image: UIImage? {
+    var animation: Lottie.LottieAnimation? {
         didSet {
-            contentImageView.image = image
+            animationView.animation = animation
         }
     }
     
@@ -207,22 +224,18 @@ private final class FeatureCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        containerContentImageView.addSubview(contentImageView)
+        contentView.addSubview(animationView)
         
-        contentView.addSubview(containerContentImageView)
-        
-        contentImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.greaterThanOrEqualToSuperview()
-            make.right.lessThanOrEqualToSuperview()
-            make.centerX.equalToSuperview()
-            make.height.equalToSuperview()
+        animationView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
-        
-        containerContentImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.horizontalEdges.equalToSuperview()
-            make.height.equalToSuperview()
-        }
+    }
+    
+    func startAnimation() {
+        animationView.play(fromProgress: 0, toProgress: 1, loopMode: .loop)
+    }
+    
+    func stopAnimation() {
+        animationView.stop()
     }
 }

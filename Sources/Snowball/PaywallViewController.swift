@@ -202,7 +202,7 @@ open class PaywallViewController: UIViewController {
         view.titleTextColor = colorAppearance.invertPrimaryLabel
         
         for item in viewModel.benefit.items {
-            view.append(title: item.title, image: item.image)
+            view.append(title: item.title, animation: item.animation)
         }
         
         contentView.addSubview(view)
